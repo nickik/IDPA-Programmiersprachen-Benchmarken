@@ -1,0 +1,14 @@
+Nick:
+
+- LaTeX
+- Einleitung
+- Algorytmus
+- clojure programm
+- sprachen beschreiben
+
+Math:
+
+- Vorwort und Abstract
+- Testsystem beschreiben
+- Java und Scala compilieren
+- research daten auslesen

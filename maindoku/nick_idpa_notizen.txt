@@ -1,0 +1,35 @@
+Vorwort
+
+Dieses Projrkt ist aus dem Willen heraus entstanden eine Arbeit zu machen die Applikations. und Systemtechnikenkenntniss nuetzt und verbindet. Nach verschiedenen Ideen einigten wir uns 
+
+Allgemeines zu den Sprachen
+Um es einfacher und fair zu machen haben wir uns Entschieden Programmiersprachen zu nehmen die auf der JVM lafen
+
+Clojure
+Clojure ist eine dynamische Programmiersprache 
+
+
+Glossar
+
+
+Virtuall Maschine
+Eine Virtuall Maschine ist eine Programm welches simuliert eine echte Maschine zu sein. Sie bekommt als input irgend eine Sprache und fuert diese auf der darunter liegenden Sprache aus.
+Java Virtuall Maschiene
+Eine implementation einer VM die dafuer ausgelegt ist Java Bytecode auszufueren.
+Bytecode
+
+Java Bytecode
+The Java Bytecode wurde als Zielsprache fuer 
+
+Abkuerzungen
+
+VM
+Virtuall Maschine
+JVm
+Java Virtuell Maschine
+IR
+Interniediet Language
+
+
+
+
