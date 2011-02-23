@@ -23,40 +23,40 @@ Wir haben uns entschieden für unsere Maturaarbeit die Programmiersprachen Java,
 \section{Einleitung}
 
 \subsection{Untersuchungsgegenstand}
-Wir haben uns ein sehr komplexes Thema vorgenommen. Programmiersprachen und Compiler sind, auf die Informatik bezogen, einen sehr altes Thema. \\
-Hochsprachen wie wir Sie in dieser Arbeit verwenden, werden seit mehr
-als fünfzig Jahren immer wieder weiter entwickelt und verbessert. Seit
-der Anfangszeit herrscht der Konflikt zwischen hoher Abstraktion und
-Geschwindigkeit. Umso höher die Abstraktion ist, die eine
-Programmiersprache bietet, umso schwieriger ist die Programmiersprache
-auf der darunterliegenden Sprache effizient auszuführen.
+Wir haben uns ein sehr kompliertes Thema
+vorgenommen. Programmiersprachen und Compiler sind, zumindes f\"ur die
+Informatik, einen sehr altes Thema. \\
 
+Hochsprachen wie wir Sie in dieser Arbeit verwenden werden seit mehr
+als f\"unfzig Jahren immer wieder weiter entwickelt und verbessert. Seit
+der Anfangszeit herscht der Konflikt zwischen hoher Abstraktion und
+Geschwindikeit. Umso h\"oher die Abstraktion ist die eine
+Programmiersprache bietet umso schwieriger ist die Programmiersprache
+auf der darunterliegenden effizient auszuf\"uhren. 
 
 \subsection{Problemstellung}
 
 Wir haben uns die Aufgabe gestellt drei Programmiersprachen unter dem
-Aspekt der Geschwindigkeit anzuschauen und zu vergleichen. Eine
-definitives Ergebnis ist in diesem Bereich fast unmöglich da die
+asbekt der Geschwindigkeit anzuschauen und zu vergleichen. Eine
+definitives Ergebniss ist in diesem Bereich fast unm\"oglich da die
 Anwendungsgebiete einer Programmiersprache zu verschieden sind und
-jeder Anwendungsfall andere Anforderungen hat. Auch die
+jeder Anwendungsfall andere Requirements hat. Auch die
 unter der Programmiersprache liegenden Layers (Betriebssysteme und
 Hardware) sind von entscheidender Bedeutung. Um korrekte Aussagen zu
-machen müssen diese Layers entweder herausgerechnet werden oder
-identisch sein. Das Ziel ist es für unseren Anwendungsfall Messungen
-zu machen, Aussagen über die Geschwindigkeiten zu treffen und
-wenn möglich klären warum die Sprachen in diesem Beispiel so schnell
+machen m\"ussen diese Layers entweder herausgerechnet werden oder
+identisch sein. Das Ziel ist es f�r unseren Anwendungsfall Messungen
+zu machen, Aussagen �ber die geschwindikeiten zu treffen und
+wenn m�glich kl�hren warum die Sprachen in diesem Beispiel so schnell
 sind wie sie sind.
 
-
-\subsection{Wissenslücken}
+\subsection{Wissensl�cken}
 
 Um komplizierte Algorithmen in drei verschiedenen Sprachen zu
 programmieren braucht man viel Erfahrung in diesen Sprachen. Um den
 Aufwand nicht zu hoch werden zu lassen haben wir uns auf die
 Implementierung in einer Programmiersprache spezialisiert und
-vergleichen diese mit Referenz-Implementationen die wir nur erklären
+vergleichen diese mit reference Implementationen die wir nur Erkl\"ahren
 und messen.
-
 
 \section{Material und Methoden}
 \subsection{Allgemeines zu den Versuchen}
@@ -68,16 +68,16 @@ und messen.
 
 \subsection{Allgemeines zu den Sprachen}
 
-Um es einfacher, fair und simpel zu machen haben wir uns entschieden
-Programmiersprachen zu wählen die auf der JVM (oder anderen VMs die
-Java Byte Code ausführen) laufen. Das Modell der VM bietet
-verschiedene Vorteile die ich kurz erläutern möchte.
+Um es einfacher und fair und simple  zu machen haben wir uns Entschieden
+Programmiersprachen zu nehmen die auf der JVM (oder anderen VMs die
+Java Byte Code ausf�hren) laufen. Das modell der VM bietet
+verschiedene Vorteile die ich kurz erl�utern m�chte.
 \\
-Da VMs einen Bytecode als Input erhalten ist es grundsätzlich möglich
-jede Programmiersprache auf einer VM laufen zu lassen. Wie dieser
-Bytecode in der VM ausgeführt wird ist den darüber liegenden Sprachen
+Da VM einen Bytecode als Input erhalten ist es grunds�tzlich m�glich
+jeder Programmiersprache auf einer VM laufen zu lassen. Wie dieser
+Bytecode in der VM ausgef�hrt wird ist den dar�ber liegenden Sprachen
 egal.\\ 
-Einige Möglichkeiten wie eine VM den Bytecode ausführt:
+Einige M�glichkeiten wie eine VM den Bytecode ausf�hen:
 
 \begin{itemize}
 \item Interpreter
@@ -86,34 +86,37 @@ Einige Möglichkeiten wie eine VM den Bytecode ausführt:
 \item Direkt auf Hardware
 \end{itemize}
 
-Ich möchte nur auf den JIT-Compiler etwas näher eingehen da die JVM
-die wir benutzen einen solchen verwendet (Hotspot). Um zu verstehen warum ein
+Ich m�chte nur auf den JIT-Compiler etwas n�her eingehen da die JVM
+die wir ben�tzen einen solchen verwendet (Hotspot). Um zu verstehen warum ein
 Programm langsam oder schnell ist muss man bis zu einem gewissen grad
 den Compiler verstehen.
 
 \subsubsection{JIT Compiler}
 
-Ein JIT-Compiler kompiliert nicht alles auf einmal sondern, nur den
-Code der auch wirklich gebraucht wird. Das erlaubt es dem Compiler
-Optimierungen an den wichtigen Stellen anzubringen. Ein weiterer
+Ein JIT-Compiler compiliert nicht alles auf einmal sonder, nur den
+Code den auch wirklich braucht. Das erlaubt es dem Compiler
+obtimierungen an den wichtigen Stellen anzubringen. Ein weiterer
 grosser Vorteil ist es, dass dem JIT-Compiler die Umgebung auf der er
-sich befindet bekannt ist. Das erlaubt es Optimierungen anzubringen
-die speziell für diese Hardware den Code anpassen.
+sich befindet bekannt ist. Das erlaubt es obtimierungen anzubringen
+die speziell f�r diese Hardware den Code anpassen.
 \\
-Gute JIT-Compiler sind heutzutage vergleichbar mit der Geschwindigkeiten
+Gute JIT-Compiler sind heutzutage vergleichbar mit der Geschwindikeiten
 von Native Code Compilern. Die Unterschiede sind in vielen
-Anwendungsfällen nur noch gering.
+Anwendungsf�llen nur noch gering. 
+
+ 
 
 \subsection{Java}
 
 \subsubsection{Beschreibung}
 
-Java ist eine Programmiersprache die ab 1992 von Sun Microsystems (oder
-teilweise im Auftrag von Sun) entwickelt wurde. Java wurde zuerst für
-eingebettete Systeme geschrieben. Heutzutage findet man Java Applikation in
+Java ist eine Programmiersprache die von 1992 an von Sun Microsystems (oder
+teilweise im Auftrag von Sun) entwickelt wurde. Java wurde zuerst f�r
+Embedet Systems geschrieben. Heutzutage findet man Java Applikation in
 vielen Anwendungsgebieten.
+
 Java ist eine der meist verwendeten Programmiersprachen und wird auch
-in vielen Universitäten gelehrt. 
+in vielen Unversit�ten gelehre. 
 %Siehe Tiobe index ...
 
 
@@ -122,29 +125,33 @@ in vielen Universitäten gelehrt.
 \subsubsection{Beschreibung}
 
 Die Entwicklung von Scala hat 2001 an der ETH Lausanne unter Martin
-Odersky begonnen. Die Idee war eine Sprache zu designen, welche die
-Konzepte von funktionalen und objektorientierten Sprachen in Synthese
-verwendet. Zwar wurde Scala im akademischen Kontext entwickelt findet
-aber immer mehr Anwendungen im Business Bereich.
+Odersky begonnen. Die Idee ist es eine Sprache zu designen die
+Konzepte eine Funktionalen und Objektorientiertersprachen in syntese
+verwendet. Zwar wurde Scala im Akademischen Kontext entwickelt findet
+aber immer mehr Anwendungen im Bussness Bereichen
+
 
 \subsection{Clojure}
 
 \subsubsection{Beschreibung}
 
 Clojure ist eine dynamische Programmiersprache die 2007 von Rich Hicky
-für die JVM geschrieben wurde. Im Vordergrund der Entwicklung standen
-hohe Abstraktion, vor allem bei Concurency Programming, und eine gute
-Integration ins Host System (JVM). Diese erlaubt die Wiederverwendung von
-Java Code, Java Ecosystems (Webservers, Profilers, Debuggers...) und natürlich der VM.
+f�r die JVM geschrieben wurde. Im Vordergrund der Entwicklung standen
+hohe Abstraktion, vor allem bei Concurency Programming, und gut
+integration ins Host System (JVM). Diese erlaubt Wiederverwednung von
+Java Code, Java Ecosystems (Webservers, Profilers, Debuggers
+...) und nat�rlich der VM.
 
-\section{Diskussion}
+
+
+\section{Diskussiona}
 \subsection{Vergleich der Resultate}
 \subsection{Schlussfolgerung}
-\section{Abkürzungsverzeichnis}
+\section{Abk\"urzungsverzeichnis}
 
-VM  - Virtual Machine\\
-JVM - Java Virtual Machine\\
-IL - Intermediate Language\\
+VM  - Virtuall Maschine
+JVM - Java Virtuell Maschine
+IL - Interniediet Language
 
 \section{Literaturverzeichnis}
 
@@ -152,10 +159,14 @@ IL - Intermediate Language\\
 
 \section{Glossar}
 
-Virtual Machine: Eine Virtual Machine ist ein Programm, welches dem darauf ausgeführten Programm vorgibt, ein echter Computer zu sein. Sie bekommt als Eingabe eine beliebige Sprache und führt diese auf der darunter liegenden Sprache aus.\\\\
-Java Virtual Machine: Eine Implementierung einer VM die dafür ausgelegt ist Java Bytecode auszuführen.\\\\
-Bytecode: Ein Instruktionsset für eine VM.\\\\
-Java Bytecode: Java Bytecode ist der für Java bzw. für die JVM
+Virtuall Maschine: Eine Virtuall Maschine ist eine Programm welches simuliert eine echte
+Maschine zu sein. Sie bekommt als input irgend eine Sprache und fuert
+diese auf der darunter liegenden Sprache aus.
+
+Java Virtuall Maschiene: Eine implementation einer VM die dafuer ausgelegt ist Java Bytecode auszufueren.
+
+Bytecode: Ein Instruktionsset f�r eine VM.
+Java Bytecode: Java Bytecode ist der f�r Java bzw. f�r die JVM
 entwickelte Bytecode.
 
 
