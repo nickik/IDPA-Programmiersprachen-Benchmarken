@@ -52,33 +52,33 @@
 
 \section{Vorwort}
 
-Dieses Projrkt ist aus dem Willen heraus entstanden eine Arbeit zu
-machen die Applikations. und Systemtechnikenkenntniss nuetzt und
-verbindet. Nach verschiedenen Ideen einigten wir uns ... 
+Die Informatik hat auf uns schon immer eine gewisse Faszination ausgeübt. Es war daher für uns beide naheliegend eine Lehre als Informatiker zu machen. Während Nick vor allem an der Softwareentwicklung interessiert ist, bevorzuge ich die Systemtechnik, in der die Installation und Wartung von IT-Systemen der Grosse Schwerpunkt ist.
+Da wir beide unsere Berufe noch immer sehr interessiert ausführen, war es für uns beide klar für die IDPA ein Thema aus dem Bereich Informatik zu wählen. Es galt nun ein Thema zu finden, in dem sowohl die Applikationsentwicklung wie auch die Systemtechnik gleichermassen eine Rolle spielen. Bereits nach kurzer Recherche stiessen wir auf das Thema „Programmiersprachen Benchmarking“. Sofort war unser beider Interesse geweckt und dadurch,  dass dieses Thema sowohl ein Testsystem wie auch selbstgeschriebene Programme erforderte, eignete es sich sehr gut für eine IDPA. Wir entschieden uns, unsere Maturaarbeit diesem Thema zu widmen.
+Am gewählten Thema interessiert uns beide in erster Linie ob tatsächlich Performanceunterschiede zwischen den untersuchten Sprachen feststellbar sind, und in welchem Ausmass sie sich zeigen. Heutige Computer sind sehr leistungsfähig, dadurch ist es für kleinere Programme wie wir sie testen werden meist irrelevant ob eine Programmiersprache einige Millisekunden schneller ist als die andere. Für grössere Projekte spielt die Geschwindigkeit jedoch auch heute noch eine wichtige Rolle, wir hoffen daher, dass sich unsere Testergebnisse auf grössere Applikationen projizieren lassen.
 
 \section{Abstract}
+Wir haben uns entschieden für unsere Maturaarbeit die Programmiersprachen Java, Clojure und Scala zu vergleichen. Wir haben dazu ein identisches Programm in jeder der genannten Programmiersprachen geschrieben. Durch das Messen von Prozessor- und Speicherdaten sowie der Ausführungszeiten der Programme wollten wir Unterschiede feststellen, um am Ende aufzeigen zu können, welche der getesteten Sprachen vom Testsystem am wenigsten Leistung abverlangt. Für die Messungen haben wir ein Script geschrieben, welches die erforderlichen Daten in angemessenen Zeitabständen ausliest. 
+
 \section{Einleitung}
 
 \subsection{Untersuchungsgegenstand}
 
-Wir haben uns ein sehr kompliertes Thema
-vorgenommen. Programmiersprachen und Compiler sind, zumindes f\"ur die
-Informatik, einen sehr altes Thema. \\
+Wir haben uns ein sehr komplexes Thema vorgenommen. Programmiersprachen und Compiler sind, auf die Informatik bezogen, einen sehr altes Thema. \\
+Hochsprachen wie wir Sie in dieser Arbeit verwenden, werden seit mehr
+als fünfzig Jahren immer wieder weiter entwickelt und verbessert. Seit
+der Anfangszeit herrscht der Konflikt zwischen hoher Abstraktion und
+Geschwindigkeit. Umso höher die Abstraktion ist, die eine
+Programmiersprache bietet, umso schwieriger ist die Programmiersprache
+auf der darunterliegenden Sprache effizient auszuführen.
 
-Hochsprachen wie wir Sie in dieser Arbeit verwenden werden seit mehr
-als f\"unfzig Jahren immer wieder weiter entwickelt und verbessert. Seit
-der Anfangszeit herscht der Konflikt zwischen hoher Abstraktion und
-Geschwindikeit. Umso h\"oher die Abstraktion ist die eine
-Programmiersprache bietet umso schwieriger ist die Programmiersprache
-auf der darunterliegenden effizient auszuf\"uhren. 
 
 \subsection{Problemstellung}
 
 Wir haben uns die Aufgabe gestellt drei Programmiersprachen unter dem
-asbekt der Geschwindigkeit anzuschauen und zu vergleichen. Eine
-definitives Ergebniss ist in diesem Bereich fast unm\"oglich da die
+Aspekt der Geschwindigkeit anzuschauen und zu vergleichen. Eine
+definitives Ergebnis ist in diesem Bereich fast unmöglich da die
 Anwendungsgebiete einer Programmiersprache zu verschieden sind und
-jeder Anwendungsfall andere Requirements hat. Auch die
+jeder Anwendungsfall andere Anforderungen hat. Auch die
 unter der Programmiersprache liegenden Layers (Betriebssysteme und
 Hardware) sind von entscheidender Bedeutung. Um korrekte Aussagen zu
 machen m\"ussen diese Layers entweder herausgerechnet werden oder
@@ -86,13 +86,13 @@ identisch sein. Das Ziel ist es f\"ur den von uns ausgew\"ahlten Anwendungsfall 
 zu machen, Aussagen \"uber die Geschwindikeiten zu treffen und
 wenn m\"oglich kl\"ahren warum die Sprachen so verh\"alt.
 
-\subsection{Wissensl\"ucken}
+\subsection{Wissenslücken}
 
 Um komplizierte Algorithmen in drei verschiedenen Sprachen zu
 programmieren braucht man viel Erfahrung in diesen Sprachen. Um den
 Aufwand nicht zu hoch werden zu lassen haben wir uns auf die
 Implementierung in einer Programmiersprache spezialisiert und
-vergleichen diese mit reference Implementationen die wir nur Erkl\"ahren
+vergleichen diese mit Referenz-Implementationen die wir nur erklären
 und messen.
 
 \subsection{Erwartungen}
@@ -100,10 +100,15 @@ und messen.
 Wegen er unter der Sprachen liegenden Infrastruktur erwarten wir sehr
 \"ahnliche Testresultate. Es ist das erkl\"ahrte Ziel von Clojure und
 Scala genau so schnell zu sein wie Java um nie auf Java zur\"uck fallen
-zu m\"ussen.
+zu m\"ussen. 
 
-Was wir allso testen ist die effizienz der Sourcecode zu Bytecode
-Compiler. Diese Technischen Details werden sp\"ater in dieser Arbeit verwendet.
+Wir haben die Hypothese aufgestellt, dass Scala es relativ einfach hat
+gleichschneller Code wie Java zu produzieren da die Sprachen beide 
+Statische Typeinformation haben, Scala sehr Java \"ahnlich programmiert werden kann
+und Scala eine der \"altesten und reifsten JVM-Sprachen ist.
+
+Die Erwartung f\"ur Clojure ist nicht ganz so hoch da das Projekt relativ neu ist. Clojure 
+ist ausserdem eine dynamische Programmiersprache diese sind schwerer zu optimieren.
 
 \section{Material und Methoden}
 
@@ -193,6 +198,18 @@ Bytecode in der VM ausgef\"uhrt wird ist den dar\"uber liegenden Sprachen
 egal.\\ 
 Einige M\"oglichkeiten wie eine VM den Bytecode ausf\"uhen:
 
+Um es einfacher, fair und simpel zu machen haben wir uns entschieden
+Programmiersprachen zu wählen die auf der JVM (oder anderen VMs die
+Java Byte Code ausführen) laufen. Das Modell der VM bietet
+verschiedene Vorteile die ich kurz erläutern möchte.
+\\
+Da VMs einen Bytecode als Input erhalten ist es grundsätzlich möglich
+jede Programmiersprache auf einer VM laufen zu lassen. Wie dieser
+Bytecode in der VM ausgeführt wird ist den darüber liegenden Sprachen
+egal.\\ 
+Einige Möglichkeiten wie eine VM den Bytecode ausführt:
+
+
 \begin{itemize}
 \item Interpreter
 \item JIT-Compiler
@@ -207,17 +224,16 @@ den Compiler verstehen.
 
 \subsubsection{JIT Compiler}
 
-Ein JIT-Compiler compiliert nicht alles auf einmal sonder, nur den
-Code den auch wirklich braucht. Das erlaubt es dem Compiler
-obtimierungen an den wichtigen Stellen anzubringen. Ein weiterer
+Ein JIT-Compiler kompiliert nicht alles auf einmal sondern, nur den
+Code der auch wirklich gebraucht wird. Das erlaubt es dem Compiler
+Optimierungen an den wichtigen Stellen anzubringen. Ein weiterer
 grosser Vorteil ist es, dass dem JIT-Compiler die Umgebung auf der er
-sich befindet bekannt ist. Das erlaubt es obtimierungen anzubringen
-die speziell f\"ur diese Hardware den Code anpassen.
+sich befindet bekannt ist. Das erlaubt es Optimierungen anzubringen
+die speziell für diese Hardware den Code anpassen.
 \\
-Gute JIT-Compiler sind heutzutage vergleichbar mit der Geschwindikeiten
+Gute JIT-Compiler sind heutzutage vergleichbar mit der Geschwindigkeiten
 von Native Code Compilern. Die Unterschiede sind in vielen
 Anwendungsf\"allen nur noch gering.
-
 
 \section{Programmiersprachen und Implementierungen}
 
@@ -225,30 +241,32 @@ Anwendungsf\"allen nur noch gering.
 \subsection{Java}
 \subsubsection{Beschreibung}
 
-Java ist eine Programmiersprache die von 1992 an von Sun Microsystems (oder
-teilweise im Auftrag von Sun) entwickelt wurde. Java wurde zuerst f\"ur
-Embedet Systems geschrieben. Heutzutage findet man Java Applikation in
-vielen Anwendungsgebieten, insbesondere Enterprice Applikationen.
+Java ist eine Programmiersprache die ab 1992 von Sun Microsystems (oder
+teilweise im Auftrag von Sun) entwickelt wurde. Java wurde zuerst f\"r
+eingebettete Systeme geschrieben. Heutzutage findet man Java Applikation in
+vielen Anwendungsgebieten.
+Java ist eine der meist verwendeten Programmiersprachen und wird auch
+in vielen Universitäten gelehrt. 
+%Siehe Tiobe index ...
 
 \subsection{Scala}
 
 \subsubsection{Beschreibung}
 
 Die Entwicklung von Scala hat 2001 an der ETH Lausanne unter Martin
-Odersky begonnen. Die Idee ist es eine Sprache zu designen die
-Konzepte eine Funktionalen und Objektorientiertersprachen in syntese
-verwendet. Zwar wurde Scala im Akademischen Kontext entwickelt findet
-aber immer mehr Anwendungen im Bussness Bereichen
+Odersky begonnen. Die Idee war eine Sprache zu designen, welche die
+Konzepte von funktionalen und objektorientierten Sprachen in Synthese
+verwendet. Zwar wurde Scala im akademischen Kontext entwickelt findet
+aber immer mehr Anwendungen im Business Bereich.
 
 \subsection{Clojure}
 \subsubsection{Beschreibung}
 
 Clojure ist eine dynamische Programmiersprache die 2007 von Rich Hicky
-f\"ur die JVM geschrieben wurde. Im Vordergrund der Entwicklung standen
-hohe Abstraktion, vor allem bei Concurency Programming, und gut
-integration ins Host System (JVM). Diese erlaubt Wiederverwednung von
-Java Code, Java Ecosystems (Webservers, Profilers, Debuggers
-...) und nat\"urlich der VM.
+für die JVM geschrieben wurde. Im Vordergrund der Entwicklung standen
+hohe Abstraktion, vor allem bei Concurency Programming, und eine gute
+Integration ins Host System (JVM). Diese erlaubt die Wiederverwendung von
+Java Code, Java Ecosystems (Webservers, Profilers, Debuggers...) und natürlich der VM.
 
 \subsubsection{Code}
 
@@ -262,11 +280,11 @@ Java Code, Java Ecosystems (Webservers, Profilers, Debuggers
 \subsection{Datenauswertungsmethoden}
 
 \section{Ergebnisse}
-
 \section{Diskussion}
 \subsection{Vergleich der Resultate}
 
 \subsection{Schlussfolgerung}
+
 
 \section{Abk\"urzungsverzeichnis}
 
@@ -290,7 +308,7 @@ Java Virtuall Maschiene: \\ Eine implementation einer VM die dafuer ausgelegt is
 
 Bytecode: \\Ein Instruktionsset f\"ur eine VM.\\
 Java Bytecode:\\ Java Bytecode ist der f\"ur Java bzw. f\"ur die JVM
-entwickelte Bytecode.
+
 
 
 \section{Anhang}
