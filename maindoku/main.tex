@@ -1,6 +1,8 @@
 \documentclass{fancydocument}
 
 \usepackage{enumerate}
+\usepackage{listings}
+\usepackage{courier}
 
 \title{IDPA: Programmiersprachen benchmarken}
 \author{Nick Zbinden und Matthias Gasser}
@@ -8,6 +10,45 @@
 \begin{document}
 \maketitle
 \thispagestyle{fancy}
+\newpage
+\tableofcontents
+
+\definecolor{lineno}{rgb}{0.5,0.5,0.5}
+\definecolor{code}{rgb}{0,0.1,0.6}
+\definecolor{keyword}{rgb}{0.5,0.1,0.1}
+\definecolor{titlebox}{rgb}{0.85,0.85,0.85}
+\definecolor{download}{rgb}{0.8,0.1,0.5}
+\definecolor{title}{rgb}{0.4,0.4,0.4}
+
+\lstdefinelanguage{clojure}
+{
+    morekeywords={*agent*, *clojure-version*, *command-line-args*, *compile-files*, *compile-path*, *e, *err*, *file*, *flush-on-newline*, *in*, *ns*, *out*, *print-dup*, *print-length*, *print-level*, *print-meta*, *print-readably*, *read-eval*, *warn-on-reflection*, +, -, ->, ->>, .., /, <, <=, =, ==, >, >=, accessor, aclone, add-classpath, add-watch, agent, agent-error, agent-errors, aget, alength, alias, all-ns, alter, alter-meta!, alter-var-root, amap, ancestors, and, apply, areduce, array-map, aset, aset-boolean, aset-byte, aset-char, aset-double, aset-float, aset-int, aset-long, aset-short, assert, assoc, assoc!, assoc-in, associative?, atom, await, await-for, bases, bean, bigdec, bigint, binding, bit-and, bit-and-not, bit-clear, bit-flip, bit-not, bit-or, bit-set, bit-shift-left, bit-shift-right, bit-test, bit-xor, boolean, boolean-array, booleans, bound-fn, bound-fn*, bound?, butlast, byte, byte-array, bytes, case, cast, char, char-array, char-escape-string, char-name-string, char?, chars, class, class?, clear-agent-errors, clojure-version, coll?, comment, commute, comp, comparator, compare, compare-and-set!, compile, complement, concat, cond, condp, conj, conj!, cons, constantly, construct-proxy, contains?, count, counted?, create-ns, create-struct, cycle, dec, decimal?, declare, definline, defmacro, defmethod, defmulti, defn, defn-,def, defonce, defprotocol, defrecord, defstruct, deftype, delay, delay?, deliver, denominator, deref, derive, descendants, disj, disj!, dissoc, dissoc!, distinct, distinct?, doall, doc, dorun, doseq, dosync, dotimes, doto, double, double-array, doubles, drop, drop-last, drop-while, empty, empty?, ensure, enumeration-seq, error-handler, error-mode, eval, even?, every?, extend, extend-protocol, extend-type, extenders, extends?, false?, ffirst, file-seq, filter, find, find-doc, find-ns, find-var, first, flatten, float, float-array, float?, floats, flush, fn, fn?, fnext, fnil, for, force, format, frequencies, future, future-call, future-cancel, future-cancelled?, future-done?, future?, gen-class, gen-interface, gensym, get, get-in, get-method, get-proxy-class, get-thread-bindings, get-validator, group-by, hash, hash-map, hash-set, identical?, identity, if-let, if-not, ifn?, import, in-ns, inc, init-proxy, instance?, int, int-array, integer?, interleave, intern, interpose, into, into-array, ints, io!, isa?, iterate, iterator-seq, juxt, keep, keep-indexed, key, keys, keyword, keyword?, last, lazy-cat, lazy-seq, let, letfn, line-seq, list, list*, list?, load, load-file, load-reader, load-string, loaded-libs, locking, long, long-array, longs, loop, macroexpand, macroexpand-1, make-array, make-hierarchy, map, map-indexed, map?, mapcat, max, max-key, memfn, memoize, merge, merge-with, meta, methods, min, min-key, mod, name, namespace, namespace-munge, neg?, newline, next, nfirst, nil?, nnext, not, not-any?, not-empty, not-every?, not=, ns, ns-aliases, ns-imports, ns-interns, ns-map, ns-name, ns-publics, ns-refers, ns-resolve, ns-unalias, ns-unmap, nth, nthnext, num, number?, numerator, object-array, odd?, or, parents, partial, partition, partition-all, partition-by, pcalls, peek, persistent!, pmap, pop, pop!, pop-thread-bindings, pos?, pr, pr-str, prefer-method, prefers, print, print-namespace-doc, print-str, printf, println, println-str, prn, prn-str, promise, proxy, proxy-mappings, proxy-super, push-thread-bindings, pvalues, quot, rand, rand-int, rand-nth, range, ratio?, rationalize, re-find, re-groups, re-matcher, re-matches, re-pattern, re-seq, read, read-line, read-string, reduce, reductions, ref, ref-history-count, ref-max-history, ref-min-history, ref-set, refer, refer-clojure, reify, release-pending-sends, rem, remove, remove-all-methods, remove-method, remove-ns, remove-watch, repeat, repeatedly, replace, replicate, require, reset!, reset-meta!, resolve, rest, restart-agent, resultset-seq, reverse, reversible?, rseq, rsubseq, satisfies?, second, select-keys, send, send-off, seq, seq?, seque, sequence, sequential?, set, set-error-handler!, set-error-mode!, set-validator!, set?, short, short-array, shorts, shuffle, shutdown-agents, slurp, some, sort, sort-by, sorted-map, sorted-map-by, sorted-set, sorted-set-by, sorted?, special-form-anchor, special-symbol?, spit, split-at, split-with, str, string?, struct, struct-map, subs, subseq, subvec, supers, swap!, symbol, symbol?, sync, syntax-symbol-anchor, take, take-last, take-nth, take-while, test, the-ns, thread-bound?, time, to-array, to-array-2d, trampoline, transient, tree-seq, true?, type, unchecked-add, unchecked-dec, unchecked-divide, unchecked-inc, unchecked-multiply, unchecked-negate, unchecked-remainder, unchecked-subtract, underive, update-in, update-proxy, use, val, vals, var-get, var-set, var?, vary-meta, vec, vector, vector-of, vector?, when, when-first, when-let, when-not, while, with-bindings, with-bindings*, with-in-str, with-local-vars, with-meta, with-open, with-out-str, with-precision, xml-seq, zero?, zipmap, recur},
+   sensitive,
+   alsodigit=-,
+   morecomment=[l];,
+   morestring=[b]"
+  }[keywords,comments,strings]
+
+\lstset{
+         language=Clojure,
+         basicstyle=\footnotesize\ttfamily, % Standardschrift
+         %numbers=left,               % Ort der Zeilennummern
+         numberstyle=\tiny,          % Stil der Zeilennummern
+         %stepnumber=2,               % Abstand zwischen den Zeilennummern
+         numbersep=5pt,              % Abstand der Nummern zum Text
+         tabsize=2,                  % Groesse von Tabs
+         extendedchars=true,         %
+         breaklines=true,            % Zeilen werden Umgebrochen
+         keywordstyle=\color{red}, frame=b,         
+         stringstyle=\color{white}\ttfamily, % Farbe der String
+         showspaces=false,           % Leerzeichen anzeigen ?
+         showtabs=false,             % Tabs anzeigen ?
+         xleftmargin=17pt,
+         framexleftmargin=17pt,
+         framexrightmargin=5pt,
+         framexbottommargin=4pt,
+         showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+}
 
 \section{Vorwort}
 
@@ -19,6 +60,7 @@ verbindet. Nach verschiedenen Ideen einigten wir uns ...
 \section{Einleitung}
 
 \subsection{Untersuchungsgegenstand}
+
 Wir haben uns ein sehr kompliertes Thema
 vorgenommen. Programmiersprachen und Compiler sind, zumindes f\"ur die
 Informatik, einen sehr altes Thema. \\
@@ -40,12 +82,11 @@ jeder Anwendungsfall andere Requirements hat. Auch die
 unter der Programmiersprache liegenden Layers (Betriebssysteme und
 Hardware) sind von entscheidender Bedeutung. Um korrekte Aussagen zu
 machen m\"ussen diese Layers entweder herausgerechnet werden oder
-identisch sein. Das Ziel ist es für unseren Anwendungsfall Messungen
-zu machen, Aussagen über die geschwindikeiten zu treffen und
-wenn möglich klähren warum die Sprachen in diesem Beispiel so schnell
-sind wie sie sind.
+identisch sein. Das Ziel ist es f\"ur den von uns ausgew\"ahlten Anwendungsfall Messungen
+zu machen, Aussagen \"uber die Geschwindikeiten zu treffen und
+wenn m\"oglich kl\"ahren warum die Sprachen so verh\"alt.
 
-\subsection{Wissenslücken}
+\subsection{Wissensl\"ucken}
 
 Um komplizierte Algorithmen in drei verschiedenen Sprachen zu
 programmieren braucht man viel Erfahrung in diesen Sprachen. Um den
@@ -54,26 +95,103 @@ Implementierung in einer Programmiersprache spezialisiert und
 vergleichen diese mit reference Implementationen die wir nur Erkl\"ahren
 und messen.
 
+\subsection{Erwartungen}
+
+Wegen er unter der Sprachen liegenden Infrastruktur erwarten wir sehr
+\"ahnliche Testresultate. Es ist das erkl\"ahrte Ziel von Clojure und
+Scala genau so schnell zu sein wie Java um nie auf Java zur\"uck fallen
+zu m\"ussen.
+
+Was wir allso testen ist die effizienz der Sourcecode zu Bytecode
+Compiler. Diese Technischen Details werden sp\"ater in dieser Arbeit verwendet.
+
 \section{Material und Methoden}
-\subsection{Allgemeines zu den Versuchen}
-\subsection{Verwendete Programmiersprachen}
-\subsection{Das Testsystem}
-\subsection{Aufnahme der Daten}
-\subsection{Datenauswertungsmethoden}
-\section{Ergebnisse}
 
-\subsection{Allgemeines zu den Sprachen}
+\subsection{Allgemeines}
 
-Um es einfacher und fair und simple  zu machen haben wir uns Entschieden
-Programmiersprachen zu nehmen die auf der JVM (oder anderen VMs die
-Java Byte Code ausführen) laufen. Das modell der VM bietet
-verschiedene Vorteile die ich kurz erläutern möchte.
+\subsubsection{Sprachauswahl}
+
+In den letzten Jahren ist ein neuer Trend
+erwachsen. Programmiersprachen werden oft nicht mehr von Grund auf neu
+aufgebaut sondern versuchen bestehende Infrastrukturen zu verwenden.
 \\
-Da VM einen Bytecode als Input erhalten ist es grundsätzlich möglich
+Diese bringt Vorteile und Nachteile mit sich. Der Vorteil ist, dass
+man sich als Trittbrettfahrer an einer VM anh\"angen kann. In moderne
+VM wie der JVM wurden hunderte von Mannjahren investiert und sind
+daher sehr stabiel und schon fast \"uberall installiert.
+
+Der zweite Vorteil ist das Interoptabilit\"at zwischen den
+verschiedenen Sprachen erreicht werden kann. Somit kann Code
+wiederverwendet werden ohne, dass man Zeit in portierung von
+Programmen stecken muss die jede Sprach braucht um im echten Leben
+verwendung zu finden beispielsweise Datenbank Protokolle, XML Parsers usw.
+
+In der Java Programmiersprach sind all diese Grundlegenden Programme
+schon implementiert und die JVM ist eine geeignet Plattform um ander
+Sprachen darauf aufzusetzten.
+
+Die entscheidene Frage ist nun warum sollten die Nutzer die neuen
+Sprachen ben\"utzen. Die Antwort ist sehr vielf\"alltig. Einige neue
+Sprachen (Scala) bieten bessere Typsysteme und dadurch besser
+Compiletime Sicherheiten andere Sprachen wie z.B. Groovy versuchen Features
+von sehr dynamischen Sprachen zu unterst\"utzen.
+
+Alle diese neuen und spannenden Features sind fantastisch kommen aber
+oft auf Kosten der Performance. Das kommt davon das manche Features (Bouncechecking)
+einfach per definition Laufzeit brauchen aber oft ist das Problem auch der Unterschied in
+den Sprache Semantiken d.h. wenn in einer Sprache ein Feature
+unterst\"utzt ist aber in der Host-VM nicht muss um das Problem herum
+gearbeitet was zus\"atzlichen Runtime-Overhead verursacht. In dieser
+Arbeit haben wir uns zwei der meiste verwendeten neuen JVM-Sprachen
+ausgesucht um herauszufinden ob diese es schaffen die Geschwindikeit
+der Hostsprache (Java) zu erreichen.
+
+\subsubsection{Zielanpassung: Sprachanpassung}
+
+Im Expose haben wir die drei JVM-Sprachen Clojure, Scala und JRuby
+gennant die wir Benchmarken wollten. W\"ahrend der Arbeit haben wir
+festgestellt, dass JRuby andere Ziele vorfolgt als maximale
+Performance zu bieten und deshalb weder produktiv noch sinnvoll ist
+JRuby mit Clojure und Scala, die beide diesen Anspruch haben, zu
+vergleichen.
+
+Um JRuby zu ersetzen h\"atten wir eine weiter neue JVM-Sprache
+hernehmen k\"onnen (es gibt mehr als einhundert) aber es gibt kaum
+Sprachen die weit genug entwickelt sind oder die \"ahnliche Ziele
+verfolgen. Deshalb haben wir uns Entschieden den test zu machen ob
+Clojure und Scala wirklich die Geschwindigkeit von Java erreichen
+
+\subsubsection{Zielanpassung: Implementierung}
+
+Zuerst war die Idee ein Algorithmus in drei verschiedenen Sprachen zu
+implementieren und dann die Performence zu messen. Um einen mehr oder
+weniger komplexen Algprithmus in drei Sprachen zu implementieren muss
+man diese Sprachen sehr gut kennen und verstehen. Noch schwieriger
+wird es wenn Performance noch von grosser wichtigkeit ist. Viele
+Sprachen kann man extrem verbiegen was es, auf Kosten von
+Einfachheit und Klarheit, erlaubt die Geschwindkeit zu verbessern.
+
+Um solche Progamme zu schreiben sind wir f\"ahig und sich sowas
+anzueignen ist of mit Monate langer einarbeitung Verbunden. Deshalb
+beschr\"anken wir uns, bei der implementierung, auf eine Sprache. In
+den anderen nehmen Reference implementierung und werden diese nur
+testen und erkl\"aren.
+
+\subsection{Grundlagen}
+
+\subsubsection{Virtuelle Maschienen}
+
+Um es simpel zu halten haben wir uns Entschieden
+Programmiersprachen zu nehmen die auf der JVM (oder anderen VMs die
+Java Byte Code ausf\"uhren) laufen. Dies erlaubt uns Aussagen \"uber die
+Codegenerierung des Source-to-Bytecoden compilers der Sprache zu
+machen.
+\\
+Da VM einen Bytecode als Input erhalten ist es grunds\"atzlich m\"oglich
 jeder Programmiersprache auf einer VM laufen zu lassen. Wie dieser
-Bytecode in der VM ausgeführt wird ist den darüber liegenden Sprachen
+Bytecode in der VM ausgef\"uhrt wird ist den dar\"uber liegenden Sprachen
 egal.\\ 
-Einige Möglichkeiten wie eine VM den Bytecode ausfühen:
+Einige M\"oglichkeiten wie eine VM den Bytecode ausf\"uhen:
 
 \begin{itemize}
 \item Interpreter
@@ -82,8 +200,8 @@ Einige Möglichkeiten wie eine VM den Bytecode ausfühen:
 \item Direkt auf Hardware
 \end{itemize}
 
-Ich möchte nur auf den JIT-Compiler etwas näher eingehen da die JVM
-die wir benützen einen solchen verwendet (Hotspot). Um zu verstehen warum ein
+Ich m\"ochte nur auf den JIT-Compiler etwas n\"aher eingehen da die JVM
+die wir ben\"utzen einen solchen verwendet (Hotspot). Um zu verstehen warum ein
 Programm langsam oder schnell ist muss man bis zu einem gewissen grad
 den Compiler verstehen.
 
@@ -94,27 +212,23 @@ Code den auch wirklich braucht. Das erlaubt es dem Compiler
 obtimierungen an den wichtigen Stellen anzubringen. Ein weiterer
 grosser Vorteil ist es, dass dem JIT-Compiler die Umgebung auf der er
 sich befindet bekannt ist. Das erlaubt es obtimierungen anzubringen
-die speziell für diese Hardware den Code anpassen.
+die speziell f\"ur diese Hardware den Code anpassen.
 \\
 Gute JIT-Compiler sind heutzutage vergleichbar mit der Geschwindikeiten
 von Native Code Compilern. Die Unterschiede sind in vielen
-Anwendungsfällen nur noch gering. 
+Anwendungsf\"allen nur noch gering.
 
- 
+
+\section{Programmiersprachen und Implementierungen}
+
 
 \subsection{Java}
-
 \subsubsection{Beschreibung}
 
 Java ist eine Programmiersprache die von 1992 an von Sun Microsystems (oder
-teilweise im Auftrag von Sun) entwickelt wurde. Java wurde zuerst für
+teilweise im Auftrag von Sun) entwickelt wurde. Java wurde zuerst f\"ur
 Embedet Systems geschrieben. Heutzutage findet man Java Applikation in
-vielen Anwendungsgebieten.
-
-Java ist eine der meist verwendeten Programmiersprachen und wird auch
-in vielen Unversitäten gelehre. 
-%Siehe Tiobe index ...
-
+vielen Anwendungsgebieten, insbesondere Enterprice Applikationen.
 
 \subsection{Scala}
 
@@ -126,27 +240,40 @@ Konzepte eine Funktionalen und Objektorientiertersprachen in syntese
 verwendet. Zwar wurde Scala im Akademischen Kontext entwickelt findet
 aber immer mehr Anwendungen im Bussness Bereichen
 
-
 \subsection{Clojure}
-
 \subsubsection{Beschreibung}
 
 Clojure ist eine dynamische Programmiersprache die 2007 von Rich Hicky
-für die JVM geschrieben wurde. Im Vordergrund der Entwicklung standen
+f\"ur die JVM geschrieben wurde. Im Vordergrund der Entwicklung standen
 hohe Abstraktion, vor allem bei Concurency Programming, und gut
 integration ins Host System (JVM). Diese erlaubt Wiederverwednung von
 Java Code, Java Ecosystems (Webservers, Profilers, Debuggers
-...) und natürlich der VM.
+...) und nat\"urlich der VM.
+
+\subsubsection{Code}
 
 
 
-\section{Diskussiona}
+
+\subsection{Das Testsystem}
+
+\subsection{Aufnahme der Daten}
+
+\subsection{Datenauswertungsmethoden}
+
+\section{Ergebnisse}
+
+\section{Diskussion}
 \subsection{Vergleich der Resultate}
+
 \subsection{Schlussfolgerung}
+
 \section{Abk\"urzungsverzeichnis}
 
 VM  - Virtuall Maschine
+\\
 JVM - Java Virtuell Maschine
+\\
 IL - Interniediet Language
 
 \section{Literaturverzeichnis}
@@ -155,18 +282,21 @@ IL - Interniediet Language
 
 \section{Glossar}
 
-Virtuall Maschine: Eine Virtuall Maschine ist eine Programm welches simuliert eine echte
+Virtuall Maschine:\\ Eine Virtuall Maschine ist eine Programm welches simuliert eine echte
 Maschine zu sein. Sie bekommt als input irgend eine Sprache und fuert
 diese auf der darunter liegenden Sprache aus.
+\\
+Java Virtuall Maschiene: \\ Eine implementation einer VM die dafuer ausgelegt ist Java Bytecode auszufueren.\\
 
-Java Virtuall Maschiene: Eine implementation einer VM die dafuer ausgelegt ist Java Bytecode auszufueren.
-
-Bytecode: Ein Instruktionsset für eine VM.
-Java Bytecode: Java Bytecode ist der für Java bzw. für die JVM
+Bytecode: \\Ein Instruktionsset f\"ur eine VM.\\
+Java Bytecode:\\ Java Bytecode ist der f\"ur Java bzw. f\"ur die JVM
 entwickelte Bytecode.
 
 
 \section{Anhang}
+
+
+
 
 
 \end{document}

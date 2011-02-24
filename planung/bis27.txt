@@ -4,7 +4,7 @@ Nick:
 - Einleitung
 - Algorytmus
 - clojure programm
-- sprachen beschreiben
+- sprachen beschreiben (meh oder weniger)
 
 Math:
 

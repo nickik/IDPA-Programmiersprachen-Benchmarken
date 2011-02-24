@@ -4,4 +4,5 @@ pdflatex main.tex
 rm *.log
 rm *.aux
 rm *.out
+rm *.toc
 xpdf main.pdf
