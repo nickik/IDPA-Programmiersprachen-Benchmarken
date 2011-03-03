@@ -39,8 +39,8 @@
          tabsize=2,                  % Groesse von Tabs
          extendedchars=true,         %
          breaklines=true,            % Zeilen werden Umgebrochen
-         keywordstyle=\color{red}, frame=b,         
-         stringstyle=\color{white}\ttfamily, % Farbe der String
+         keywordstyle=\color{red},         
+         stringstyle=\color{black}\ttfamily, % Farbe der String
          showspaces=false,           % Leerzeichen anzeigen ?
          showtabs=false,             % Tabs anzeigen ?
          xleftmargin=17pt,
@@ -235,8 +235,314 @@ Gute JIT-Compiler sind heutzutage vergleichbar mit der Geschwindigkeiten
 von Native Code Compilern. Die Unterschiede sind in vielen
 Anwendungsf\"allen nur noch gering.
 
-\section{Programmiersprachen und Implementierungen}
+\subsection{Das Testsystem}
+\subsubsection{Leistungsdaten}
+Beim verwendeten Testsystem  handelt es sich um einen HP Compaq 6710b Notebook mit den folgenden Leistungsdaten.
 
+\begin{itemize}
+\item Prozessor: Intel Core 2 Duo T7700 @ 2.4 GHz
+\item Arbeitsspeicher: 2 GB
+\end{itemize}
+
+Wir haben uns entschieden als Betriebssystem die aktuellste Version der Linux-Distribution Debian zu verwenden. Debian hat die Vorteile, dass es sehr stabil läuft und einfacher zu bedienen ist, als andere Linux-Distributionen. Wir haben uns aus verschiedenen Gründen dafür entschieden unsere Tests Linux-basierend durchzuführen. So ist unter Linux keine Lizenzierung nötig, da das Betriebssystem und der grösste Teil der Programme Open-Source sind  oder  wir haben durch vorgängige Recherchen festgestellt, dass die Auswahl an freien Performance-Monitoring-Tools in der Linux-Welt viel grösser ist.
+Die genannten Leistungsdaten sind für die Nachvollziehbarkeit der Messdaten sehr wichtig. Werden die Tests auf einem anderen System wiederholt, kann nicht sichergestellt werden, dass die Resultate identisch sind. 
+Des Weiteren ist zu erwähnen, dass obwohl der installierte Prozessor über zwei Cores verfügt, die Testprogramme nur einen nutzen.  Dies hat hauptsächlich zwei Gründe:
+
+\begin{itemize}
+\item Der Programmieraufwand ist kleiner, wenn nur ein Kern genutzt wird
+\item Eine Parallelisierung lohnt sich bei zwei Kernen vielfach nicht da der zusätzliche Rechenaufwand grösser ist als der Geschwindigkeitsgewinn.
+\end{itemize}
+
+\subsubsection{Swap-Space}
+Der Swap-Space ist ein virtueller Speicher welcher vom Betriebssystem genutzt wird, wenn der eingebaute Arbeitsspeicher nicht ausreicht. In der MS Windows-Welt ist der Swap-Space unter der Bezeichnung „Auslagerungsdatei“ bekannt. Der Swap-Space befindet sich auf der Festplatte und ist daher um ca. Faktor 1000 langsamer als der Arbeitsspeicher. Trotzdem ist es wichtig, dass das Betriebssystem notfalls in der Lage ist auf einen Swap zurückgreifen zu können. Ansonsten kann dies zu abstürzen von einzelnen Prozessen oder gar dem ganzen System führen. Da gerade die JVM relativ speicherintensiv ist, wird dies umso wichtiger. 
+Ein viel diskutiertes Thema wenn es um den Swap-Space geht dessen Grösse. Grundsätzlich wird empfohlen den Swap-Space mindestens gleich gross wie den Arbeitsspeicher, aber höchstens doppelt so gross zu machen. Ich habe mich daher an die Faustregel Swap-Space = 1.5 * Arbeitsspeicher gehalten. Nach oben sind theoretisch übrigens keine Grenzen gesetzt, jedoch ist es fraglich ob ein System jemals einen noch grösseren Swap-Space auslasten wird. Es ist daher reine Speicherverschwendung grössere Bereiche auf der Festplatte für Swap zu reservieren.
+
+\subsection{Aufnahme der Daten}
+Nach gründlichen Recherchen und dem Testen diverser Monitoring-Tools kamen wir leider zu Schluss, dass kein Programm unsere Anforderungen ausreichend erfüllen konnte. Das Hauptproblem war meist, dass die Datenaufnahme nicht automatisch gestartet werden konnte. Die Aufzeichnung der Daten manuell zu starten, kam für uns jedoch nicht in Frage, da bereits eine Sekunde Verzögerung zwischen Programmstart und Start der Datenaufnahme den Verlust einer Grossen Datenmenge zur Folge hätte. Des Weiteren boten einige Programme keine oder  nur beschränkte Möglichkeiten um die gesammelten Daten zu speichern.
+Als Alternative haben wir uns für ein selbstgeschriebenes Script entschieden. Linux bringt selbst bereits eine Vielzahl an Funktionen mit um Leistungsdaten auszulesen. Bereits nach kurzer Nachforschung zeigte sich, dass eine Automatisierung des Auslesevorgangs mittels Script relativ einfach zu realisieren ist.
+
+\subsubsection{Das Script}
+Das folgende Script liest die benötigten Leistungsdaten aus. Ich erkläre die einzelnen Bereiche des Scripts nacheinander um Verwirrung zu vermeiden.
+Die erste Zeile informiert Linux darüber, dass es sich um ein Shell-Script handelt, damit das Betriebssystem den Code richtig interpretieren kann. Bei einem Perl Script müsste hier beispielsweise das ‚sh‘ durch ein ‚perl‘ ersetzt werden.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Shebang]{}
+#!/bin/sh
+\end{lstlisting}
+\end{minipage}
+Die als Parameter mitgegebenen Parameter werden in Variablen gespeichert.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Parameter]{}
+lang=$1
+code=$2
+param=$3
+\end{lstlisting}
+\end{minipage}
+
+Nun folgt die Fehlerbehandlung.  Die erste Zeile besagt, dass wenn im Script ein Fehler auftritt, welcher nicht zuvor durch eine andere Funktion abgefangen wird, die Funktion „error“ ausgeführt werden soll. Dabei ist es egal wodurch der Fehler verursacht wird oder an welcher Stelle er auftritt.
+Die Error-Funktion gibt ihrerseits eine Meldung aus, die den Benutzer über das Auftreten des Fehlers aufklärt und evtl. mögliche Ursachen dafür nennt. Anschliessend wird das Script beendet.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Fehlerbehandlung,literate=% 
+{ü}{{\"u}}1 
+{ä}{{\"a}}1 
+{ö}{{\"o}}1]{}
+trap "error" ERR
+#
+function error() {
+	echo '
+##########
+Ein unbekannter Fehler ist aufgetreten. Prüfen Sie die folgenden möglichen Fehlerquellen:
+- ungültige Java Parameter
+- fehlerhafte Programmdatei (*.jar)
+##########'
+	exit 0
+}
+\end{lstlisting}
+\end{minipage}
+
+Die folgenden beiden Vergleichsoperationen (IF-Konstrukte) dienen ebenfalls der Fehlerbehandlung. Die erste Funktion prüft ob die angegebene Sprache zulässig ist (wenn die Sprache im Parameter \$lang nicht Clojure ist und nicht Java ist und nicht Scala ist, dann führe den folgenden Code aus). Wenn der Vergleich wahr ist, d.h. eine falsche Sprache angegeben wurde, wird eine entsprechende Meldung ausgegeben und das Script beendet.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Sprachparameter prüfen]{}
+if [ $lang != clojure -a $lang != java -a $lang != scala ] ; then
+	echo 'Enter clojure, java or scala for Parameter 1!'
+	exit 0
+fi
+\end{lstlisting}
+\end{minipage}
+
+Die zweite Vergleichsoperation überprüft, ob die angegebene auszuführende Programmdatei überhaupt auffindbar ist (wenn die Datei im Parameter \$code nicht vorhanden ist, dann führe den folgenden Code aus). Sollte das Script keine Datei finden können, wird der Benutzer informiert und das Script beendet.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Jar-Datei prüfen]{}
+if [ ! -f $code ] ; then
+	echo 'File "'$code'" not found!'
+	exit 0
+fi
+\end{lstlisting}
+\end{minipage}
+
+Der nun folgende Abschnitt überprüft ob bereits Dateien mit Messdaten vorhanden sind. Sollte das der Fall sein fragt das Script beim Benutzer nach, ob die bestehenden Dateien überschrieben werden sollen oder die neuen Messdaten in den bestehenden Dateien, unterhalb der bereits vorhandenen Daten, angehängt werden sollen.
+Die for-Schleife wird hier benötigt, weil sich die im Ablageverzeichnis für die Messdaten möglicherweise mehrere Dateien befinden, welche mit dem Parameter \$lang, d.h. der verwendeten Programmiersprache beginnen.  Da die Vergleichsoperation, welche prüft ob entsprechende Dateien vorhanden sind, nur einen Parameter erlaubt, würde das Script in diesem Fall abstürzen. Mit der Schleife wird dem Vergleicher jeweils nur eine einzelne, zu prüfende Datei übergeben.
+Falls bereits Dateien vorhanden sind, wird der Benutzer nach dem weiteren Vorgehen gefragt und die Antwort in eine Variable eingelesen. Eine weitere Vergleichsoperation prüft nun ob der Benutzer ein kleines oder grosses Ypsilon (für Yes) eingegeben hat. Ist das der Fall, werden mit dem rm-Befehl die vorhandenen Dateien gelöscht, der Benutzer wird informiert und die Schleife abgebrochen. Hat der Benutzer jedoch etwas anderes oder gar nichts eingegeben, teilt das Script ihm mit, dass es die bestehenden Dateien erneut verwenden wird und bricht ebenfalls die Schleife ab. Es ist hier notwendig die Schleife abzubrechen, da diese die vorhandenen Dateien hochzählt.  Befinden sich also mehrere Dateien im Verzeichnis, würde der Benutzer pro Datei einmal nach dem weiteren Vorgehen abgefragt.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Benutzerabfrage,literate=% 
+{ü}{{\"u}}1 
+{ä}{{\"a}}1 
+{ö}{{\"o}}1]{}
+for tfile in /opt/data/$lang.* ] ; do
+	if [ -f $tfile ] ; then
+		echo '
+Bestehende Dateien überschreiben? Geben Sie "Y" ein um die bestehenden Datei zu löschen oder drücken Sie Enter um neuen Messdaten in die bestehenden Dateien zu schreiben!'
+		read answer
+		if [ "$answer" = y -o "$answer" = Y ] ; then
+			rm /opt/data/$lang.*
+			echo 'Dateien wurden gelöscht!'
+			break
+		else
+			echo 'Daten werden in bestehende Dateien geschrieben!'
+			break		
+		fi			
+	fi
+done
+\end{lstlisting}
+\end{minipage}
+
+In die drei Dateien, in welche die gesammelten Daten gespeichert werden, wird das aktuelle Datum sowie die Uhrzeit geschrieben. Somit ist in den Dateien ersichtlich, von wann genau die Messdaten stammen.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Titel einfügen]{}
+echo "#
+####$(date +%d.%m.%Y" "%T)####
+#" | tee -a /opt/data/$lang.memory /opt/data/$lang.cpu /opt/data/$lang.time > /dev/null
+\end{lstlisting}
+\end{minipage}
+
+In einem ersten Schritt werden die Daten zum Arbeitsspeicher gesammelt. Nachdem der Benutzer informiert wurde, wird dazu das zu überwachende Programm gestartet und gleichzeitig (wird mit dem \&-Zeichen festgelegt) eine Schleife, welche die Daten ausliest. Beim Programmaufruf ist ersichtlich, dass der Parameter \$param mitgegeben wird. Dieser enthält evtl. weitere, notwendige Parameter für die JVM um die Programmausführung zu optimieren. Ohne das \&-Zeichen nach dem Programmaufruf, würden die beiden Befehle nicht gleichzeitig ausgeführt. Somit würden die Daten erst ausgelesen, wenn das Programm bereits durchgelaufen ist. 
+
+Die Schleife prüft als Bedingung ob die Ausgabe von ps \$! Grösser als /dev/null ist. \$! Ist eine Variable, in der die Prozess-ID (PID) des zuletzt gestarteten Programms abgelegt ist. PS ist ein Linux-Befehl um Prozessinformationen anzuzeigen. Bei dem Verzeichnis /dev/null handelt es sich um das bekannte schwarze Loch in Linux. Es steht für das Nichts, die Leere. So lange also die Ausgabe von Prozessinformationen zum zuletzt gestarteten Prozess grösser als nichts ist (d.h. der Prozess ist noch aktiv), wird die Schleife ausgeführt.
+
+Der sed-Befehl kopiert die Zeilen 11 bis 20 aus der Datei /proc/\$!/status in die Datei \$lang.memory. Im Proc-Dateisystem werden die aktuellen System- und Prozessinformationen des Linux-System gespeichert. Auch hier steht \$! wieder für die PID des zuletzt gestarteten Prozesses. Anschliessend wird mit dem echo-Befehl eine Trennzeile in die gleiche Datei geschrieben und das Script wird für die Dauer von 0.2 Sekunden pausiert. An dieser Stelle kann somit festgelegt werden, in welchem Intervall die Daten ausgelesen werden sollen. Da unsere Programme nur eine sehr kurze Ausführungszeit haben, reicht eine Wartezeit von 0.2 Sekunden aus. Ohne Wartezeit wäre die Datenmenge zudem extrem hoch.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Speicherdaten sammeln]{}
+echo '
+Collecting Memory Data...
+'
+java -server $param -jar $code &
+while ps $! > /dev/null
+do
+	sed -n '11,20p' /proc/$!/status >> /opt/data/$lang.memory
+	echo '-----------------------' >> /opt/data/$lang.memory		
+	sleep .2
+done
+echo '
+done'
+\end{lstlisting}
+\end{minipage}
+
+Der zweite Schritt ist das Auslesen der Prozessor-Daten. Dazu wird eine Temporäre-Datei benötigt. Deren Dateiname wird mit der date-Funktion generiert. Diese schreibt das aktuelle Datum sowie die genaue Uhrzeit in eine Variable. Der Dateiname ist somit einzigartig.
+
+Anschliessend erfolgt der gleiche Programmaufruf wie er bereits für das Auslesen der Speicherdaten benutzt wurde. Die CPU-Daten können leider nicht aus dem proc-Dateisystem ausgelesen werden. Sie werden mit dem ps-Befehl gesammelt und in temporäre Datei geschrieben.
+
+Mit dem ps-Befehl werden jedes Mal zu den Prozessordaten auch die Spaltenüberschriften in die Datei geschrieben. Für eine bessere Darstellung werden diese mit dem sed-Befehl entfernt und die neue Ausgabe in die Datei \$lang.cpu geschrieben. Der sed-Befehl entfernt ab der dritten Zeile jede zweite Zeile in der temporären Datei. Anschliessend wird die temporäre Datei gelöscht.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=CPU-Daten sammeln]{}
+echo '
+Collecting CPU Data...
+'
+random=tmp$(date +%d%m%Y_%H%M%S)
+java -server $param -jar $code &	
+while ps $! > /dev/null
+do
+	ps -p $! -o user,pid,%cpu,time >> /opt/data/$random
+	sleep .2
+done
+sed '3~2d' /opt/data/$random >> /opt/data/$lang.cpu
+rm /opt/data/\random
+echo '
+done'
+\end{lstlisting}
+\end{minipage}
+
+Der letzte Schritt ist nun das Auslesen von Zeitdaten (Wie lange dauert die Programmausführung? Wie viel Zeit davon hat die CPU im Kernel-, wie viel im User-Modus verbracht?). Für diese Daten wird keine Schleife benötigt. Die Daten können mit nur einer Befehlszeile ausgelesen werden. Der Parameter –f definiert das Format der Ausgabe (Was soll ausgegeben und wie sollen die Ausgaben beschriftet werden?), der Parameter –o definiert die Ausgabedatei (Output) und der Parameter –a sorgt dafür, dass die Ausgabedatei nicht überschrieben wird sondern die neuen Daten einfach angehängt (append) werden. Als letzten Parameter erwartet der time-Befehl das Programm welches ausgeführt werden soll.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Zeitdaten sammeln]{}
+echo '
+Collecting Time Data...
+'
+/usr/bin/time -f "Elapsed real time: %E\nCPU usage: %P\nTotal CPU-seconds in user mode: %U\nTotal CPU-seconds in kernel mode: %S\nName and arguments of the command: %C" -o /opt/data/$lang.time -a java -server $param -jar $code
+echo '
+done'
+\end{lstlisting}
+\end{minipage}
+
+\subsection{Datenauswertungsmethoden}
+
+Um die Methoden für die Datenauswertung zu bestimmen ist es vorerst wichtig zu wissen was die gesammelten Daten genau bedeuten um sie später korrekt auswerten zu können. Ich habe in den folgenden drei Unterkapiteln versucht dies möglichst verständlich darzustellen.
+
+\subsubsection{Memory}
+Der Memory Bereich ist der wohl komplexeste von allen. Der Begriff des virtuellen Speichers ist hier immer wieder anzutreffen. Deshalb folgt hier eine kurze, vereinfachte Erklärung.
+\\\\
+\underline{Virtual Memory:} Einem Prozess wird ein Adressbereich simuliert den er alleine für sich benutzen kann. Somit hat der Prozess den Eindruck, über einen Teil des Hauptspeichers zu verfügen. In Wirklichkeit verteilt das Betriebssystem den vom Prozess genutzten Speicher über den ganzen Arbeitsspeicher und teilweise auch den Swap-Space (siehe Bild).
+\\\\
+In der Folge eine Beispielsausgabe aus unserem Messskript.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Speicherdaten]{}
+-----------------------
+VmPeak:	 1086096 kB
+VmSize:	 1036004 kB
+VmLck:	       0 kB
+VmHWM:	   15304 kB
+VmRSS:	   15304 kB
+VmData:	  988080 kB
+VmStk:	     220 kB
+VmExe:	      32 kB
+VmLib:	   10960 kB
+VmPTE:	     180 kB
+-----------------------
+\end{lstlisting}
+\end{minipage}
+
+\begin{tabular}[c]{|l|p{13cm}|} \hline
+\textbf{Wert} & \textbf{Erklärung}\\
+\hline
+VmPeak & höchster Verbrauch von virtuellem Speicher den der Prozess seit dem Start jemals hatte\\
+\hline
+VmSize & aktueller Verbrauch von virtuellem Speicher. Darin ist auch VmData eingerechnet wodurch dieser Wert für die Messungen nicht weiter relevant ist (siehe VmData)\\
+\hline
+VmLck & Bei der virtuellen Speicherverwaltung wird der virtuelle Adressraum in Pages aufgeteilt. Aufgrund eines Fehlers kann es sein, dass eine solche Page gesperrt (locked) wird. Die Grösse des gesperrten Speichers würde, wenn vorhanden, hier angegeben.\\
+\hline
+VmHWM & HWM = high water mark, höchster Verbrauch von physikalischem Speicher den der Prozess seit dem Start jemals hatte\\
+\hline
+VmRSS & RSS = resident set size, aktueller Verbrauch von physikalischem Speicher\\
+\hline
+VmData & Daten auf denen das Programm ausgeführt wird. Sprich die JVM. Dieser Wert enthält auch Daten welche noch nicht in den Arbeitsspeicher geladen wurden weil sie nicht benötigt werden. Da für unsere Messungen nur die Daten im physikalischen Arbeitsspeicher interessant sind, ist dieser Wert für unsere Messungen daher irrelevant.\\
+\hline
+VmStk & Benötigte Ressourcen für die Ausführung. Dieser Wert ist eingerechnet in VmRSS.\\
+\hline
+VmExe & Der ausgeführte Programmcode, bzw. die als ausführbar markierten Pages. Dieser Wert ist eingerechnet in VmRSS.\\
+\hline
+VmLib & Shared Memory, Speicherbereich auf den auch andere Prozesse zugreifen können\\
+\hline
+VmPTE & Zwischen dem virtuellen und dem physikalischen Speicher befindet sich eine sog. Page Table welche den virtuellen Speicher dem physikalischen zuordnet  (z.B. virt. Adresse 0x01 befindet sich bei 0x0A im Arbeitsspeicher usw.). Die Grösse der Page Table ist in hier angegeben. \\
+\hline							
+\end{tabular}\vspace{1cm}
+
+\\
+Zusammenfassend lässt sich sagen, dass für unsere Messungen lediglich der Wert VmRSS, welcher den tatsächlichen, physikalischen Speicherverbrauch abbildet, relevant ist. Dies weil die anderen Messwerte insofern verfälscht sind, dass sie teilweise gar nie in den Speicher geladen werden (VmPeak, VmSize, VmData) oder weil es für unsere Messungen nicht relevant ist wie gross die einzelnen Datensegmente (VmStk, VmExe) im Speicher sind.
+
+\subsubsection{CPU}
+In der Folge eine Beispielausgabe für die  Messung der CPU-Daten mit unserem Script. Neben dem ausführenden Benutzer unter der Prozess-ID sind hier auch die momentane CPU-Auslastung und die vergangene Ausführzeit ersichtlich.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Speicherdaten]{}
+#
+####26.02.2011 13:59:13####
+#
+USER       PID %CPU     TIME
+root      7730  0.0 00:00:00
+root      7730  0.0 00:00:00
+root      7730 43.0 00:00:00
+root      7730 65.0 00:00:00
+root      7730 86.0 00:00:00
+root      7730  112 00:00:01
+root      7730  152 00:00:01
+\end{lstlisting}
+\end{minipage}
+
+Bei Betrachtung dieser Daten fällt auf den ersten Blick auf, dass die CPU-Auslastung 100\% teilweise übersteigt. Da es sich beim Testsystem um ein Dual-Core System handelt, kann die CPU-Auslastung bis zu 200\% erreichen wenn beide Kerne zu 100\% ausgelastet sind. Aufgrund der heute von beinahe allen Betriebssystemen verwendeten SMP-Systemarchitektur, verwenden die Prozessoren unseres Testsystems einen gemeinsamen Adressraum um Aufgaben dynamisch verteilen zu können. Dies führt jedoch auch zu diesen, auf den ersten Blick verwirrenden, Messdaten. Da die gemessenen Daten aufgrund dessen jedoch keineswegs falsch sind, werden wir diese trotzdem für unsere Benchmarkes verwenden.
+Die Spalte TIME gibt auf die Sekunde genau an, wie lange der Prozess bereits aktiv ist. Da wir die aktuellen Daten alle 0.2 Sekunden messen, ergeben sich fünf Zeilen pro Sekunde.
+
+\subsubsection{Time}
+
+Hier eine Beispielausgabe für die Messung der Zeit-Daten mit unserem Script. Erneut tauchen hier evtl. unbekannte Begriffe welche in der Folge kurz erklärt werden.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[language=bash,caption=Speicherdaten]{}
+#
+####26.02.2011 13:59:13####
+#
+Elapsed real time: 0:02.30
+CPU usage: 99%
+Total CPU-seconds in user mode: 2.38
+Total CPU-seconds in kernel mode: 0.06
+Name and arguments of the command: java -server -jar clojure/clojure.jar
+\end{lstlisting}
+\end{minipage}
+
+\\\\
+\noindent
+\underline{CPU-Modi:} Man unterscheidet zwischen zwei verschiedenen Betriebsmodi in denen die CPU Prozesse ausführt, es sind dies der Kernel- und der User-Modus.
+\\\\
+\underline{Kernel Mode:} Der ausgeführte Code hat unbeschränkten Zugang zur Hardware, kann jede Anweisung ausführen und jede Speicheradresse adressieren. Der Kernel Mode ist grundsätzlich für vertrauenswürdige Funktionen des Betriebssystems reserviert. Abstürze in diesem Mode können für das System verheerende Folgen haben.
+\\\\
+\underline{User Mode:} Der ausgeführte Code hat keine Möglichkeit direkt auf die Hardware zuzugreifen. Sollten solche Zugriffe nötig sein, müssen sie über Schnittstellen des Betriebssystems erfolgen. Durch die Einschränkungen entstehen bei Abstürzen keine Schäden am System.
+\\\\
+\underline{CPU-seconds:} Zeit in der die CPU tatsächlich mit der Ausführung des Prozesses beschäftigt war. Da durch das Betriebssystem immer auch andere Prozesse aktiv sind, dauert die Programmausführung in der Regel länger als die Anzahl CPU-Seconds die tatsächlich dafür aufgewendet wurden (CPU muss priorisieren). Aufgrund der Multicore Technologie ist es aber durchaus auch möglich, dass für eine Programmausführung mehr CPU-Seconds benötigt werden, als tatsächlich Zeit vergeht die CPU-Seconds pro Kern gezählt werden.
+\\
+
+\begin{tabular}[c]{|p{4cm}|p{11cm}|} \hline
+\textbf{Wert} & \textbf{Erklärung}\\
+\hline
+Elapsed real time & Zeit die für die Programmausführung benötigt wurde\\
+\hline
+CPU usage & Durchschnittliche CPU-Auslastung während der Programmausführung\\
+\hline
+Total CPU-seconds in user mode & Im User-Mode verbrachte Zeit\\
+\hline
+Total CPU-seconds in kernel mode & Im Kernel-Mode verbrachte Zeit\\
+\hline
+Name and arguments of the command & Ausgeführtes Programm inkl. aller Parameter\\
+\hline
+\end{tabular}
+\section{Programmiersprachen und Implementierungen}
 
 \subsection{Java}
 \subsubsection{Beschreibung}
@@ -269,15 +575,6 @@ Integration ins Host System (JVM). Diese erlaubt die Wiederverwendung von
 Java Code, Java Ecosystems (Webservers, Profilers, Debuggers...) und natürlich der VM.
 
 \subsubsection{Code}
-
-
-
-
-\subsection{Das Testsystem}
-
-\subsection{Aufnahme der Daten}
-
-\subsection{Datenauswertungsmethoden}
 
 \section{Ergebnisse}
 \section{Diskussion}
