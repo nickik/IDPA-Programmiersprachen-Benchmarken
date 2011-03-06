@@ -3,16 +3,22 @@
 \usepackage{enumerate}
 \usepackage{listings}
 \usepackage{courier}
+\usepackage{tabularx}
+\usepackage{array}
 
-\title{IDPA: Programmiersprachen benchmarken}
+\title{Programmiersprachen benchmarken}
+\title{Programmiersprachen benchmarken - \\ \renewcommand{\baselinestretch}{1.50}\large Programmiersprache ist nicht gleich Programmiersprache}
 \author{Nick Zbinden und Matthias Gasser}
 \date{\today}
 \begin{document}
 \maketitle
 \thispagestyle{fancy}
+\vspace*{\fill}
+\noindent
+Berufsbildungszentrum Bau und Gewerbe, Luzern\\
+Klasse: BML08E
 \newpage
 \tableofcontents
-
 \definecolor{lineno}{rgb}{0.5,0.5,0.5}
 \definecolor{code}{rgb}{0,0.1,0.6}
 \definecolor{keyword}{rgb}{0.5,0.1,0.1}
@@ -50,10 +56,15 @@
          showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
 }
 
+\newcolumntype{v}[1]{%
+  >{\raggedright\hspace{0pt}\arraybackslash}p{#1}%
+}
+
 \section{Vorwort}
 
 Die Informatik hat auf uns schon immer eine gewisse Faszination ausgeübt. Es war daher für uns beide naheliegend eine Lehre als Informatiker zu machen. Während Nick vor allem an der Softwareentwicklung interessiert ist, bevorzuge ich die Systemtechnik, in der die Installation und Wartung von IT-Systemen der Grosse Schwerpunkt ist.
 Da wir beide unsere Berufe noch immer sehr interessiert ausführen, war es für uns beide klar für die IDPA ein Thema aus dem Bereich Informatik zu wählen. Es galt nun ein Thema zu finden, in dem sowohl die Applikationsentwicklung wie auch die Systemtechnik gleichermassen eine Rolle spielen. Bereits nach kurzer Recherche stiessen wir auf das Thema „Programmiersprachen Benchmarking“. Sofort war unser beider Interesse geweckt und dadurch,  dass dieses Thema sowohl ein Testsystem wie auch selbstgeschriebene Programme erforderte, eignete es sich sehr gut für eine IDPA. Wir entschieden uns, unsere Maturaarbeit diesem Thema zu widmen.
+
 Am gewählten Thema interessiert uns beide in erster Linie ob tatsächlich Performanceunterschiede zwischen den untersuchten Sprachen feststellbar sind, und in welchem Ausmass sie sich zeigen. Heutige Computer sind sehr leistungsfähig, dadurch ist es für kleinere Programme wie wir sie testen werden meist irrelevant ob eine Programmiersprache einige Millisekunden schneller ist als die andere. Für grössere Projekte spielt die Geschwindigkeit jedoch auch heute noch eine wichtige Rolle, wir hoffen daher, dass sich unsere Testergebnisse auf grössere Applikationen projizieren lassen.
 
 \section{Abstract}
@@ -246,7 +257,7 @@ Beim verwendeten Testsystem  handelt es sich um einen HP Compaq 6710b Notebook m
 
 Wir haben uns entschieden als Betriebssystem die aktuellste Version der Linux-Distribution Debian zu verwenden. Debian hat die Vorteile, dass es sehr stabil läuft und einfacher zu bedienen ist, als andere Linux-Distributionen. Wir haben uns aus verschiedenen Gründen dafür entschieden unsere Tests Linux-basierend durchzuführen. So ist unter Linux keine Lizenzierung nötig, da das Betriebssystem und der grösste Teil der Programme Open-Source sind  oder  wir haben durch vorgängige Recherchen festgestellt, dass die Auswahl an freien Performance-Monitoring-Tools in der Linux-Welt viel grösser ist.
 Die genannten Leistungsdaten sind für die Nachvollziehbarkeit der Messdaten sehr wichtig. Werden die Tests auf einem anderen System wiederholt, kann nicht sichergestellt werden, dass die Resultate identisch sind. 
-Des Weiteren ist zu erwähnen, dass obwohl der installierte Prozessor über zwei Cores verfügt, die Testprogramme nur einen nutzen.  Dies hat hauptsächlich zwei Gründe:
+Des Weiteren ist zu erwähnen, dass obwohl der installierte Prozessor über zwei Cores verfügt, die Testprogramme nur darauf ausgelegt sind, einen zu nutzen. Eine Lastverteilung durch das Betriebssystem findet jedoch trotzdem statt. Die Hauptgründe dafür, dass nur ein Kern genutzt wird, sind die folgenden:
 
 \begin{itemize}
 \item Der Programmieraufwand ist kleiner, wenn nur ein Kern genutzt wird
@@ -254,15 +265,18 @@ Des Weiteren ist zu erwähnen, dass obwohl der installierte Prozessor über zwei
 \end{itemize}
 
 \subsubsection{Swap-Space}
-Der Swap-Space ist ein virtueller Speicher welcher vom Betriebssystem genutzt wird, wenn der eingebaute Arbeitsspeicher nicht ausreicht. In der MS Windows-Welt ist der Swap-Space unter der Bezeichnung „Auslagerungsdatei“ bekannt. Der Swap-Space befindet sich auf der Festplatte und ist daher um ca. Faktor 1000 langsamer als der Arbeitsspeicher. Trotzdem ist es wichtig, dass das Betriebssystem notfalls in der Lage ist auf einen Swap zurückgreifen zu können. Ansonsten kann dies zu abstürzen von einzelnen Prozessen oder gar dem ganzen System führen. Da gerade die JVM relativ speicherintensiv ist, wird dies umso wichtiger. 
-Ein viel diskutiertes Thema wenn es um den Swap-Space geht dessen Grösse. Grundsätzlich wird empfohlen den Swap-Space mindestens gleich gross wie den Arbeitsspeicher, aber höchstens doppelt so gross zu machen. Ich habe mich daher an die Faustregel Swap-Space = 1.5 * Arbeitsspeicher gehalten. Nach oben sind theoretisch übrigens keine Grenzen gesetzt, jedoch ist es fraglich ob ein System jemals einen noch grösseren Swap-Space auslasten wird. Es ist daher reine Speicherverschwendung grössere Bereiche auf der Festplatte für Swap zu reservieren.
+Der Swap-Space ist ein virtueller Speicher welcher vom Betriebssystem genutzt wird, wenn der eingebaute Arbeitsspeicher nicht ausreicht. In der MS Windows-Welt ist der Swap-Space unter der Bezeichnung „Auslagerungsdatei“ bekannt. Der Swap-Space befindet sich auf der Festplatte und ist daher um ca. Faktor 1000 langsamer als der Arbeitsspeicher. Trotzdem ist es wichtig, dass das Betriebssystem notfalls in der Lage ist auf einen Swap zurückgreifen zu können. Ansonsten kann dies zu abstürzen von einzelnen Prozessen oder gar dem ganzen System führen. Da gerade die JVM relativ speicherintensiv ist, wird dies umso wichtiger.
+
+Ein viel diskutiertes Thema wenn es um den Swap-Space geht, ist dessen Grösse. Grundsätzlich wird empfohlen den Swap-Space mindestens gleich gross wie den Arbeitsspeicher, aber höchstens doppelt so gross zu machen. Ich habe mich daher an die Faustregel Swap-Space = 1.5 * Arbeitsspeicher gehalten. Nach oben sind theoretisch übrigens keine Grenzen gesetzt, jedoch ist es fraglich ob ein System jemals einen noch grösseren Swap-Space auslasten wird. Es ist daher reine Speicherverschwendung grössere Bereiche auf der Festplatte für Swap zu reservieren.
 
 \subsection{Aufnahme der Daten}
 Nach gründlichen Recherchen und dem Testen diverser Monitoring-Tools kamen wir leider zu Schluss, dass kein Programm unsere Anforderungen ausreichend erfüllen konnte. Das Hauptproblem war meist, dass die Datenaufnahme nicht automatisch gestartet werden konnte. Die Aufzeichnung der Daten manuell zu starten, kam für uns jedoch nicht in Frage, da bereits eine Sekunde Verzögerung zwischen Programmstart und Start der Datenaufnahme den Verlust einer Grossen Datenmenge zur Folge hätte. Des Weiteren boten einige Programme keine oder  nur beschränkte Möglichkeiten um die gesammelten Daten zu speichern.
+
 Als Alternative haben wir uns für ein selbstgeschriebenes Script entschieden. Linux bringt selbst bereits eine Vielzahl an Funktionen mit um Leistungsdaten auszulesen. Bereits nach kurzer Nachforschung zeigte sich, dass eine Automatisierung des Auslesevorgangs mittels Script relativ einfach zu realisieren ist.
 
 \subsubsection{Das Script}
 Das folgende Script liest die benötigten Leistungsdaten aus. Ich erkläre die einzelnen Bereiche des Scripts nacheinander um Verwirrung zu vermeiden.
+
 Die erste Zeile informiert Linux darüber, dass es sich um ein Shell-Script handelt, damit das Betriebssystem den Code richtig interpretieren kann. Bei einem Perl Script müsste hier beispielsweise das ‚sh‘ durch ein ‚perl‘ ersetzt werden.
 
 \begin{minipage}{\textwidth}
@@ -281,6 +295,7 @@ param=$3
 \end{minipage}
 
 Nun folgt die Fehlerbehandlung.  Die erste Zeile besagt, dass wenn im Script ein Fehler auftritt, welcher nicht zuvor durch eine andere Funktion abgefangen wird, die Funktion „error“ ausgeführt werden soll. Dabei ist es egal wodurch der Fehler verursacht wird oder an welcher Stelle er auftritt.
+
 Die Error-Funktion gibt ihrerseits eine Meldung aus, die den Benutzer über das Auftreten des Fehlers aufklärt und evtl. mögliche Ursachen dafür nennt. Anschliessend wird das Script beendet.
 
 \begin{minipage}{\textwidth}
@@ -325,7 +340,9 @@ fi
 \end{minipage}
 
 Der nun folgende Abschnitt überprüft ob bereits Dateien mit Messdaten vorhanden sind. Sollte das der Fall sein fragt das Script beim Benutzer nach, ob die bestehenden Dateien überschrieben werden sollen oder die neuen Messdaten in den bestehenden Dateien, unterhalb der bereits vorhandenen Daten, angehängt werden sollen.
+
 Die for-Schleife wird hier benötigt, weil sich die im Ablageverzeichnis für die Messdaten möglicherweise mehrere Dateien befinden, welche mit dem Parameter \$lang, d.h. der verwendeten Programmiersprache beginnen.  Da die Vergleichsoperation, welche prüft ob entsprechende Dateien vorhanden sind, nur einen Parameter erlaubt, würde das Script in diesem Fall abstürzen. Mit der Schleife wird dem Vergleicher jeweils nur eine einzelne, zu prüfende Datei übergeben.
+
 Falls bereits Dateien vorhanden sind, wird der Benutzer nach dem weiteren Vorgehen gefragt und die Antwort in eine Variable eingelesen. Eine weitere Vergleichsoperation prüft nun ob der Benutzer ein kleines oder grosses Ypsilon (für Yes) eingegeben hat. Ist das der Fall, werden mit dem rm-Befehl die vorhandenen Dateien gelöscht, der Benutzer wird informiert und die Schleife abgebrochen. Hat der Benutzer jedoch etwas anderes oder gar nichts eingegeben, teilt das Script ihm mit, dass es die bestehenden Dateien erneut verwenden wird und bricht ebenfalls die Schleife ab. Es ist hier notwendig die Schleife abzubrechen, da diese die vorhandenen Dateien hochzählt.  Befinden sich also mehrere Dateien im Verzeichnis, würde der Benutzer pro Datei einmal nach dem weiteren Vorgehen abgefragt.
 
 \begin{minipage}{\textwidth}
@@ -384,7 +401,7 @@ done'
 \end{lstlisting}
 \end{minipage}
 
-Der zweite Schritt ist das Auslesen der Prozessor-Daten. Dazu wird eine Temporäre-Datei benötigt. Deren Dateiname wird mit der date-Funktion generiert. Diese schreibt das aktuelle Datum sowie die genaue Uhrzeit in eine Variable. Der Dateiname ist somit einzigartig.
+Der zweite Schritt ist das Auslesen der Prozessor-Daten. Dazu wird eine temporäre Datei benötigt. Deren Dateiname wird mit der date-Funktion generiert. Diese schreibt das aktuelle Datum sowie die genaue Uhrzeit in eine Variable. Der Dateiname ist somit einzigartig.
 
 Anschliessend erfolgt der gleiche Programmaufruf wie er bereits für das Auslesen der Speicherdaten benutzt wurde. Die CPU-Daten können leider nicht aus dem proc-Dateisystem ausgelesen werden. Sie werden mit dem ps-Befehl gesammelt und in temporäre Datei geschrieben.
 
@@ -429,7 +446,7 @@ Um die Methoden für die Datenauswertung zu bestimmen ist es vorerst wichtig zu 
 \subsubsection{Memory}
 Der Memory Bereich ist der wohl komplexeste von allen. Der Begriff des virtuellen Speichers ist hier immer wieder anzutreffen. Deshalb folgt hier eine kurze, vereinfachte Erklärung.
 \\\\
-\underline{Virtual Memory:} Einem Prozess wird ein Adressbereich simuliert den er alleine für sich benutzen kann. Somit hat der Prozess den Eindruck, über einen Teil des Hauptspeichers zu verfügen. In Wirklichkeit verteilt das Betriebssystem den vom Prozess genutzten Speicher über den ganzen Arbeitsspeicher und teilweise auch den Swap-Space (siehe Bild).
+\underline{Virtual Memory:} Einem Prozess wird ein Adressbereich simuliert den er alleine für sich benutzen kann. Somit hat der Prozess den Eindruck, über einen zusammenhängenden sTeil des Hauptspeichers zu verfügen. In Wirklichkeit verteilt das Betriebssystem den vom Prozess genutzten Speicher über den ganzen Arbeitsspeicher und teilweise auch den Swap-Space (siehe Bild).
 \\\\
 In der Folge eine Beispielsausgabe aus unserem Messskript.
 
@@ -498,6 +515,7 @@ root      7730  152 00:00:01
 \end{minipage}
 
 Bei Betrachtung dieser Daten fällt auf den ersten Blick auf, dass die CPU-Auslastung 100\% teilweise übersteigt. Da es sich beim Testsystem um ein Dual-Core System handelt, kann die CPU-Auslastung bis zu 200\% erreichen wenn beide Kerne zu 100\% ausgelastet sind. Aufgrund der heute von beinahe allen Betriebssystemen verwendeten SMP-Systemarchitektur, verwenden die Prozessoren unseres Testsystems einen gemeinsamen Adressraum um Aufgaben dynamisch verteilen zu können. Dies führt jedoch auch zu diesen, auf den ersten Blick verwirrenden, Messdaten. Da die gemessenen Daten aufgrund dessen jedoch keineswegs falsch sind, werden wir diese trotzdem für unsere Benchmarkes verwenden.
+
 Die Spalte TIME gibt auf die Sekunde genau an, wie lange der Prozess bereits aktiv ist. Da wir die aktuellen Daten alle 0.2 Sekunden messen, ergeben sich fünf Zeilen pro Sekunde.
 
 \subsubsection{Time}
@@ -525,7 +543,7 @@ Name and arguments of the command: java -server -jar clojure/clojure.jar
 \\\\
 \underline{User Mode:} Der ausgeführte Code hat keine Möglichkeit direkt auf die Hardware zuzugreifen. Sollten solche Zugriffe nötig sein, müssen sie über Schnittstellen des Betriebssystems erfolgen. Durch die Einschränkungen entstehen bei Abstürzen keine Schäden am System.
 \\\\
-\underline{CPU-seconds:} Zeit in der die CPU tatsächlich mit der Ausführung des Prozesses beschäftigt war. Da durch das Betriebssystem immer auch andere Prozesse aktiv sind, dauert die Programmausführung in der Regel länger als die Anzahl CPU-Seconds die tatsächlich dafür aufgewendet wurden (CPU muss priorisieren). Aufgrund der Multicore Technologie ist es aber durchaus auch möglich, dass für eine Programmausführung mehr CPU-Seconds benötigt werden, als tatsächlich Zeit vergeht die CPU-Seconds pro Kern gezählt werden.
+\underline{CPU-seconds:} Zeit in der die CPU tatsächlich mit der Ausführung des Prozesses beschäftigt war. Da durch das Betriebssystem immer auch andere Prozesse aktiv sind, dauert die Programmausführung in der Regel länger als die Anzahl CPU-Seconds die tatsächlich dafür aufgewendet wurden (CPU muss priorisieren). Aufgrund der Multicore Technologie ist es aber durchaus auch möglich, dass für eine Programmausführung mehr CPU-Seconds benötigt werden, als tatsächlich Zeit vergeht da die CPU-Seconds pro Kern gezählt werden.
 \\
 
 \begin{tabular}[c]{|p{4cm}|p{11cm}|} \hline
@@ -604,29 +622,100 @@ Java Code, Java Ecosystems (Webservers, Profilers, Debuggers...) und natürlich 
 
 
 \section{Abk\"urzungsverzeichnis}
-
-VM  - Virtuall Maschine
-\\
-JVM - Java Virtuell Maschine
-\\
-IL - Interniediet Language
-
-\section{Literaturverzeichnis}
-
+\begin{tabbing}
+\hspace*{2cm}\=\kill
+\textbf{CPU} \>Central Processing Unit\\
+\textbf{HWM} \>High Water Mark\\
+\textbf{IL} \>Intermediate Language\\
+\textbf{JVM} \>Java Virtual Machine\\
+\textbf{PID} \>Process Identifier\\
+\textbf{procfs}\>Process Filesystem
+\textbf{PS} \>Process Status\\
+\textbf{PTE} \>Page Table Entry\\
+\textbf{RAM} \>Random Access Memory\\
+\textbf{RSS} \>Resident Set Size\\
+\textbf{SED} \>Stream Editor\\
+\textbf{SMP} \>Symmetric Multiprocessing\\
+\textbf{VM} \>Virtual Machine\\
+\end{tabbing}
 
 
 \section{Glossar}
-
-Virtuall Maschine:\\ Eine Virtuall Maschine ist eine Programm welches simuliert eine echte
-Maschine zu sein. Sie bekommt als input irgend eine Sprache und fuert
-diese auf der darunter liegenden Sprache aus.
-\\
-Java Virtuall Maschiene: \\ Eine implementation einer VM die dafuer ausgelegt ist Java Bytecode auszufueren.\\
-
-Bytecode: \\Ein Instruktionsset f\"ur eine VM.\\
-Java Bytecode:\\ Java Bytecode ist der f\"ur Java bzw. f\"ur die JVM
-
-
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\linewidth}{p{6.5cm}X}
+\textbf{Arbeitsspeicher}&auch Hauptspeicher, dient zum kurzzeitigen Speichern von Daten und ist massiv schneller als Festplatten\\
+\textbf{Befehlssatz}&Eine Menge von Befehlen, welche in Maschinensprache vorliegt\\
+\textbf{Bytecode}&Ein Befehlssatz für eine VM.\\
+\textbf{CPU-Modi}&siehe Kapitel 4.5.3 (Time)\\
+\textbf{CPU-second}&siehe Kapitel 4.5.3 (Time)\\
+\textbf{Debian}&Eine frei erhältiches Client-Betriebssystem welches auf einem Linux-Kernel basiert\\
+\textbf{Hardware}&mechanische und elektronische Teile eines beliebigen Systems, dazu gehören auch Computer\\
+\textbf{Java Bytecode}&Der Bytecode für Java bzw. für die JVM\\
+\textbf{Java Virtual Machine}&Die Implementierung einer VM, welche darauf ausgelegt ist Java Bytecode auszuführen.\\
+\textbf{Kernel Mode}&siehe Kapitel 4.5.3 (Time)\\
+\textbf{Kompilierung}&Übersetzung von Quellcode einer Programmiersprache in Maschinensprache\\
+\textbf{Maschinensprache}&Befehle, die der Prozessor ohne Kompilierung ausführen kann\\
+\textbf{Open-Source}&Software deren Quellcode öffentlich zugänglich ist\\
+\textbf{Page}&eine Einheit in die der Arbeitsspeicher unterteilt wird, es handelt sich um die kleinste Speichereinheit, in der Reservationen durchgeführt werden\\
+\textbf{Parallelisierung}&Aufteilung eines Programms in mehrere Teile, die gleichzeitig ausgeführt werden können. Das Programm wird dadurch multiprozessorfähig\\
+\textbf{Parameter}&ein Wert der einem Programm oder Script mitgegeben wird\\
+\end{tabularx}
+\newpage
+\noindent
+\begin{tabularx}{\linewidth}{p{6.5cm}X}
+\textbf{Performance-Monitoring-Tool}&Programm, welches die Leistungsdaten eines Computers oder Prozesses überwacht\\
+\textbf{Proc}&ein virtuelles Dateisystem welches System- und Prozessinformationen anzeigt\\
+\textbf{Script}&ein in einer Scriptsprache geschriebenes Programm\\
+\textbf{Scriptsprache}&Programmiersprache welche sich speziell für kleine Programme eignet\\
+\textbf{User Mode}&siehe Kapitel 4.5.3 (Time)\\
+\textbf{Virtual Machine}&Eine Programm, welches einen physikalischen Computer simuliert. Sie erhält als Input eine beliebige Sprache und führt
+diese auf der darunter liegenden Sprache aus.\\
+\textbf{Virtual Memory}&siehe Kapitel 4.5.1 (Memory)\\
+\end{tabularx}
+\section{Literaturverzeichnis}
+\noindent
+\begin{tabularx}{\linewidth}{@{$\bullet$  }v{15cm}@{}}
+Bird, Tim (2009): Runtime Memory Measurement
+http://elinux.org/Runtime\_Memory\_Measurement (26.02.2011)\tabularnewline[3pt]
+Feiner, Tom (2009): Peak memory usage of a process
+http://serverfault.com/questions/11550/peak-memory-usage-of-a-process (26.02.2011)\tabularnewline[3pt]
+Fulgham, Brent (2011): The Computer Language Benchmarks Game.
+http://shootout.alioth.debian.org/ (26.02.2011)\tabularnewline[3pt]
+Gmane.org, Benutzer: shivaligupta (2006): Regarding /proc/<pid>/status
+http://article.gmane.org/gmane.linux.kernel.kernelnewbies/15454/match= (26.02.2011)\tabularnewline[3pt]
+Kerrisk, Michael (2010): proc - process information pseudo-file system.
+http://www.kernel.org/doc/man-pages/online/pages/man5/proc.5.html (26.02.2011)\tabularnewline[3pt]
+Mackintosh, David (2010): A definition for a CPU second?
+http://serverfault.com/questions/138703/a-definition-for-a-cpu-second (26.02.2011)\tabularnewline[3pt]
+McGrath, Roland (2007): Locking Pages
+http://www.gnu.org/s/libc/manual/html\_node/Locking-Pages.html#Locking-Pages (26.02.2011)\tabularnewline[3pt]
+Santosa, Mulyadi (2006): When Linux Runs Out of Memory.
+http://linuxdevcenter.com/pub/a/linux/2006/11/30/linux-out-of-memory.html (26.02.2011)\tabularnewline[3pt]
+Turakhia, Bhavin (2010): Understanding and optimizing Memory utilization.
+http://careers.directi.com/display/tu/Understanding+and+optimizing+Memory+ utilization (26.02.2011)\tabularnewline[3pt]
+University of Alberta (2010): Understanding Memory
+http://www.ualberta.ca/CNS/RESEARCH/LinuxClusters/mem.html (26.02.2011)\tabularnewline[3pt]
+Unix.com, Benutzer: sysgate (2008): top command + \%CPU usage exceeds 100\%?
+http://www.unix.com/unix-dummies-questions-answers/92541-top-command-cpu-usage-exceeds-100-a.html (26.02.2011)\tabularnewline[3pt]
+\end{tabularx}
+\newpage
+\noindent
+\begin{tabularx}{\linewidth}{@{$\bullet$  }v{15cm}@{}}
+Wikipedia, Benutzer: Guy Harris (2011): Page table
+http://en.wikipedia.org/wiki/Page\_table (26.02.2011)\tabularnewline[3pt]
+Wikipedia, Benutzer: MetaEntropy (2010): Code segment.
+http://en.wikipedia.org/wiki/Code\_segment (26.02.2011)\tabularnewline[3pt]
+Wikipedia, Benutzer: Mindmatrix (2011): Stack (data structure)
+http://en.wikipedia.org/wiki/Stack\_(data\_structure) (26.02.2011)\tabularnewline[3pt]
+Wikipedia, Benutzer: Nat682 (2011): Memory segmentation.
+http://en.wikipedia.org/wiki/Segmentation\_(memory) (26.02.2011)\tabularnewline[3pt]
+Wikipedia, Benutzer: Rich Farmbrough (2009): Resident set size.
+http://en.wikipedia.org/wiki/Resident\_set\_size (26.02.2011)\tabularnewline[3pt]
+Wikipedia, unbekannter Autor (2011): Data segment.
+http://en.wikipedia.org/wiki/Data\_segment (26.02.2011)\tabularnewline[3pt]
+Wikipedia, unbekannter Autor (2011): Virtual memory.
+http://en.wikipedia.org/wiki/Virtual\_memory (26.02.2011)\tabularnewline[3pt]
+\end{tabularx}
 
 \section{Anhang}
 
