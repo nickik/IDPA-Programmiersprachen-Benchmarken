@@ -1,19 +1,16 @@
-(ns clojure.binarytrees
+(ns binarytrees-fast
   (:gen-class))
 
 (set! *warn-on-reflection* true)
 
-(definterface ITreeNode
-  (^int item [])
-  (left [])
-  (right []))
-
-;; These TreeNode's take up noticeably less memory than a similar one
-;; implemented using defrecord.
+(defprotocol ITreeNode
+  (item [this])
+  (left [this])
+  (right [this]))
 
 (deftype TreeNode [left right ^int item]
   ITreeNode
-  (^int item [this] item)
+  (item [this] item)
   (left [this] left)
   (right [this] right))
 
@@ -52,20 +49,14 @@
           check (item-check tree)]
       (println (format "stretch tree of depth %d\t check: %d" stretch-depth check)))
     (let [long-lived-tree (bottom-up-tree 0 max-depth) ]
-      ;; The following line is where Kenneth Jonsson used pmap.  On a
-      ;; 1-core machine, I have found significantly less user+system
-      ;; CPU time used when it is map, and slightly less elapsed time
-      ;; (at the cost of more user+system CPU time) when it is pmap.
-      (doseq [trees-nfo (map (fn [d]
+      (doseq [trees-nfo (pmap (fn [d]
                               (iterate-trees max-depth min-depth d))
 			      (range min-depth stretch-depth 2)) ]
         (println trees-nfo))
-      (println (format "long lived tree of depth %d\t check: %d" max-depth
-                       (item-check long-lived-tree)))
+      (println (format "long lived tree of depth %d\t check: %d" max-depth (item-check long-lived-tree)))
       (shutdown-agents))))
 
 (defn -main [& args]
-  (println args)
   (let [n (if (first args) (Integer/parseInt (first args)) 0)
         max-depth (if (> (+ min-depth 2) n) (+ min-depth 2) n)]
     (time (main max-depth))))
