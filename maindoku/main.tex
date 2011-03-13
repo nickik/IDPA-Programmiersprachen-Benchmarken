@@ -126,6 +126,11 @@ Implementierung in einer Programmiersprache spezialisiert und
 vergleichen diese mit Referenz-Implementationen die wir nur erklären
 und messen.
 
+Um genau zu erkennen wo Programme ihr Zeit verbringen benötigt man
+kompleze Analyse Tools oder speziell dafür ausgelegt VMs. Diese Tools
+sind komplex in der Verwendung und man braucht viel Erfahrung in einem
+System um aus den Information auch die richtigen Schlüsse zu ziehen.
+
 \subsection{Erwartungen}
 
 Wegen er unter der Sprachen liegenden Infrastruktur erwarten wir sehr
@@ -134,12 +139,13 @@ Scala genau so schnell zu sein wie Java um nie auf Java zur\"uck fallen
 zu m\"ussen. 
 
 Wir haben die Hypothese aufgestellt, dass Scala es relativ einfach hat
-gleichschneller Code wie Java zu produzieren da die Sprachen beide 
-Statische Typeinformation haben, Scala sehr Java \"ahnlich programmiert werden kann
-und Scala eine der \"altesten und reifsten JVM-Sprachen ist.
+gleichschneller Code wie Java zu produzieren da die Sprachen beide
+reife Implementierung haben und \"uber die alle nötigen
+Typeinformationen verf\"ugen.
 
 Die Erwartung f\"ur Clojure ist nicht ganz so hoch da das Projekt relativ neu ist. Clojure 
-ist ausserdem eine dynamische Programmiersprache diese sind schwerer zu optimieren.
+ist ausserdem eine dynamische Programmiersprache diese sind schwerer
+zu optimieren. 
 
 \section{Material und Methoden}
 
@@ -174,9 +180,10 @@ von sehr dynamischen Sprachen zu unterst\"utzen.
 
 Alle diese neuen und spannenden Features sind fantastisch kommen aber
 oft auf Kosten der Performance. Das kommt davon das manche Features (Bouncechecking)
-einfach per definition Laufzeit brauchen aber oft ist das Problem auch der Unterschied in
-den Sprache Semantiken d.h. wenn in einer Sprache ein Feature
-unterst\"utzt ist aber in der Host-VM nicht muss um das Problem herum
+einfach immer wieder zur Laufzeit ausgef\"uhrt werden m\"ussen aber 
+oft ist das Problem auch der Unterschied in den Sprache Semantiken 
+d.h. wenn in einer Sprache ein Feature unterst\"utzt ist aber in der
+Host-VM nicht muss um das Problem herum
 gearbeitet was zus\"atzlichen Runtime-Overhead verursacht. In dieser
 Arbeit haben wir uns zwei der meiste verwendeten neuen JVM-Sprachen
 ausgesucht um herauszufinden ob diese es schaffen die Geschwindikeit
