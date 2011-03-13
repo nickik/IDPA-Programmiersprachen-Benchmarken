@@ -5,6 +5,9 @@
 \usepackage{courier}
 \usepackage{tabularx}
 \usepackage{array}
+\usepackage{graphicx}
+\usepackage[all]{hypcap}
+\usepackage{capt-of}
 
 \title{Programmiersprachen benchmarken}
 \title{Programmiersprachen benchmarken - \\ \renewcommand{\baselinestretch}{1.50}\large Programmiersprache ist nicht gleich Programmiersprache}
@@ -59,7 +62,7 @@ Klasse: BML08E
 \newcolumntype{v}[1]{%
   >{\raggedright\hspace{0pt}\arraybackslash}p{#1}%
 }
-
+\newpage
 \section{Vorwort}
 
 Die Informatik hat auf uns schon immer eine gewisse Faszination ausgeübt. Es war daher für uns beide naheliegend eine Lehre als Informatiker zu machen. Während Nick vor allem an der Softwareentwicklung interessiert ist, bevorzuge ich die Systemtechnik, in der die Installation und Wartung von IT-Systemen der Grosse Schwerpunkt ist.
@@ -68,8 +71,7 @@ Da wir beide unsere Berufe noch immer sehr interessiert ausführen, war es für 
 Am gewählten Thema interessiert uns beide in erster Linie ob tatsächlich Performanceunterschiede zwischen den untersuchten Sprachen feststellbar sind, und in welchem Ausmass sie sich zeigen. Heutige Computer sind sehr leistungsfähig, dadurch ist es für kleinere Programme wie wir sie testen werden meist irrelevant ob eine Programmiersprache einige Millisekunden schneller ist als die andere. Für grössere Projekte spielt die Geschwindigkeit jedoch auch heute noch eine wichtige Rolle, wir hoffen daher, dass sich unsere Testergebnisse auf grössere Applikationen projizieren lassen.
 
 \section{Abstract}
-Wir haben uns entschieden für unsere Maturaarbeit die Programmiersprachen Java, Clojure und Scala zu vergleichen. Wir haben dazu ein identisches Programm in jeder der genannten Programmiersprachen geschrieben. Durch das Messen von Prozessor- und Speicherdaten sowie der Ausführungszeiten der Programme wollten wir Unterschiede feststellen, um am Ende aufzeigen zu können, welche der getesteten Sprachen vom Testsystem am wenigsten Leistung abverlangt. Für die Messungen haben wir ein Script geschrieben, welches die erforderlichen Daten in angemessenen Zeitabständen ausliest. 
-
+Wir haben uns entschieden für unsere Maturaarbeit die Programmiersprachen Java, Clojure und Scala zu vergleichen. Wir haben dazu ein identisches Programm in jeder der genannten Programmiersprachen geschrieben. Durch das Messen von Prozessor- und Speicherdaten sowie der Ausführungszeiten der Programme wollten wir Unterschiede feststellen, um am Ende aufzeigen zu können, welche der getesteten Sprachen vom Testsystem am wenigsten Leistung abverlangt. Für die Messungen haben wir ein Script geschrieben, welches die erforderlichen Daten in angemessenen Zeitabständen ausliest. Nach Auswertung der gemessenen Daten zeigte sich, dass Clojure das System bei weitem am wenigsten belastet. Jedoch war die Ausführungszeit für das Clojure Programm ungefähr drei Mal so lange wie diejenige der anderen Sprachen. Da in der Programmierung heutzutage Geschwindigkeit wichtiger ist als alles andere, raten wir davon ab Clojure für grössere Projekte zu verwenden, da die sehr junge Sprache schlicht noch nicht genügend ausgereift ist. Scala und Java lieferten beide sehr ähnliche Resultate. Bei einer beinahe identischen Ausführungszeit benötigte Scala jedoch immer leicht weniger Systemressourcen als Java. Da Ressourcen bei aktuellen Computern meist jedoch kaum mehr eine Rolle spielen, sollte wenn immer möglich die schnellste Programmiersprache, d.h. Java, verwendet werden.
 \section{Einleitung}
 
 \subsection{Untersuchungsgegenstand}
@@ -447,7 +449,14 @@ Um die Methoden für die Datenauswertung zu bestimmen ist es vorerst wichtig zu 
 Der Memory Bereich ist der wohl komplexeste von allen. Der Begriff des virtuellen Speichers ist hier immer wieder anzutreffen. Deshalb folgt hier eine kurze, vereinfachte Erklärung.
 \\\\
 \underline{Virtual Memory:} Einem Prozess wird ein Adressbereich simuliert den er alleine für sich benutzen kann. Somit hat der Prozess den Eindruck, über einen zusammenhängenden sTeil des Hauptspeichers zu verfügen. In Wirklichkeit verteilt das Betriebssystem den vom Prozess genutzten Speicher über den ganzen Arbeitsspeicher und teilweise auch den Swap-Space (siehe Bild).
-\\\\
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.3\linewidth]{bilder/virtualmemory.png}
+\caption{Wie virtueller Speicher funktioniert. Quelle: en.wikipedia.org, Virtual memory}
+\end{center}
+\end{figure}
+
+\noindent
 In der Folge eine Beispielsausgabe aus unserem Messskript.
 
 \begin{minipage}{\textwidth}
@@ -467,6 +476,7 @@ VmPTE:	     180 kB
 \end{lstlisting}
 \end{minipage}
 
+\begin{table}[ht!]
 \begin{tabular}[c]{|l|p{13cm}|} \hline
 \textbf{Wert} & \textbf{Erklärung}\\
 \hline
@@ -490,9 +500,10 @@ VmLib & Shared Memory, Speicherbereich auf den auch andere Prozesse zugreifen k�
 \hline
 VmPTE & Zwischen dem virtuellen und dem physikalischen Speicher befindet sich eine sog. Page Table welche den virtuellen Speicher dem physikalischen zuordnet  (z.B. virt. Adresse 0x01 befindet sich bei 0x0A im Arbeitsspeicher usw.). Die Grösse der Page Table ist in hier angegeben. \\
 \hline							
-\end{tabular}\vspace{1cm}
-
-\\
+\end{tabular}
+\caption{Erklärung der gemessenen Speicherwerte}
+\end{table}
+\newpage
 Zusammenfassend lässt sich sagen, dass für unsere Messungen lediglich der Wert VmRSS, welcher den tatsächlichen, physikalischen Speicherverbrauch abbildet, relevant ist. Dies weil die anderen Messwerte insofern verfälscht sind, dass sie teilweise gar nie in den Speicher geladen werden (VmPeak, VmSize, VmData) oder weil es für unsere Messungen nicht relevant ist wie gross die einzelnen Datensegmente (VmStk, VmExe) im Speicher sind.
 
 \subsubsection{CPU}
@@ -535,7 +546,7 @@ Name and arguments of the command: java -server -jar clojure/clojure.jar
 \end{lstlisting}
 \end{minipage}
 
-\\\\
+\bigskip
 \noindent
 \underline{CPU-Modi:} Man unterscheidet zwischen zwei verschiedenen Betriebsmodi in denen die CPU Prozesse ausführt, es sind dies der Kernel- und der User-Modus.
 \\\\
@@ -545,7 +556,7 @@ Name and arguments of the command: java -server -jar clojure/clojure.jar
 \\\\
 \underline{CPU-seconds:} Zeit in der die CPU tatsächlich mit der Ausführung des Prozesses beschäftigt war. Da durch das Betriebssystem immer auch andere Prozesse aktiv sind, dauert die Programmausführung in der Regel länger als die Anzahl CPU-Seconds die tatsächlich dafür aufgewendet wurden (CPU muss priorisieren). Aufgrund der Multicore Technologie ist es aber durchaus auch möglich, dass für eine Programmausführung mehr CPU-Seconds benötigt werden, als tatsächlich Zeit vergeht da die CPU-Seconds pro Kern gezählt werden.
 \\
-
+\begin{table}[h!]
 \begin{tabular}[c]{|p{4cm}|p{11cm}|} \hline
 \textbf{Wert} & \textbf{Erklärung}\\
 \hline
@@ -560,6 +571,8 @@ Total CPU-seconds in kernel mode & Im Kernel-Mode verbrachte Zeit\\
 Name and arguments of the command & Ausgeführtes Programm inkl. aller Parameter\\
 \hline
 \end{tabular}
+\caption{Erklärung der gemessenen Zeitwerte}
+\end{table}
 
 \subsubsection{Methoden}
 Für die Auswertung der Daten gehen wir wie folgt vor.
@@ -615,11 +628,506 @@ Java Code, Java Ecosystems (Webservers, Profilers, Debuggers...) und natürlich 
 \subsubsection{Code}
 
 \section{Ergebnisse}
+Im diesem Kapitel werden die Messresultate der durchgeführten Messungen aufgezeigt. Hier ist zu beachten, dass es sich bei den Zeitangaben welche für die Memory- und CPU-Grafiken verwendet wurden, um Schätzungen handelt. Wir waren mit Hilfe unseres Scripts leider nicht in der Lage den genauen Zeitverlauf aufzuzeigen. Eventuelle Unregelmässigkeiten können daher nicht ausgeschlossen werden. Des weiteren beinhalten die in diesem Kapitel aufgezeigten Tabellen, aufgrund der grossen Datenmenge, nicht alle Messresultate. Die genaue Bedeutung der Werte wurde in den vorhergehenden Kapiteln bereits ausführlich behandelt, an dieser Stelle folgen daher keine Erklärungen mehr.
+
+\subsection{Java}
+\subsubsection{Allgemeine Daten}
+Die folgende Tabelle beinhaltet einige allgemeine Messresultate zu Java. 
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{6cm}|r|} \hline
+Sprache & Java\\
+\hline
+Benötigte Zeit & 22.28s\\
+\hline
+Ø Speicherauslastung & 308557kB\\
+\hline
+Ø CPU-Auslastung & 109\%\\
+\hline
+Anz. CPU-Sekunden & 24.31s\\
+\hline
+davon im User-Mode & 23.74s\\
+\hline
+davon im Kernel-Mode & 0.57s\\
+\hline
+davon im User-Mode & 97.66\%\\
+\hline
+davon im Kernel-Mode & 2.34\%\\
+\hline
+\end{tabular}
+\caption{Erklärung der gemessenen Zeitwerte Java}
+\end{table}
+
+\subsubsection{Memory}
+Die nachfolgende Tabelle beinhaltet den Verlauf des physikalischen Speicherverbrauchs während der Ausführung des Java-Testprogrammes. Aufgrund der grossen Datenmenge haben wir uns auf einen Wert je zwei Sekunden Programmlaufzeit beschränkt. Die Grafik wurde unter Verwendung aller Messwerte erstellt, allfällige Spitzen sind darauf daher erkenntlich.
+\begin{table}[h!]
+\centering
+\begin{tabular}{|r|r|} \hline
+\textbf{Laufzeit [s]} & \textbf{Speicherverbrauch [kB]}\\
+\hline
+0 & 704\\
+\hline
+2 & 64888\\
+\hline
+4 & 398824\\
+\hline
+6 & 280544\\
+\hline
+8 & 287952\\
+\hline
+10 & 297992\\
+\hline
+12 & 314180\\
+\hline
+14 & 342300\\
+\hline
+16 & 394120\\
+\hline
+18 & 408484\\
+\hline
+20 & 419848\\
+\hline
+22 & 432032
+\\
+\hline
+\end{tabular}
+\caption{Wertetabelle Speicherverbrauch Java}
+\end{table}
+\begin{center}
+\includegraphics[width=\linewidth]{bilder/MemoryJava.png}
+\captionof{figure}{Verlauf der Speicherauslastung Java}
+\end{center}
+
+\subsubsection{CPU}
+Die nachfolgende Tabelle beinhaltet den Verlauf der CPU-Auslastung während der Ausführung des Java-Testprogrammes. Aufgrund der grossen Datenmenge haben wir uns auf einen Wert je zwei Sekunden Programmlaufzeit beschränkt. Die Grafik wurde unter Verwendung aller Messwerte erstellt, allfällige Spitzen sind darauf daher erkenntlich.
+\begin{table}[h!]
+\centering
+\begin{tabular}{|r|r|} \hline
+\textbf{Laufzeit [s]} & \textbf{CPU-Auslastung [\%]}\\
+\hline
+0 & 0\\
+\hline
+2 & 103\\
+\hline
+4 & 131\\
+\hline
+6 & 116\\
+\hline
+8 & 99.2\\
+\hline
+10 & 100\\
+\hline
+12 & 99.3\\
+\hline
+14 & 100\\
+\hline
+16 & 100\\
+\hline
+18 & 100\\
+\hline
+20 & 106\\
+\hline
+22 & 106
+\\
+\hline
+\end{tabular}
+\caption{Wertetabelle CPU-Auslastung Java}
+\end{table}
+\begin{center}
+\includegraphics[width=\linewidth]{bilder/CPUJava.png}
+\captionof{figure}{Verlauf CPU-Auslastung Java}
+\end{center}
+
+
+\subsection{Scala}
+\subsubsection{Allgemeine Daten}
+Die folgende Tabelle beinhaltet einige allgemeine Messresultate zu Scala. 
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{6cm}|r|} \hline
+Sprache & Scala\\
+\hline
+Benötigte Zeit & 22.37s\\
+\hline
+Ø Speicherauslastung & 297488kB\\
+\hline
+Ø CPU-Auslastung & 107\%\\
+\hline
+Anz. CPU-Sekunden & 24.03s\\
+\hline
+davon im User-Mode & 23.43s\\
+\hline
+davon im Kernel-Mode & 0.6s\\
+\hline
+davon im User-Mode & 97.50\%\\
+\hline
+davon im Kernel-Mode & 2.50\%\\
+\hline
+\end{tabular}
+\caption{Erklärung der gemessenen Zeitwerte Scala}
+\end{table}
+
+\subsubsection{Memory}
+Die nachfolgende Tabelle beinhaltet den Verlauf des physikalischen Speicherverbrauchs während der Ausführung des Scala-Testprogrammes. Aufgrund der grossen Datenmenge haben wir uns auf einen Wert je zwei Sekunden Programmlaufzeit beschränkt. Die Grafik wurde unter Verwendung aller Messwerte erstellt, allfällige Spitzen sind darauf daher erkenntlich.
+\begin{table}[h!]
+\centering
+\begin{tabular}{|r|r|} \hline
+\textbf{Laufzeit [s]} & \textbf{Speicherverbrauch [kB]}\\
+\hline
+0 & 548\\
+\hline
+2 & 145256\\
+\hline
+4 & 294424\\
+\hline
+6 & 228976\\
+\hline
+8 & 233204\\
+\hline
+10 & 245484\\
+\hline
+12 & 262084\\
+\hline
+14 & 293188\\
+\hline
+16 & 349612\\
+\hline
+18 & 443108\\
+\hline
+20 & 451776\\
+\hline
+22 & 493828\\
+\hline
+\end{tabular}
+\caption{Wertetabelle Speicherverbrauch Scala}
+\end{table}
+\begin{center}
+\includegraphics[width=\linewidth]{bilder/MemoryScala.png}
+\captionof{figure}{Verlauf der Speicherauslastung Scala}
+\end{center}
+
+\subsubsection{CPU}
+Die nachfolgende Tabelle beinhaltet den Verlauf der CPU-Auslastung während der Ausführung des Scala-Testprogrammes. Aufgrund der grossen Datenmenge haben wir uns auf einen Wert je zwei Sekunden Programmlaufzeit beschränkt. Die Grafik wurde unter Verwendung aller Messwerte erstellt, allfällige Spitzen sind darauf daher erkenntlich.
+\begin{table}[h!]
+\centering
+\begin{tabular}{|r|r|} \hline
+\textbf{Laufzeit [s]} & \textbf{CPU-Auslastung [\%]}\\
+\hline
+0 & 0\\
+\hline
+2 & 105\\
+\hline
+4 & 103\\
+\hline
+6 & 100\\
+\hline
+8 & 101\\
+\hline
+10 & 100\\
+\hline
+12 & 100\\
+\hline
+14 & 100\\
+\hline
+16 & 100\\
+\hline
+18 & 99.3\\
+\hline
+20 & 100\\
+\hline
+22 & 105\\
+\hline
+\end{tabular}
+\caption{Wertetabelle CPU-Auslastung Scala}
+\end{table}
+\begin{center}
+\includegraphics[width=\linewidth]{bilder/CPUScala.png}
+\captionof{figure}{Verlauf CPU-Auslastung Scala}
+\end{center}
+
+\subsection{Clojure}
+\subsubsection{Allgemeine Daten}
+Die folgende Tabelle beinhaltet einige allgemeine Messresultate zu Clojure. 
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{6cm}|r|} \hline
+Sprache & Clojure\\
+\hline
+Benötigte Zeit & 62.88s\\
+\hline
+Ø Speicherauslastung & 120264kB\\
+\hline
+Ø CPU-Auslastung & 26\%\\
+\hline
+Anz. CPU-Sekunden & 73.32s\\
+\hline
+davon im User-Mode & 72.32s\\
+\hline
+davon im Kernel-Mode & 1.0s\\
+\hline
+davon im User-Mode & 98.64\%\\
+\hline
+davon im Kernel-Mode & 1.36\%\\
+\hline
+\end{tabular}
+\caption{Erklärung der gemessenen Zeitwerte Clojure}
+\end{table}
+
+\subsubsection{Memory}
+Die nachfolgende Tabelle beinhaltet den Verlauf des physikalischen Speicherverbrauchs während der Ausführung des Clojure-Testprogrammes. Aufgrund der grossen Datenmenge haben wir uns auf einen Wert je fünf Sekunden Programmlaufzeit beschränkt. Die Grafik wurde unter Verwendung aller Messwerte erstellt, allfällige Spitzen sind darauf daher erkenntlich.
+\begin{table}[h!]
+\centering
+\begin{tabular}{|r|r|} \hline
+\textbf{Laufzeit [s]} & \textbf{Speicherverbrauch [kB]}\\
+\hline
+0 & 1300\\
+\hline
+5 & 64240\\
+\hline
+10 & 120264\\
+\hline
+15 & 112896\\
+\hline
+20 & 112896\\
+\hline
+25 & 112896\\
+\hline
+30 & 112896\\
+\hline
+35 & 112896\\
+\hline
+40 & 112896\\
+\hline
+45 & 112896\\
+\hline
+50 & 112896\\
+\hline
+55 & 112896\\
+\hline
+60 & 112896\\
+\hline
+\end{tabular}
+\caption{Wertetabelle Speicherverbrauch Clojure}
+\end{table}
+\begin{center}
+\includegraphics[width=\linewidth]{bilder/MemoryClojure.png}
+\captionof{figure}{Verlauf der Speicherauslastung Clojure}
+\end{center}
+
+\subsubsection{CPU}
+Die nachfolgende Tabelle beinhaltet den Verlauf der CPU-Auslastung während der Ausführung des Clojure-Testprogrammes. Aufgrund der grossen Datenmenge haben wir uns auf einen Wert je fünf Sekunden Programmlaufzeit beschränkt. Die Grafik wurde unter Verwendung aller Messwerte erstellt, allfällige Spitzen sind darauf daher erkenntlich.
+\begin{table}[h!]
+\centering
+\begin{tabular}{|r|r|} \hline
+\textbf{Laufzeit [s]} & \textbf{CPU-Auslastung [\%]}\\
+\hline
+0 & 0\\
+\hline
+5 & 92.4\\
+\hline
+10 & 42\\
+\hline
+15 & 28.8\\
+\hline
+20 & 23.2\\
+\hline
+25 & 19.3\\
+\hline
+30 & 16\\
+\hline
+35 & 13.6\\
+\hline
+40 & 11.9\\
+\hline
+45 & 10.5\\
+\hline
+50 & 9.4\\
+\hline
+55 & 8.6\\
+\hline
+60 & 7.9\\
+\hline
+\end{tabular}
+\caption{Wertetabelle CPU-Auslastung Clojure}
+\end{table}
+\begin{center}
+\includegraphics[width=\linewidth]{bilder/CPUClojure.png}
+\captionof{figure}{Verlauf CPU-Auslastung Clojure}
+\end{center}
+
 \section{Diskussion}
 \subsection{Vergleich der Resultate}
+\subsubsection{Zeitspezifische Daten}
+In diesem Unterkapitel vergleichen wir die jene Messdaten, welche die Zeit betreffen, d.h. die realen Ausführungszeiten und die benötigten CPU-Sekunden. Genau diese Werte wurden in Abbildung Nr. 8 grafisch dargestellt. Es ist deutlich ersichtlich wie Java und Scala sich ein Kopf-an-Kopf-Rennen liefern während Clojure mit einer ca. dreimal so hohen Ausführungszeit weit abgeschlagen ist. Das gleiche Bild zeigt sich bei den CPU-Sekunden, wo die Differenz noch grösser ist. Vergleicht man die Messungen von Java und Scala etwas genauer, so hat Scala bei beinaher gleicher Ausführungszeit etwas weniger CPU-Sekunden benötigt. Scala könnte daher als knapper 'Sieger' dieser Messung bezeichnet werden.
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{6cm}|r|r|r|} \hline
+Sprache & Java & Scala & Clojure \\
+\hline
+Benötigte Zeit & 22.28s & 22.37s & 62.88s\\
+\hline
+Anz. CPU-Sekunden & 24.31s & 24.03s & 73.32s\\
+\hline
+davon im User-Mode & 23.74s & 23.42s & 72.32s\\
+\hline
+davon im Kernel-Mode & 0.57s & 0.6s & 1.0s\\
+\hline
+davon im User-Mode & 97.66\% & 97.50\% & 98.64\%\\
+\hline
+davon im Kernel-Mode & 2.34\% & 2.50\% & 1.36\%\\
+\hline
+\end{tabular}
+\caption{Erklärung der gemessenen Zeitwerte Clojure}
+\end{table}
+\begin{center}
+\includegraphics[width=\linewidth]{bilder/TimeAll.png}
+\captionof{figure}{Vergleich der Zeitmessungen}
+\end{center}
+Abbildung Nr. 9 zeigt den prozentualen Anteil an CPU-Sekunden auf, welcher im Kernel-Mode verbracht werden musste. Hier sieht das Bild schon wieder ganz anders aus. Clojure verbrachte rund ein Prozent weniger Ausführungszeit im Kernel-Mode als die anderen beiden Sprachen. Scala liegt mit einem Anteil von 2.5\% auf dem letzten Platz. Es muss hier jedoch angemerkt werden, dass es unklar ist wann genau die CPU diese Zeit benötigt hat. Sollte sich dies auf den Programmstart beschränken, wird der Prozentsatz der CPU-Sekunden im Kernel-Mode bereits durch die lange Ausführungszeit des Clojure-Programms hinuntergezogen. Leider lässt sich dies nur sehr schlecht prüfen.
+\begin{center}
+\includegraphics[width=\linewidth]{bilder/KernelModeAll.png}
+\captionof{figure}{Vergleich des Anteils an CPU-Sekunden, welche im Kernel Mode verbracht wurden}
+\end{center}
+
+\subsubsection{Memory}
+Die folgende Grafik vergleicht die Speicherdaten aller Sprachen. Clojure hat den anderen Sprachen gegenüber einen enorm tiefern Speicherverbrauch. Es muss jedoch bedacht werden, dass das Programm bei einem um 60\% tieferen Speicherverbrauch auch eine um ca. 60\% längere Ausführungszeit hat. Der Speicherverbrauch von Java und Scala entwickelt sich sehr ähnlich, jedoch ist der Arbeitsspeicherverbrauch von Scala etwas tiefer als jener von Java. Erst kurz vor Programmende steigt der Verbrauch von Scala nochmal stark an und übersteigt jenen von Java. Entsprechend ist auch der durchschnittliche Speicherverbrauch von Java der höchste.
+
+\\
+\bigskip
+\noindent
+Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabelle jeweils nur einen Wert je Sekunde Ausführungszeit. Des weiteren ist die Spalte für Clojure nicht vollständig, da ab Sekunde 23 kein Vergleich mehr mit den anderen Sprachen möglich ist.
+
+
+\begin{center}
+\begin{tabular}{|r|r|r|r|} \hline
+\textbf{Zeit [s]} & \textbf{Java [kB]} & \textbf{Scala [kB]} & \textbf{Clojure [kB]}\\
+\hline
+0 & 704 & 548 & 1300\\
+\hline
+1 & 4076 & 24504 & 4240\\
+\hline
+2 & 64888 & 145256 & 12532\\
+\hline
+3 & 254820 & 301740 & 25872\\
+\hline
+4 & 398824 & 294424 & 37100\\
+\hline
+5 & 315296 & 243544 & 64240\\
+\hline
+6 & 280544 & 228976 & 69396\\
+\hline
+7 & 278380 & 228492 & 89632\\
+\hline
+8 & 287952 & 233204 & 120256\\
+\hline
+9 & 292080 & 239428 & 120256\\
+\hline
+10 & 297992 & 245484 & 120264\\
+\hline
+11 & 305280 & 252520 & 120264\\
+\hline
+12 & 314180 & 262084 & 112896\\
+\hline
+13 & 324204 & 275336 & 112896\\
+\hline
+14 & 342300 & 293188 & 112896\\
+\hline
+15 & 357680 & 320268 & 112896\\
+\hline
+16 & 394120 & 349612 & 112896\\
+\hline
+17 & 404572 & 376812 & 112896\\
+\hline
+18 & 408484 & 443108 & 112896\\
+\hline
+19 & 408484 & 443236 & 112896\\
+\hline
+20 & 419848 & 451776 & 112896\\
+\hline
+21 & 425884 & 451780 & 112896\\
+\hline
+22 & 432032 & 493828 & 112896\\
+\hline
+... & - & - & ...\\
+\hline
+\end{tabular}
+\captionof{table}{Vergleich der gemessenen Speicherdaten}
+
+\includegraphics[width=\linewidth]{bilder/MemoryAll.png}
+\captionof{figure}{Vergleich des Speicherverbrauchs}
+\end{center}
+\subsubsection{CPU}
+Die folgende Grafik zeigt die CPU-Auslastung während der Programmausführung an. Anfangs steigt die CPU-Auslastung bei allen Sprachen ungefäht gleich stark an. Während sich Java und Clojure anschliessend während der ganzen Programmausführung in einem Bereich von ca. 100\% bewegen, nimmt die CPU-Auslastung bei Clojure bis zum Programmende stetig ab. Auch hier muss jedoch bedacht werden, dass die Programmausführung bei Clojure weit länger dauert als bei den anderen Sprachen. Beim genaueren Vergleich von Java und Scala fällt auf, dass die CPU-Auslastung bei Java stets leicht höher ist als bei Scala.
+
+\bigskip
+\noindent
+Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabelle jeweils nur einen Wert je Sekunde Ausführungszeit. Des weiteren ist die Spalte für Clojure nicht vollständig, da ab Sekunde 23 kein Vergleich mehr mit den anderen Sprachen möglich ist.
+
+\begin{center}
+\begin{tabular}{|r|r|r|r|} \hline
+\textbf{Zeit [s]} & \textbf{Java [\%]} & \textbf{Scala [\%]} & \textbf{Clojure [\%]}\\
+\hline
+0 & 0 & 0 & 0\\
+\hline
+1 & 99 & 105 & 82\\
+\hline
+2 & 103 & 105 & 128\\
+\hline
+3 & 144 & 102 & 108\\
+\hline
+4 & 131 & 103 & 115\\
+\hline
+5 & 99.8 & 102 & 92.4\\
+\hline
+6 & 116 & 100 & 77\\
+\hline
+7 & 114 & 100 & 66\\
+\hline
+8 & 99.2 & 101 & 51.3\\
+\hline
+9 & 100 & 101 & 46.2\\
+\hline
+10 & 100 & 101 & 42\\
+\hline
+11 & 100 & 101 & 38.5\\
+\hline
+12 & 99.3 & 100 & 35.5\\
+\hline
+13 & 99.6 & 100 & 33\\
+\hline
+14 & 100 & 100 & 30.8\\
+\hline
+15 & 99.7 & 100 & 28.8\\
+\hline
+16 & 100 & 100 & 27.1\\
+\hline
+17 & 100 & 100 & 25.6\\
+\hline
+18 & 100 & 100 & 24.4\\
+\hline
+19 & 107 & 100 & 23.2\\
+\hline
+20 & 103 & 103 & 22\\
+\hline
+21 & 105 & 105 & 22\\
+\hline
+22 & 106 & 105 & 21\\
+\hline
+... & - & - & ...\\
+\hline
+\end{tabular}
+\captionof{table}{Vergleich der gemessenen CPU-Auslastungen}
+
+\includegraphics[width=.9\linewidth]{bilder/CPUAll.png}
+\captionof{figure}{Vergleich der CPU-Auslastung}
+\bigskip
+\includegraphics[width=.9\linewidth]{bilder/AverageCPUAll.png}
+\captionof{figure}{Vergleich der durchschnittlichen CPU-Auslastung}
+\end{center}
 
 \subsection{Schlussfolgerung}
-
+Die Messresultate entsprechen weitgehend den Erwartungen. Wie es sich auch schon bei anderen Benchmarkes gezeigt hat, sind die Messresultate von Java und Scala sehr ähnlich. Etwas überraschend war lediglich die leicht tiefere Systembelastung von Scala gegenüber Java. Dies bei einer Ausführungszeit welche mit einer Differenz von 0.1 Sekunden beinahe identisch mit derjenigen von Java ist. Clojure ist, wie bei einer so jungen Sprache auch nicht anders zu erwarten, verglichen mit den anderen Sprachen weit abgeschlagen. Zwar ist lag die Belastung von CPU und Memory während der Ausführung stets tiefer als bei den anderen Sprachen, mit einer Zeit von über einer Minute dauerte die Ausführung jedoch ungefähr drei Mal so lange. Da heutige Systeme sehr performant sind und über ausreichend Arbeitsspeicher und Rechenleistung verfügen, wäre eine bessere Nutzung der Ressourcen wünschenswerter gewesen wenn sich dadurch die Ausführzeit verringert hätte. Schliesslich sind die zusätzlichen Ressourcen ja dazu da um genutzt zu werden und damit das System zu verschnellern.
+Zusammenfassend lässt sich sagen, dass Java und Scala aufgrund der Messresultate auch für Grossprojekte sehr geeignet sind. Diese gehören, wie sich aus externen Tests schliessen lässt, mitunter zu den schnellsten Programmiersprachen überhaupt. Clojure hingegen kann (noch) nicht mit diesen Programmiersprachen mithalten. Es ist daher vor allem bei grösseren Projekte ratsam zu prüfen, ob die von Clojure erbrachte Geschwindigkeit für das Projekt ausreichend ist.
 
 \section{Abk\"urzungsverzeichnis}
 \begin{tabbing}
@@ -629,7 +1137,7 @@ Java Code, Java Ecosystems (Webservers, Profilers, Debuggers...) und natürlich 
 \textbf{IL} \>Intermediate Language\\
 \textbf{JVM} \>Java Virtual Machine\\
 \textbf{PID} \>Process Identifier\\
-\textbf{procfs}\>Process Filesystem
+\textbf{procfs}\>Process Filesystem\\
 \textbf{PS} \>Process Status\\
 \textbf{PTE} \>Page Table Entry\\
 \textbf{RAM} \>Random Access Memory\\
@@ -718,8 +1226,6 @@ http://en.wikipedia.org/wiki/Virtual\_memory (26.02.2011)\tabularnewline[3pt]
 \end{tabularx}
 
 \section{Anhang}
-
-
 
 
 
