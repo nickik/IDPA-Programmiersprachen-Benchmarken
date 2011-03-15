@@ -59,6 +59,7 @@
 
 (defn -main [& args]
   (println "Binarytree-me")
+  (println (.. Runtime getRuntime totalMemory))
   (let [n (read-string (first args))
         max-depth (long (if (> (+ min-depth 2) n) (+ min-depth 2) n))]
     (time (main max-depth))))

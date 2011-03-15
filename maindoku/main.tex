@@ -83,25 +83,76 @@ Klasse: BML08E
 \newpage
 \section{Vorwort}
 
-Die Informatik hat auf uns schon immer eine gewisse Faszination ausgeübt. Es war daher für uns beide naheliegend eine Lehre als Informatiker zu machen. Während Nick vor allem an der Softwareentwicklung interessiert ist, bevorzuge ich die Systemtechnik, in der die Installation und Wartung von IT-Systemen der Grosse Schwerpunkt ist.
-Da wir beide unsere Berufe noch immer sehr interessiert ausführen, war es für uns beide klar für die IDPA ein Thema aus dem Bereich Informatik zu wählen. Es galt nun ein Thema zu finden, in dem sowohl die Applikationsentwicklung wie auch die Systemtechnik gleichermassen eine Rolle spielen. Bereits nach kurzer Recherche stiessen wir auf das Thema „Programmiersprachen Benchmarking“. Sofort war unser beider Interesse geweckt und dadurch,  dass dieses Thema sowohl ein Testsystem wie auch selbstgeschriebene Programme erforderte, eignete es sich sehr gut für eine IDPA. Wir entschieden uns, unsere Maturaarbeit diesem Thema zu widmen.
+Die Informatik hat auf uns schon immer eine gewisse Faszination
+ausgeübt. Es war daher für uns beide naheliegend eine Lehre als
+Informatiker zu machen. Während Nick vor allem an der
+Softwareentwicklung interessiert ist, bevorzuge ich die Systemtechnik,
+in der die Installation und Wartung von IT-Systemen der Grosse
+Schwerpunkt ist.
 
-Am gewählten Thema interessiert uns beide in erster Linie ob tatsächlich Performanceunterschiede zwischen den untersuchten Sprachen feststellbar sind, und in welchem Ausmass sie sich zeigen. Heutige Computer sind sehr leistungsfähig, dadurch ist es für kleinere Programme wie wir sie testen werden meist irrelevant ob eine Programmiersprache einige Millisekunden schneller ist als die andere. Für grössere Projekte spielt die Geschwindigkeit jedoch auch heute noch eine wichtige Rolle, wir hoffen daher, dass sich unsere Testergebnisse auf grössere Applikationen projizieren lassen.
+Da wir beide unsere Berufe noch immer sehr interessiert ausführen, war
+es für uns beide klar für die IDPA ein Thema aus dem Bereich
+Informatik zu wählen. Es galt nun ein Thema zu finden, in dem sowohl
+die Applikationsentwicklung wie auch die Systemtechnik gleichermassen
+eine Rolle spielen. Bereits nach kurzer Recherche stiessen wir auf das
+Thema „Programmiersprachen Benchmarking“. Sofort war unser beider
+Interesse geweckt und dadurch,  dass dieses Thema sowohl ein
+Testsystem wie auch selbstgeschriebene Programme erforderte, eignete
+es sich sehr gut für eine IDPA. Wir entschieden uns, unsere
+Maturaarbeit diesem Thema zu widmen.
+
+
+Am gewählten Thema interessiert uns beide in erster Linie ob
+tatsächlich Performanceunterschiede zwischen den untersuchten Sprachen
+feststellbar sind, und in welchem Ausmass sie sich zeigen. Heutige
+Computer sind sehr leistungsfähig, dadurch ist es für kleinere
+Programme wie wir sie testen werden meist irrelevant ob eine
+Programmiersprache einige Millisekunden schneller ist als die
+andere. Für grössere Projekte spielt die Geschwindigkeit jedoch auch
+heute noch eine wichtige Rolle, wir hoffen daher, dass sich unsere
+Testergebnisse auf grössere Applikationen projizieren lassen.
+
 
 \section{Abstract}
-Wir haben uns entschieden für unsere Maturaarbeit die Programmiersprachen Java, Clojure und Scala zu vergleichen. Wir haben dazu ein identisches Programm in jeder der genannten Programmiersprachen geschrieben. Durch das Messen von Prozessor- und Speicherdaten sowie der Ausführungszeiten der Programme wollten wir Unterschiede feststellen, um am Ende aufzeigen zu können, welche der getesteten Sprachen vom Testsystem am wenigsten Leistung abverlangt. Für die Messungen haben wir ein Script geschrieben, welches die erforderlichen Daten in angemessenen Zeitabständen ausliest. Nach Auswertung der gemessenen Daten zeigte sich, dass Clojure das System bei weitem am wenigsten belastet. Jedoch war die Ausführungszeit für das Clojure Programm ungefähr drei Mal so lange wie diejenige der anderen Sprachen. Da in der Programmierung heutzutage Geschwindigkeit wichtiger ist als alles andere, raten wir davon ab Clojure für grössere Projekte zu verwenden, da die sehr junge Sprache schlicht noch nicht genügend ausgereift ist. Scala und Java lieferten beide sehr ähnliche Resultate. Bei einer beinahe identischen Ausführungszeit benötigte Scala jedoch immer leicht weniger Systemressourcen als Java. Da Ressourcen bei aktuellen Computern meist jedoch kaum mehr eine Rolle spielen, sollte wenn immer möglich die schnellste Programmiersprache, d.h. Java, verwendet werden.
+Wir haben uns entschieden für unsere Maturaarbeit die
+Programmiersprachen Java, Clojure und Scala zu vergleichen. Wir haben
+dazu ein identisches Programm in jeder der genannten
+Programmiersprachen geschrieben. Durch das Messen von Prozessor- und
+Speicherdaten sowie der Ausführungszeiten der Programme wollten wir
+Unterschiede feststellen, um am Ende aufzeigen zu können, welche der
+getesteten Sprachen den Benchmark am schnellsten Ausf\"uhert. Für die
+Messungen haben wir ein Script geschrieben,
+welches die erforderlichen Daten in angemessenen Zeitabständen
+ausliest. 
+//
+Nach Auswertung der gemessenen Daten zeigte sich, dass Scala
+und Java beide optimalen Code generieren und somit fast gleich schnell
+sind. Die Clojure ist in unserem Benchmark
+etwa drei mal langsamer, was für eine Sprache die im Kern dynamisch
+ist kein Katostrphales Ergebniss ist aber sicherlich potenzial nache
+oben offen l\"asst. 
+//
+Diese Resultat best\"atigt die Erwartung das
+sowohl Java als auch Scala perfekt mit der VM harmonieren.
+Clojure schafft es auch schon die Plattform effizient zu nützen
+verschwendet aber viel Zeit mit warten. Die Gründe hierfür zu
+analysieren spregen aber den Umfang dieser Arbeit.
+
+
 \section{Einleitung}
 
 \subsection{Untersuchungsgegenstand}
 
-Wir haben uns ein sehr komplexes Thema vorgenommen. Programmiersprachen und Compiler sind, auf die Informatik bezogen, einen sehr altes Thema. \\
+Wir haben uns ein sehr komplexes Thema
+vorgenommen. Programmiersprachen und Compiler sind, auf die Informatik
+bezogen, einen sehr altes Thema. \\
+
 Hochsprachen wie wir Sie in dieser Arbeit verwenden, werden seit mehr
 als fünfzig Jahren immer wieder weiter entwickelt und verbessert. Seit
 der Anfangszeit herrscht der Konflikt zwischen hoher Abstraktion und
 Geschwindigkeit. Umso höher die Abstraktion ist, die eine
 Programmiersprache bietet, umso schwieriger ist die Programmiersprache
 auf der darunterliegenden Sprache effizient auszuführen.
-
 
 \subsection{Problemstellung}
 
@@ -113,9 +164,10 @@ jeder Anwendungsfall andere Anforderungen hat. Auch die
 unter der Programmiersprache liegenden Layers (Betriebssysteme und
 Hardware) sind von entscheidender Bedeutung. Um korrekte Aussagen zu
 machen m\"ussen diese Layers entweder herausgerechnet werden oder
-identisch sein. Das Ziel ist es f\"ur den von uns ausgew\"ahlten Anwendungsfall Messungen
-zu machen, Aussagen \"uber die Geschwindikeiten zu treffen und
-wenn m\"oglich kl\"ahren warum die Sprachen so verh\"alt.
+identisch sein. Das Ziel ist es f\"ur den von uns ausgew\"ahlten
+Anwendungsfall Messungen zu machen, Aussagen \"uber die
+Geschwindikeiten zu treffen und wenn m\"oglich kl\"ahren warum die
+Sprachen so verh\"alt.
 
 \subsection{Wissenslücken}
 
@@ -143,9 +195,9 @@ gleichschneller Code wie Java zu produzieren da die Sprachen beide
 reife Implementierung haben und \"uber die alle nötigen
 Typeinformationen verf\"ugen.
 
-Die Erwartung f\"ur Clojure ist nicht ganz so hoch da das Projekt relativ neu ist. Clojure 
-ist ausserdem eine dynamische Programmiersprache diese sind schwerer
-zu optimieren. 
+Die Erwartung f\"ur Clojure ist nicht ganz so hoch da das Projekt
+relativ neu ist und im Kern  dynamische ist. Diese Sprachen sind
+schwerer zu optimieren.
 
 \section{Material und Methoden}
 
@@ -272,6 +324,20 @@ die speziell für diese Hardware den Code anpassen.
 Gute JIT-Compiler sind heutzutage vergleichbar mit der Geschwindigkeiten
 von Native Code Compilern. Die Unterschiede sind in vielen
 Anwendungsf\"allen nur noch gering.
+
+\subsubsection{Garbage Collector}
+
+Der GC ist neben dem JIT der wichtigste und kompliziertiste Teil der
+VM. In grossen Business Applikationen ist der GC meistens
+verantwortlich f\"ur die limitierte Performance.
+
+Ein GC befreit den Programmierer davon selbst den Speicher
+aufzur\"aumen. Daf\"ur m\"ussen Garbage Collectors aber oft den
+Programmablauf stoppen um das Memory zu analysieren.
+
+Oft kann eine Applikation obtimiert werden wenn man die GC Parameter
+auf die Applikation anpasst. Diese wird aber bei unserem benchmark
+untersagt.
 
 \subsection{Das Testsystem}
 \subsubsection{Leistungsdaten}
@@ -895,7 +961,8 @@ Benötigte Zeit & 62.88s\\
 \hline
 Anz. CPU-Sekunden & 73.32s\\
 \hline
-davon im User-Mode & 72.32s\\
+ (Betriebssysteme und
+Hardware) sind von entscheidender Bedeutung. davon im User-Mode & 72.32s\\
 \hline
 davon im Kernel-Mode & 1.0s\\
 \hline
@@ -1179,6 +1246,8 @@ Zusammenfassend lässt sich sagen, dass Java und Scala aufgrund der Messresultat
 \textbf{SED} \>Stream Editor\\
 \textbf{SMP} \>Symmetric Multiprocessing\\
 \textbf{VM} \>Virtual Machine\\
+\textbf{JIT} \>Just in Time Compiler\\
+\textbf{GC} \>Garbage Collector\\
 \end{tabbing}
 
 
