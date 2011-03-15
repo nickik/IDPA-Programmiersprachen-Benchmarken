@@ -92,12 +92,12 @@ Aspekt der Geschwindigkeit anzuschauen und zu vergleichen. Eine
 definitives Ergebnis ist in diesem Bereich fast unmöglich da die
 Anwendungsgebiete einer Programmiersprache zu verschieden sind und
 jeder Anwendungsfall andere Anforderungen hat. Auch die
-unter der Programmiersprache liegenden Layers (Betriebssysteme und
+unter der Programmiersprache liegenden Layer (Betriebssystem und
 Hardware) sind von entscheidender Bedeutung. Um korrekte Aussagen zu
-machen m\"ussen diese Layers entweder herausgerechnet werden oder
+machen m\"ussen diese Layer entweder herausgerechnet werden oder
 identisch sein. Das Ziel ist es f\"ur den von uns ausgew\"ahlten Anwendungsfall Messungen
-zu machen, Aussagen \"uber die Geschwindikeiten zu treffen und
-wenn m\"oglich kl\"ahren warum die Sprachen so verh\"alt.
+zu machen, Aussagen \"uber die Geschwindigkeiten zu treffen und
+wenn m\"oglich kl\"aren warum die Sprachen sich so verhalten.
 
 \subsection{Wissenslücken}
 
@@ -110,18 +110,17 @@ und messen.
 
 \subsection{Erwartungen}
 
-Wegen er unter der Sprachen liegenden Infrastruktur erwarten wir sehr
-\"ahnliche Testresultate. Es ist das erkl\"ahrte Ziel von Clojure und
-Scala genau so schnell zu sein wie Java um nie auf Java zur\"uck fallen
-zu m\"ussen. 
+Aufgrund der, unter den Sprachen liegenden Infrastruktur, erwarten wir sehr
+\"ahnliche Testresultate. Es ist das erkl\"arte Ziel von Clojure und
+Scala genauso schnell zu sein wie Java, damit der Programmierer niemals aus Geschwindigkeitsgründen auf Java zurückgreifen muss.
 
-Wir haben die Hypothese aufgestellt, dass Scala es relativ einfach hat
-gleichschneller Code wie Java zu produzieren da die Sprachen beide 
-Statische Typeinformation haben, Scala sehr Java \"ahnlich programmiert werden kann
-und Scala eine der \"altesten und reifsten JVM-Sprachen ist.
+Wir haben die Hypothese aufgestellt, dass es für Scala relativ einfach ist
+gleichschnellen Code wie Java zu produzieren, da beide Sprachen 
+statische Typeninformation haben. Ausserdem ist Scala Java sehr ähnlich
+und Scala ist eine der \"altesten und reifsten JVM-Sprachen.
 
-Die Erwartung f\"ur Clojure ist nicht ganz so hoch da das Projekt relativ neu ist. Clojure 
-ist ausserdem eine dynamische Programmiersprache diese sind schwerer zu optimieren.
+Die Erwartungen an Clojure sind nicht ganz so hoch da das Clojure-Projekt relativ neu ist. Clojure 
+ist ausserdem eine dynamische Programmiersprache, diese sind schwerer zu optimieren.
 
 \section{Material und Methoden}
 
@@ -130,96 +129,83 @@ ist ausserdem eine dynamische Programmiersprache diese sind schwerer zu optimier
 \subsubsection{Sprachauswahl}
 
 In den letzten Jahren ist ein neuer Trend
-erwachsen. Programmiersprachen werden oft nicht mehr von Grund auf neu
+entstanden. Programmiersprachen werden oft nicht mehr von Grund auf neu
 aufgebaut sondern versuchen bestehende Infrastrukturen zu verwenden.
 \\
-Diese bringt Vorteile und Nachteile mit sich. Der Vorteil ist, dass
-man sich als Trittbrettfahrer an einer VM anh\"angen kann. In moderne
-VM wie der JVM wurden hunderte von Mannjahren investiert und sind
-daher sehr stabiel und schon fast \"uberall installiert.
+Dies bringt sowohl Vor- als auch Nachteile mit sich. Hauptvorteil ist, dass
+man sich als Trittbrettfahrer eine VM zunutze machen kann. In moderne
+VMs, wie der JVM, wurden hunderte von Mannjahren investiert. Sie sind
+daher sehr stabil und auf vielen Computern bereits installiert.
 
-Der zweite Vorteil ist das Interoptabilit\"at zwischen den
-verschiedenen Sprachen erreicht werden kann. Somit kann Code
-wiederverwendet werden ohne, dass man Zeit in portierung von
-Programmen stecken muss die jede Sprach braucht um im echten Leben
-verwendung zu finden beispielsweise Datenbank Protokolle, XML Parsers usw.
+Der zweite Vorteil ist die Interoperabilität zwischen den
+verschiedenen Sprachen. Dadurch kann Code
+wiederverwendet werden ohne dass viel Zeit in die Portierung von
+Funktionen investiert werden muss welche jede Sprache braucht. Dies können beispielsweise Datenbanken, Protokolle oder XML Parser sein.
 
-In der Java Programmiersprach sind all diese Grundlegenden Programme
-schon implementiert und die JVM ist eine geeignet Plattform um ander
-Sprachen darauf aufzusetzten.
+In der Java Programmiersprache sind all diese grundlegenden Funktionen
+bereits implementiert. Die JVM ist daher eine geeignete Plattform um andere
+Sprachen darauf aufzusetzen.
 
-Die entscheidene Frage ist nun warum sollten die Nutzer die neuen
-Sprachen ben\"utzen. Die Antwort ist sehr vielf\"alltig. Einige neue
-Sprachen (Scala) bieten bessere Typsysteme und dadurch besser
-Compiletime Sicherheiten andere Sprachen wie z.B. Groovy versuchen Features
+Die entscheidende Frage ist nun weshalb die Nutzer die neuen
+Sprachen ben\"utzen sollten. Dafür gibt es viele Gründe. Einige neue
+Sprachen (Scala) bieten bessere Typsysteme und dadurch mehr
+Compiletime Sicherheiten. Andere Sprachen, wie z.B. Groovy, versuchen Features
 von sehr dynamischen Sprachen zu unterst\"utzen.
 
-Alle diese neuen und spannenden Features sind fantastisch kommen aber
-oft auf Kosten der Performance. Das kommt davon das manche Features (Bouncechecking)
-einfach per definition Laufzeit brauchen aber oft ist das Problem auch der Unterschied in
-den Sprache Semantiken d.h. wenn in einer Sprache ein Feature
-unterst\"utzt ist aber in der Host-VM nicht muss um das Problem herum
-gearbeitet was zus\"atzlichen Runtime-Overhead verursacht. In dieser
-Arbeit haben wir uns zwei der meiste verwendeten neuen JVM-Sprachen
-ausgesucht um herauszufinden ob diese es schaffen die Geschwindikeit
+Alle diese neuen und spannenden Features sind fantastisch, gehen aber
+oft zu Lasten der Performance. Das kommt teilweise davon, dass manche Features (z.B. Bouncechecking)
+bereits per Definition performancelastig sind, oft stellt jedoch auch der Unterschied in den Semantiken der Sprachen ein Problem dar. D.h. wenn in einer Sprache ein Feature
+unterst\"utzt wird in der Host-VM jedoch nicht, muss um das Problem herum
+gearbeitet werden was zus\"atzlichen Runtime-Overhead verursacht. In dieser
+Arbeit haben wir uns zwei der meist verwendeten neuen JVM-Sprachen
+ausgesucht um herauszufinden ob diese es schaffen die Geschwindigkeit
 der Hostsprache (Java) zu erreichen.
 
 \subsubsection{Zielanpassung: Sprachanpassung}
 
-Im Expose haben wir die drei JVM-Sprachen Clojure, Scala und JRuby
-gennant die wir Benchmarken wollten. W\"ahrend der Arbeit haben wir
-festgestellt, dass JRuby andere Ziele vorfolgt als maximale
-Performance zu bieten und deshalb weder produktiv noch sinnvoll ist
+Gemäss Exposé wollten wir die drei JVM-Sprachen Clojure, Scala und JRuby
+Benchmarken. W\"ahrend der Arbeit haben wir
+festgestellt, dass JRuby andere Ziele verfolgt als maximale
+Performance zu bieten und es deshalb weder produktiv noch sinnvoll ist
 JRuby mit Clojure und Scala, die beide diesen Anspruch haben, zu
 vergleichen.
 
-Um JRuby zu ersetzen h\"atten wir eine weiter neue JVM-Sprache
-hernehmen k\"onnen (es gibt mehr als einhundert) aber es gibt kaum
+Um JRuby zu ersetzen h\"atten wir eine weitere neue JVM-Sprache
+wählen k\"onnen (es gibt mehr als einhundert), es gibt jedoch kaum andere
 Sprachen die weit genug entwickelt sind oder die \"ahnliche Ziele
-verfolgen. Deshalb haben wir uns Entschieden den test zu machen ob
-Clojure und Scala wirklich die Geschwindigkeit von Java erreichen
+verfolgen. Deshalb haben wir uns Entschieden zu testen ob
+Clojure und Scala wirklich die Geschwindigkeit von Java erreichen.
 
 \subsubsection{Zielanpassung: Implementierung}
 
-Zuerst war die Idee ein Algorithmus in drei verschiedenen Sprachen zu
-implementieren und dann die Performence zu messen. Um einen mehr oder
-weniger komplexen Algprithmus in drei Sprachen zu implementieren muss
+Anfangs hatten wir geplant einen Algorithmus in drei verschiedenen Sprachen zu
+implementieren und dann die Performance zu messen. Um einen mehr oder
+weniger komplexen Algorithmus in drei Sprachen zu implementieren muss
 man diese Sprachen sehr gut kennen und verstehen. Noch schwieriger
-wird es wenn Performance noch von grosser wichtigkeit ist. Viele
-Sprachen kann man extrem verbiegen was es, auf Kosten von
-Einfachheit und Klarheit, erlaubt die Geschwindkeit zu verbessern.
+wird es wenn Performanceoptimierungen gefragt sind. Viele
+Sprachen lassen sich extrem "verbiegen"  wodurch sich, auf Kosten von
+Einfachheit und Klarheit, die Geschwindigkeit verbessern lässt.
 
-Um solche Progamme zu schreiben sind wir f\"ahig und sich sowas
-anzueignen ist of mit Monate langer einarbeitung Verbunden. Deshalb
-beschr\"anken wir uns, bei der implementierung, auf eine Sprache. In
-den anderen nehmen Reference implementierung und werden diese nur
-testen und erkl\"aren.
+Wir verfügen nicht über ausreichen Fachwissen um solche Programme zu schreiben und sich dieses
+anzueignen erfordert eine monatelagen Einarbeitungszeit. Deshalb
+beschr\"anken wir uns, bei der Implementierung, auf eine Sprache. Für
+die anderen Tests benutzen wir Referenz-Implementierungen.
 
 \subsection{Grundlagen}
 
-\subsubsection{Virtuelle Maschienen}
+\subsubsection{Virtuelle Maschinen}
 
 Um es simpel zu halten haben wir uns Entschieden
-Programmiersprachen zu nehmen die auf der JVM (oder anderen VMs die
+Programmiersprachen zu verwenden, die auf der JVM (oder anderen VMs die
 Java Byte Code ausf\"uhren) laufen. Dies erlaubt uns Aussagen \"uber die
-Codegenerierung des Source-to-Bytecoden compilers der Sprache zu
+Codegenerierung des Source-to-Bytecode-Compilers der jeweiligen Sprachen
 machen.
 \\
-Da VM einen Bytecode als Input erhalten ist es grunds\"atzlich m\"oglich
-jeder Programmiersprache auf einer VM laufen zu lassen. Wie dieser
-Bytecode in der VM ausgef\"uhrt wird ist den dar\"uber liegenden Sprachen
-egal.\\ 
-Einige M\"oglichkeiten wie eine VM den Bytecode ausf\"uhen:
-
-Um es einfacher, fair und simpel zu machen haben wir uns entschieden
-Programmiersprachen zu wählen die auf der JVM (oder anderen VMs die
-Java Byte Code ausführen) laufen. Das Modell der VM bietet
-verschiedene Vorteile die ich kurz erläutern möchte.
-\\
-Da VMs einen Bytecode als Input erhalten ist es grundsätzlich möglich
+Da VMs einen Bytecode als Input erhalten ist es grunds\"atzlich m\"oglich
 jede Programmiersprache auf einer VM laufen zu lassen. Wie dieser
-Bytecode in der VM ausgeführt wird ist den darüber liegenden Sprachen
+Bytecode in der VM ausgef\"uhrt wird, ist den dar\"uber liegenden Sprachen
 egal.\\ 
+
 Einige Möglichkeiten wie eine VM den Bytecode ausführt:
 
 
@@ -232,20 +218,19 @@ Einige Möglichkeiten wie eine VM den Bytecode ausführt:
 
 Ich m\"ochte nur auf den JIT-Compiler etwas n\"aher eingehen da die JVM
 die wir ben\"utzen einen solchen verwendet (Hotspot). Um zu verstehen warum ein
-Programm langsam oder schnell ist muss man bis zu einem gewissen grad
+Programm langsam oder schnell ist muss man bis zu einem gewissen Grad
 den Compiler verstehen.
 
-\subsubsection{JIT Compiler}
+\subsubsection{JIT-Compiler}
 
 Ein JIT-Compiler kompiliert nicht alles auf einmal sondern, nur den
-Code der auch wirklich gebraucht wird. Das erlaubt es dem Compiler
+Code der auch wirklich gebraucht wird. Das erlaubt dem Compiler
 Optimierungen an den wichtigen Stellen anzubringen. Ein weiterer
 grosser Vorteil ist es, dass dem JIT-Compiler die Umgebung auf der er
-sich befindet bekannt ist. Das erlaubt es Optimierungen anzubringen
+sich befindet bekannt ist. Das erlaubt es Optimierungen vorzunehmen
 die speziell für diese Hardware den Code anpassen.
 \\
-Gute JIT-Compiler sind heutzutage vergleichbar mit der Geschwindigkeiten
-von Native Code Compilern. Die Unterschiede sind in vielen
+Gute JIT-Compiler sind heutzutage geschwindigkeitsmässig vergleichbar den Native Code Compilern. Die Unterschiede sind in vielen
 Anwendungsf\"allen nur noch gering.
 
 \subsection{Das Testsystem}
@@ -448,7 +433,7 @@ Um die Methoden für die Datenauswertung zu bestimmen ist es vorerst wichtig zu 
 \subsubsection{Memory}
 Der Memory Bereich ist der wohl komplexeste von allen. Der Begriff des virtuellen Speichers ist hier immer wieder anzutreffen. Deshalb folgt hier eine kurze, vereinfachte Erklärung.
 \\\\
-\underline{Virtual Memory:} Einem Prozess wird ein Adressbereich simuliert den er alleine für sich benutzen kann. Somit hat der Prozess den Eindruck, über einen zusammenhängenden sTeil des Hauptspeichers zu verfügen. In Wirklichkeit verteilt das Betriebssystem den vom Prozess genutzten Speicher über den ganzen Arbeitsspeicher und teilweise auch den Swap-Space (siehe Bild).
+\underline{Virtual Memory:} Einem Prozess wird ein Adressbereich simuliert den er alleine für sich benutzen kann. Somit hat der Prozess den Eindruck, über einen zusammenhängenden Teil des Hauptspeichers zu verfügen. In Wirklichkeit verteilt das Betriebssystem den vom Prozess genutzten Speicher über den ganzen Arbeitsspeicher und teilweise auch den Swap-Space (siehe Bild).
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=0.3\linewidth]{bilder/virtualmemory.png}
@@ -599,7 +584,7 @@ Alle Messresultate werden sowohl in tabellarischer wie auch in grafischer Form v
 \subsubsection{Beschreibung}
 
 Java ist eine Programmiersprache die ab 1992 von Sun Microsystems (oder
-teilweise im Auftrag von Sun) entwickelt wurde. Java wurde zuerst f\"r
+teilweise im Auftrag von Sun) entwickelt wurde. Java wurde zuerst f\"ur
 eingebettete Systeme geschrieben. Heutzutage findet man Java Applikation in
 vielen Anwendungsgebieten.
 Java ist eine der meist verwendeten Programmiersprachen und wird auch
@@ -610,11 +595,11 @@ in vielen Universitäten gelehrt.
 
 \subsubsection{Beschreibung}
 
-Die Entwicklung von Scala hat 2001 an der ETH Lausanne unter Martin
+Die Entwicklung von Scala hat 2001 an der ETH Lausanne unter der Leitung von Martin
 Odersky begonnen. Die Idee war eine Sprache zu designen, welche die
 Konzepte von funktionalen und objektorientierten Sprachen in Synthese
-verwendet. Zwar wurde Scala im akademischen Kontext entwickelt findet
-aber immer mehr Anwendungen im Business Bereich.
+verwendet. Zwar wurde Scala im akademischen Kontext entwickelt, findet
+aber auch immer mehr Anwendungen im Business Bereich.
 
 \subsection{Clojure}
 \subsubsection{Beschreibung}
@@ -958,7 +943,7 @@ Die nachfolgende Tabelle beinhaltet den Verlauf der CPU-Auslastung während der 
 \section{Diskussion}
 \subsection{Vergleich der Resultate}
 \subsubsection{Zeitspezifische Daten}
-In diesem Unterkapitel vergleichen wir die jene Messdaten, welche die Zeit betreffen, d.h. die realen Ausführungszeiten und die benötigten CPU-Sekunden. Genau diese Werte wurden in Abbildung Nr. 8 grafisch dargestellt. Es ist deutlich ersichtlich wie Java und Scala sich ein Kopf-an-Kopf-Rennen liefern während Clojure mit einer ca. dreimal so hohen Ausführungszeit weit abgeschlagen ist. Das gleiche Bild zeigt sich bei den CPU-Sekunden, wo die Differenz noch grösser ist. Vergleicht man die Messungen von Java und Scala etwas genauer, so hat Scala bei beinaher gleicher Ausführungszeit etwas weniger CPU-Sekunden benötigt. Scala könnte daher als knapper 'Sieger' dieser Messung bezeichnet werden.
+In diesem Unterkapitel vergleichen wir die jene Messdaten, welche die Zeit betreffen, d.h. die realen Ausführungszeiten und die benötigten CPU-Sekunden. Genau diese Werte wurden in Abbildung Nr. 8 grafisch dargestellt. Es ist deutlich ersichtlich wie Java und Scala sich ein Kopf-an-Kopf-Rennen liefern während Clojure mit einer ca. dreimal so hohen Ausführungszeit weit abgeschlagen ist. Das gleiche Bild zeigt sich bei den CPU-Sekunden, wo die Differenz noch grösser ist. Vergleicht man die Messungen von Java und Scala etwas genauer, so hat Scala bei nahezu gleicher Ausführungszeit etwas weniger CPU-Sekunden benötigt. Scala könnte daher als knapper 'Sieger' dieser Messung bezeichnet werden.
 \begin{table}[h!]
 \centering
 \begin{tabular}{|p{6cm}|r|r|r|} \hline
@@ -990,12 +975,12 @@ Abbildung Nr. 9 zeigt den prozentualen Anteil an CPU-Sekunden auf, welcher im Ke
 \end{center}
 
 \subsubsection{Memory}
-Die folgende Grafik vergleicht die Speicherdaten aller Sprachen. Clojure hat den anderen Sprachen gegenüber einen enorm tiefern Speicherverbrauch. Es muss jedoch bedacht werden, dass das Programm bei einem um 60\% tieferen Speicherverbrauch auch eine um ca. 60\% längere Ausführungszeit hat. Der Speicherverbrauch von Java und Scala entwickelt sich sehr ähnlich, jedoch ist der Arbeitsspeicherverbrauch von Scala etwas tiefer als jener von Java. Erst kurz vor Programmende steigt der Verbrauch von Scala nochmal stark an und übersteigt jenen von Java. Entsprechend ist auch der durchschnittliche Speicherverbrauch von Java der höchste.
+Die folgende Grafik vergleicht die Speicherdaten aller Sprachen. Clojure hat den anderen Sprachen gegenüber einen enorm tieferen Speicherverbrauch. Es muss jedoch bedacht werden, dass das Programm bei einem um 60\% tieferen Speicherverbrauch auch eine um ca. 60\% längere Ausführungszeit hat. Der Speicherverbrauch von Java und Scala entwickelt sich sehr ähnlich, jedoch ist der Arbeitsspeicherverbrauch von Scala etwas tiefer als jener von Java. Erst kurz vor Programmende steigt der Verbrauch von Scala nochmal stark an und übersteigt jenen von Java. Entsprechend ist auch der durchschnittliche Speicherverbrauch von Java der höchste.
 
 \\
 \bigskip
 \noindent
-Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabelle jeweils nur einen Wert je Sekunde Ausführungszeit. Des weiteren ist die Spalte für Clojure nicht vollständig, da ab Sekunde 23 kein Vergleich mehr mit den anderen Sprachen möglich ist.
+Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabelle jeweils nur einen Wert je Sekunde Ausführungszeit. Des Weiteren ist die Spalte für Clojure nicht vollständig, da ab Sekunde 23 kein Vergleich mehr mit den anderen Sprachen möglich ist.
 
 
 \begin{center}
@@ -1057,11 +1042,11 @@ Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabel
 \captionof{figure}{Vergleich des Speicherverbrauchs}
 \end{center}
 \subsubsection{CPU}
-Die folgende Grafik zeigt die CPU-Auslastung während der Programmausführung an. Anfangs steigt die CPU-Auslastung bei allen Sprachen ungefäht gleich stark an. Während sich Java und Clojure anschliessend während der ganzen Programmausführung in einem Bereich von ca. 100\% bewegen, nimmt die CPU-Auslastung bei Clojure bis zum Programmende stetig ab. Auch hier muss jedoch bedacht werden, dass die Programmausführung bei Clojure weit länger dauert als bei den anderen Sprachen. Beim genaueren Vergleich von Java und Scala fällt auf, dass die CPU-Auslastung bei Java stets leicht höher ist als bei Scala.
+Die folgende Grafik zeigt die CPU-Auslastung während der Programmausführung an. Anfangs steigt die CPU-Auslastung bei allen Sprachen ungefähr gleich stark an. Während sich Java und Clojure anschliessend während der ganzen Programmausführung in einem Bereich von ca. 100\% bewegen, nimmt die CPU-Auslastung bei Clojure bis zum Programmende stetig ab. Auch hier muss jedoch bedacht werden, dass die Programmausführung bei Clojure weit länger dauert als bei den anderen Sprachen. Beim genaueren Vergleich von Java und Scala fällt auf, dass die CPU-Auslastung bei Java stets leicht höher ist als bei Scala.
 
 \bigskip
 \noindent
-Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabelle jeweils nur einen Wert je Sekunde Ausführungszeit. Des weiteren ist die Spalte für Clojure nicht vollständig, da ab Sekunde 23 kein Vergleich mehr mit den anderen Sprachen möglich ist.
+Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabelle jeweils nur einen Wert je Sekunde Ausführungszeit. Des Weiteren ist die Spalte für Clojure nicht vollständig, da ab Sekunde 23 kein Vergleich mehr mit den anderen Sprachen möglich ist.
 
 \begin{center}
 \begin{tabular}{|r|r|r|r|} \hline
@@ -1156,7 +1141,7 @@ Zusammenfassend lässt sich sagen, dass Java und Scala aufgrund der Messresultat
 \textbf{Bytecode}&Ein Befehlssatz für eine VM.\\
 \textbf{CPU-Modi}&siehe Kapitel 4.5.3 (Time)\\
 \textbf{CPU-second}&siehe Kapitel 4.5.3 (Time)\\
-\textbf{Debian}&Eine frei erhältiches Client-Betriebssystem welches auf einem Linux-Kernel basiert\\
+\textbf{Debian}&Ein frei erhältliches Client-Betriebssystem welches auf einem Linux-Kernel basiert\\
 \textbf{Hardware}&mechanische und elektronische Teile eines beliebigen Systems, dazu gehören auch Computer\\
 \textbf{Java Bytecode}&Der Bytecode für Java bzw. für die JVM\\
 \textbf{Java Virtual Machine}&Die Implementierung einer VM, welche darauf ausgelegt ist Java Bytecode auszuführen.\\
@@ -1174,10 +1159,10 @@ Zusammenfassend lässt sich sagen, dass Java und Scala aufgrund der Messresultat
 \textbf{Performance-Monitoring-Tool}&Programm, welches die Leistungsdaten eines Computers oder Prozesses überwacht\\
 \textbf{Proc}&ein virtuelles Dateisystem welches System- und Prozessinformationen anzeigt\\
 \textbf{Script}&ein in einer Scriptsprache geschriebenes Programm\\
-\textbf{Scriptsprache}&Programmiersprache welche sich speziell für kleine Programme eignet\\
+\textbf{Scriptsprache}&Programmiersprache, welche sich speziell für kleine Programme eignet\\
 \textbf{User Mode}&siehe Kapitel 4.5.3 (Time)\\
 \textbf{Virtual Machine}&Eine Programm, welches einen physikalischen Computer simuliert. Sie erhält als Input eine beliebige Sprache und führt
-diese auf der darunter liegenden Sprache aus.\\
+diese auf der darunterliegenden Sprache aus.\\
 \textbf{Virtual Memory}&siehe Kapitel 4.5.1 (Memory)\\
 \end{tabularx}
 \section{Literaturverzeichnis}
