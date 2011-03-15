@@ -1,4 +1,4 @@
-(ns clojure.binarytrees
+(ns bt.binarytrees
   (:gen-class))
 
 (set! *warn-on-reflection* true)
@@ -66,9 +66,8 @@
       (shutdown-agents))))
 
 (defn -main [& args]
-  (let [n (condp apply args
-              number? (first args)
-              string? (read-string (first args))
-              :else 0)
+  (println "binarytrees")
+  (let [n (read-string (first args))
         max-depth (if (> (+ min-depth 2) n) (+ min-depth 2) n)]
     (time (main max-depth))))
+

@@ -1,4 +1,4 @@
-(ns clojure.binarytrees-me
+(ns bt.binarytrees-me
   (:gen-class))
 
 (set! *warn-on-reflection* true)
@@ -20,8 +20,10 @@
   (if (zero? depth)
     (TreeNode. nil nil item)
     (TreeNode.
-     (bottom-up-tree (dec (* 2 item)) (dec depth))
-     (bottom-up-tree (* 2 item) (dec depth))
+     (bottom-up-tree (unchecked-dec (unchecked-multiply 2 item))
+                     (unchecked-dec depth))
+     (bottom-up-tree (unchecked-multiply 2 item)
+                     (unchecked-dec depth))
      item)))
 
 (defn item-check [^TreeNode node]
@@ -34,12 +36,14 @@
 (defn iterate-trees [^long mx ^long  mn ^long d]
   (let [iterations (bit-shift-left 1 (+ mx mn (- d)))]
     (format "%d\t trees of depth %d\t check: %d"
-            (* 2 iterations)
+            (unchecked-multiply 2 iterations)
             d
-            (reduce + (map (fn [i]
-                             (+ (item-check (bottom-up-tree i d))
+            (reduce unchecked-add
+                    (map (fn [i]
+                             (unchecked-add
+                                (item-check (bottom-up-tree i d))
                                 (item-check (bottom-up-tree (- i) d))))
-                           (range 1 (inc iterations)))))))
+                           (range 1 (unchecked-int iterations)))))))
 
 (defn main [^long max-depth]
   (let [stretch-depth (inc max-depth)]
@@ -54,9 +58,9 @@
                " check: " (item-check long-lived-tree)))))
 
 (defn -main [& args]
-   (let [n (condp apply args
-              number? (first args)
-              string? (read-string (first args))
-              :else 0)
-         max-depth (long (if (> (+ min-depth 2) n) (+ min-depth 2) n))]
+  (println "Binarytree-me")
+  (let [n (read-string (first args))
+        max-depth (long (if (> (+ min-depth 2) n) (+ min-depth 2) n))]
     (time (main max-depth))))
+
+
