@@ -1,7 +1,8 @@
-(ns clojure.binarytrees
+(ns bt.binarytrees
   (:gen-class))
 
 (set! *warn-on-reflection* true)
+(def min-depth (long 4))
 
 (definterface ITreeNode
   (^int item [])
@@ -13,6 +14,15 @@
   (^int item [this] item)
   (left [this] left)
   (right [this] right))
+
+(defn toMap [^TreeNode node]
+  (when-not (nil? node)
+   {:item (.item node)
+    :left (toMap (.left node))
+    :right (toMap (.right node))}))
+
+(defn print-tree [^TreeNode node]
+  (println (toMap node)))
 
 (defn bottom-up-tree [item depth]
   (let [int-item (int item)
@@ -33,7 +43,6 @@
                                   (int (item-check (.left node))))
                    (int (- (item-check (.right node)))))))
 
-
 (defn iterate-trees [mx mn d]
   (let [iterations (bit-shift-left 1 (int (+ mx mn (- d))))]
     (format "%d\t trees of depth %d\t check: %d" (* 2 iterations) d
@@ -41,8 +50,6 @@
                              (unchecked-add (int (item-check (bottom-up-tree i d)))
                                             (int (item-check (bottom-up-tree (- i) d)))))
                            (range 1 (inc iterations)))))))
-
-(def min-depth 4)
 
 (defn main [max-depth]
   (let [stretch-depth (inc max-depth)]
@@ -59,9 +66,8 @@
       (shutdown-agents))))
 
 (defn -main [& args]
-  (let [n (condp apply args
-              number? (first args)
-              string? (read-string (first args))
-              :else 0)
+  (println "binarytrees")
+  (let [n (read-string (first args))
         max-depth (if (> (+ min-depth 2) n) (+ min-depth 2) n)]
     (time (main max-depth))))
+
