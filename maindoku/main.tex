@@ -95,7 +95,7 @@ Wir haben uns entschieden für unsere Maturaarbeit die Programmiersprachen Java,
 \subsection{Untersuchungsgegenstand}
 
 Wir haben uns ein sehr komplexes Thema vorgenommen. Programmiersprachen und Compiler sind, auf die Informatik bezogen, einen sehr altes Thema. \\
-Hochsprachen wie wir Sie in dieser Arbeit verwenden, werden seit mehr
+Hochsprachen wie wir sie in dieser Arbeit verwenden, werden seit mehr
 als fünfzig Jahren immer wieder weiter entwickelt und verbessert. Seit
 der Anfangszeit herrscht der Konflikt zwischen hoher Abstraktion und
 Geschwindigkeit. Umso höher die Abstraktion ist, die eine
@@ -122,22 +122,19 @@ wenn m\"oglich kl\"aren warum die Sprachen sich so verhalten.
 Um komplizierte Algorithmen in drei verschiedenen Sprachen zu
 programmieren braucht man viel Erfahrung in diesen Sprachen. Um den
 Aufwand nicht zu hoch werden zu lassen haben wir uns auf die
-Implementierung in einer Programmiersprache spezialisiert und
+Implementierung in einer Programmiersprache beschränkt und
 vergleichen diese mit Referenz-Implementationen die wir nur erklären
 und messen.
 
-Um genau zu erkennen wo Programme ihr Zeit verbringen benötigt man
-kompleze Analyse Tools oder speziell dafür ausgelegt VMs. Diese Tools
-sind komplex in der Verwendung und man braucht viel Erfahrung in einem
-System um aus den Information auch die richtigen Schlüsse zu ziehen.
+Um genau zu erkennen wo Programme ihre Zeit verbringen, benötigt man
+komplexe Analyse Tools oder speziell dafür ausgelegte VMs. Diese Tools
+sind komplex in der Verwendung und man braucht viel Erfahrung mit einem
+System um aus den Information auch die richtigen Schlüsse ziehen zu können.
 
 \subsection{Erwartungen}
 
-Aufgrund der, unter den Sprachen liegenden Infrastruktur, erwarten wir sehr
-\"ahnliche Testresultate. Es ist das erkl\"arte Ziel von Clojure und
-Scala genauso schnell zu sein wie Java, damit der Programmierer niemals aus Geschwindigkeitsgründen auf Java zurückgreifen muss.
-
-Wir haben die Hypothese aufgestellt, dass es für Scala relativ einfach ist
+Es ist das erkl\"arte Ziel von Clojure und
+Scala genauso schnell zu sein wie Java, damit der Programmierer niemals aus Geschwindigkeitsgründen auf Java zurückgreifen muss. Wir haben daher die Hypothese aufgestellt, dass es für Scala relativ einfach ist
 gleichschnellen Code wie Java zu produzieren, da beide Sprachen 
 statische Typeninformation haben. Ausserdem ist Scala Java sehr ähnlich
 und Scala ist eine der \"altesten und reifsten JVM-Sprachen.
@@ -164,9 +161,7 @@ daher sehr stabil und auf vielen Computern bereits installiert.
 Der zweite Vorteil ist die Interoperabilität zwischen den
 verschiedenen Sprachen. Dadurch kann Code
 wiederverwendet werden ohne dass viel Zeit in die Portierung von
-Funktionen investiert werden muss welche jede Sprache braucht. Dies können beispielsweise Datenbanken, Protokolle oder XML Parser sein.
-
-In der Java Programmiersprache sind all diese grundlegenden Funktionen
+Funktionen investiert werden muss welche jede Sprache braucht. Dies können beispielsweise Datenbanken, Protokolle oder XML Parser sein. In der Java Programmiersprache sind all diese grundlegenden Funktionen
 bereits implementiert. Die JVM ist daher eine geeignete Plattform um andere
 Sprachen darauf aufzusetzen.
 
@@ -197,7 +192,7 @@ vergleichen.
 Um JRuby zu ersetzen h\"atten wir eine weitere neue JVM-Sprache
 wählen k\"onnen (es gibt mehr als einhundert), es gibt jedoch kaum andere
 Sprachen die weit genug entwickelt sind oder die \"ahnliche Ziele
-verfolgen. Deshalb haben wir uns Entschieden zu testen ob
+verfolgen. Deshalb haben wir uns Entschieden zu testen, ob
 Clojure und Scala wirklich die Geschwindigkeit von Java erreichen.
 
 \subsubsection{Zielanpassung: Implementierung}
@@ -219,13 +214,13 @@ die anderen Tests benutzen wir Referenz-Implementierungen.
 
 \subsubsection{Virtuelle Maschinen}
 
-Um es simpel zu halten haben wir uns Entschieden
+Um es simpel zu halten haben wir uns entschieden
 Programmiersprachen zu verwenden, die auf der JVM (oder anderen VMs die
 Java Byte Code ausf\"uhren) laufen. Dies erlaubt uns Aussagen \"uber die
 Codegenerierung des Source-to-Bytecode-Compilers der jeweiligen Sprachen
 machen.
 \\
-Da VMs einen Bytecode als Input erhalten ist es grunds\"atzlich m\"oglich
+Da VMs einen Bytecode als Input erhalten, ist es grunds\"atzlich m\"oglich
 jede Programmiersprache auf einer VM laufen zu lassen. Wie dieser
 Bytecode in der VM ausgef\"uhrt wird, ist den dar\"uber liegenden Sprachen
 egal.\\ 
@@ -240,8 +235,8 @@ Einige Möglichkeiten wie eine VM den Bytecode ausführt:
 \item Direkt auf Hardware
 \end{itemize}
 
-Ich m\"ochte nur auf den JIT-Compiler etwas n\"aher eingehen da die JVM
-die wir ben\"utzen einen solchen verwendet (Hotspot). Um zu verstehen warum ein
+Ich m\"ochte nur auf den JIT-Compiler etwas n\"aher eingehen da die JVM,
+die wir ben\"utzen, einen solchen verwendet (Hotspot). Um zu verstehen warum ein
 Programm langsam oder schnell ist muss man bis zu einem gewissen Grad
 den Compiler verstehen.
 
@@ -251,7 +246,7 @@ Ein JIT-Compiler kompiliert nicht alles auf einmal sondern, nur den
 Code der auch wirklich gebraucht wird. Das erlaubt dem Compiler
 Optimierungen an den wichtigen Stellen anzubringen. Ein weiterer
 grosser Vorteil ist es, dass dem JIT-Compiler die Umgebung auf der er
-sich befindet bekannt ist. Das erlaubt es Optimierungen vorzunehmen
+sich befindet bekannt ist. Das erlaubt es Optimierungen vorzunehmen,
 die speziell für diese Hardware den Code anpassen.
 \\
 Gute JIT-Compiler sind heutzutage geschwindigkeitsmässig vergleichbar den Native Code Compilern. Die Unterschiede sind in vielen
@@ -414,7 +409,7 @@ done'
 
 Der zweite Schritt ist das Auslesen der Prozessor-Daten. Dazu wird eine temporäre Datei benötigt. Deren Dateiname wird mit der date-Funktion generiert. Diese schreibt das aktuelle Datum sowie die genaue Uhrzeit in eine Variable. Der Dateiname ist somit einzigartig.
 
-Anschliessend erfolgt der gleiche Programmaufruf wie er bereits für das Auslesen der Speicherdaten benutzt wurde. Die CPU-Daten können leider nicht aus dem proc-Dateisystem ausgelesen werden. Sie werden mit dem ps-Befehl gesammelt und in temporäre Datei geschrieben.
+Anschliessend erfolgt der gleiche Programmaufruf wie er bereits für das Auslesen der Speicherdaten benutzt wurde. Die CPU-Daten können leider nicht aus dem proc-Dateisystem ausgelesen werden. Sie werden mit dem ps-Befehl gesammelt und in die temporäre Datei geschrieben.
 
 Mit dem ps-Befehl werden jedes Mal zu den Prozessordaten auch die Spaltenüberschriften in die Datei geschrieben. Für eine bessere Darstellung werden diese mit dem sed-Befehl entfernt und die neue Ausgabe in die Datei \$lang.cpu geschrieben. Der sed-Befehl entfernt ab der dritten Zeile jede zweite Zeile in der temporären Datei. Anschliessend wird die temporäre Datei gelöscht.
 
@@ -458,12 +453,11 @@ Um die Methoden für die Datenauswertung zu bestimmen ist es vorerst wichtig zu 
 Der Memory Bereich ist der wohl komplexeste von allen. Der Begriff des virtuellen Speichers ist hier immer wieder anzutreffen. Deshalb folgt hier eine kurze, vereinfachte Erklärung.
 \\\\
 \underline{Virtual Memory:} Einem Prozess wird ein Adressbereich simuliert den er alleine für sich benutzen kann. Somit hat der Prozess den Eindruck, über einen zusammenhängenden Teil des Hauptspeichers zu verfügen. In Wirklichkeit verteilt das Betriebssystem den vom Prozess genutzten Speicher über den ganzen Arbeitsspeicher und teilweise auch den Swap-Space (siehe Bild).
-\begin{figure}[h!]
+\end{table}
 \begin{center}
 \includegraphics[width=0.3\linewidth]{bilder/virtualmemory.png}
-\caption{Wie virtueller Speicher funktioniert. Quelle: en.wikipedia.org, Virtual memory}
+\captionof{figure}{Wie virtueller Speicher funktioniert. Quelle: en.wikipedia.org, Virtual memory}
 \end{center}
-\end{figure}
 
 \noindent
 In der Folge eine Beispielsausgabe aus unserem Messskript.
@@ -516,7 +510,7 @@ VmPTE & Zwischen dem virtuellen und dem physikalischen Speicher befindet sich ei
 Zusammenfassend lässt sich sagen, dass für unsere Messungen lediglich der Wert VmRSS, welcher den tatsächlichen, physikalischen Speicherverbrauch abbildet, relevant ist. Dies weil die anderen Messwerte insofern verfälscht sind, dass sie teilweise gar nie in den Speicher geladen werden (VmPeak, VmSize, VmData) oder weil es für unsere Messungen nicht relevant ist wie gross die einzelnen Datensegmente (VmStk, VmExe) im Speicher sind.
 
 \subsubsection{CPU}
-In der Folge eine Beispielausgabe für die  Messung der CPU-Daten mit unserem Script. Neben dem ausführenden Benutzer unter der Prozess-ID sind hier auch die momentane CPU-Auslastung und die vergangene Ausführzeit ersichtlich.
+In der Folge eine Beispielausgabe für die  Messung der CPU-Daten mit unserem Script. Neben dem ausführenden Benutzer und der Prozess-ID sind hier auch die momentane CPU-Auslastung und die vergangene Ausführzeit ersichtlich.
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Speicherdaten]{}
@@ -607,7 +601,7 @@ Alle Messresultate werden sowohl in tabellarischer wie auch in grafischer Form v
 \subsection{Java}
 \subsubsection{Beschreibung}
 
-Java ist eine Programmiersprache die ab 1992 von Sun Microsystems (oder
+Java ist eine Programmiersprache, die ab 1992 von Sun Microsystems (oder
 teilweise im Auftrag von Sun) entwickelt wurde. Java wurde zuerst f\"ur
 eingebettete Systeme geschrieben. Heutzutage findet man Java Applikation in
 vielen Anwendungsgebieten.
@@ -1007,8 +1001,8 @@ Abbildung Nr. 9 zeigt den prozentualen Anteil an CPU-Sekunden auf, welcher im Ke
 \end{center}
 
 \subsubsection{Memory}
-Die folgende Grafik vergleicht die Speicherdaten aller Sprachen. Clojure hat den anderen Sprachen gegenüber einen deutlich höheren Speicherverbrauch. Jedoch verläuft auch der Verbrauch von Clojure  ähnlich wie derjenige der anderen Sprachen. Kurz nach dem Programmstart steigt der Speicherverbrauch enorm an, bleibt dann eine Weile auf ungefähr gleichbleibendem Niveau bevor er vor dem Programmende erneut stark ansteigt. Der Speicherverbrauch von Java und Scala entwickelt sich sehr ähnlich, jedoch ist der Arbeitsspeicherverbrauch von Scala etwas tiefer als jener von Java. Erst kurz vor Programmende steigt der Verbrauch von Scala nochmal stark an und übersteigt jenen von Java. Dementspreichend ist der durchschnittliche Speicherverbrauch von Clojure mit einer Differenz von ungefähr 200MB mit Abstand der höchste, gefolgt von Java und Scala.
-\\
+Die folgende Grafik vergleicht die Speicherdaten aller Sprachen. Clojure hat den anderen Sprachen gegenüber einen deutlich höheren Speicherverbrauch. Jedoch verläuft auch der Verbrauch von Clojure  ähnlich wie derjenige der anderen Sprachen. Kurz nach dem Programmstart steigt der Speicherverbrauch enorm an, bleibt dann eine Weile auf ungefähr gleichbleibendem Niveau, bevor er vor dem Programmende erneut stark ansteigt. Der Speicherverbrauch von Java und Scala entwickelt sich sehr ähnlich, jedoch ist der Arbeitsspeicherverbrauch von Scala etwas tiefer als jener von Java. Erst kurz vor Programmende steigt der Verbrauch von Scala nochmal stark an und übersteigt jenen von Java. Dementspreichend ist der durchschnittliche Speicherverbrauch von Clojure mit einer Differenz von ungefähr 200MB mit Abstand der höchste, gefolgt von Java und Scala.
+
 \bigskip
 \noindent
 Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabelle jeweils nur einen Wert je Sekunde Ausführungszeit. Des Weiteren ist die Spalte für Clojure nicht vollständig, da ab Sekunde 23 kein Vergleich mehr mit den anderen Sprachen möglich ist.
@@ -1075,7 +1069,7 @@ Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabel
 \captionof{figure}{Vergleich des Speicherverbrauchs}
 \end{center}
 \subsubsection{CPU}
-Die folgende Grafik zeigt die CPU-Auslastung während der Programmausführung an. Anfangs steigt die CPU-Auslastung bei allen Sprachen ungefähr gleich stark an. Während sich Java und Clojure anschliessend während der ganzen Programmausführung in einem Bereich von ca. 100\% bewegen, ist die CPU-Auslastung beim Clojure-Programm vot allem anfangs deutlich höher. Nach ungefähr 25 Sekunden pendelt sich das Clojure-Programm bei ca. 110\% ein. Beim genaueren Vergleich von Java und Scala fällt auf, dass die CPU-Auslastung bei Java stets minimal höher ist als bei Scala. Auch bei dieser Messung ist der Ressourcenverbrauch von Clojure am höchsten.
+Die folgende Grafik zeigt die CPU-Auslastung während der Programmausführung an. Anfangs steigt die CPU-Auslastung bei allen Sprachen ungefähr gleich stark an. Während sich Java und Clojure anschliessend während der ganzen Programmausführung in einem Bereich von ca. 100\% bewegen, ist die CPU-Auslastung beim Clojure-Programm vor allem anfangs deutlich höher. Nach ungefähr 25 Sekunden pendelt sich das Clojure-Programm bei ca. 110\% ein. Beim genaueren Vergleich von Java und Scala fällt auf, dass die CPU-Auslastung bei Java stets minimal höher ist als bei Scala. Auch bei dieser Messung ist der Ressourcenverbrauch von Clojure am höchsten.
 
 \bigskip
 \noindent
