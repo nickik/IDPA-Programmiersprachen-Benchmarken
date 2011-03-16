@@ -643,7 +643,7 @@ Java Code, Java Ecosystems (Webservers, Profilers, Debuggers...) und natürlich 
 
 \subsubsection{Code}
 
-\lstinputlisting[langauge=Clojure]{../clojure/src/clojure/binarytrees_me.clj}
+\lstinputlisting[langauge=Clojure]{../clojure/src/bt/binarytrees_me.clj}
 \section{Ergebnisse}
 Im diesem Kapitel werden die Messresultate der durchgeführten Messungen aufgezeigt. Hier ist zu beachten, dass es sich bei den Zeitangaben welche für die Memory- und CPU-Grafiken verwendet wurden, um Schätzungen handelt. Wir waren mit Hilfe unseres Scripts leider nicht in der Lage den genauen Zeitverlauf aufzuzeigen. Eventuelle Unregelmässigkeiten können daher nicht ausgeschlossen werden. Des weiteren beinhalten die in diesem Kapitel aufgezeigten Tabellen, aufgrund der grossen Datenmenge, nicht alle Messresultate. Die genaue Bedeutung der Werte wurde in den vorhergehenden Kapiteln bereits ausführlich behandelt, an dieser Stelle folgen daher keine Erklärungen mehr.
 
@@ -870,21 +870,21 @@ Die folgende Tabelle beinhaltet einige allgemeine Messresultate zu Clojure.
 \begin{tabular}{|p{6cm}|r|} \hline
 Sprache & Clojure\\
 \hline
-Benötigte Zeit & 62.88s\\
+Benötigte Zeit & 59.92s\\
 \hline
-Ø Speicherauslastung & 120264kB\\
+Ø Speicherauslastung & 527627kB\\
 \hline
-Ø CPU-Auslastung & 26\%\\
+Ø CPU-Auslastung & 112\%\\
 \hline
-Anz. CPU-Sekunden & 73.32s\\
+Anz. CPU-Sekunden & 67.52s\\
 \hline
-davon im User-Mode & 72.32s\\
+davon im User-Mode & 66.66s\\
 \hline
-davon im Kernel-Mode & 1.0s\\
+davon im Kernel-Mode & 0.86s\\
 \hline
-davon im User-Mode & 98.64\%\\
+davon im User-Mode & 98.73\%\\
 \hline
-davon im Kernel-Mode & 1.36\%\\
+davon im Kernel-Mode & 1.27\%\\
 \hline
 \end{tabular}
 \caption{Erklärung der gemessenen Zeitwerte Clojure}
@@ -897,31 +897,31 @@ Die nachfolgende Tabelle beinhaltet den Verlauf des physikalischen Speicherverbr
 \begin{tabular}{|r|r|} \hline
 \textbf{Laufzeit [s]} & \textbf{Speicherverbrauch [kB]}\\
 \hline
-0 & 1300\\
+0 & 8660\\
 \hline
-5 & 64240\\
+5 & 432428\\
 \hline
-10 & 120264\\
+10 & 491620\\
 \hline
-15 & 112896\\
+15 & 499872\\
 \hline
-20 & 112896\\
+20 & 506064\\
 \hline
-25 & 112896\\
+25 & 507408\\
 \hline
-30 & 112896\\
+30 & 514368\\
 \hline
-35 & 112896\\
+35 & 546104\\
 \hline
-40 & 112896\\
+40 & 574592\\
 \hline
-45 & 112896\\
+45 & 619920\\
 \hline
-50 & 112896\\
+50 & 661224\\
 \hline
-55 & 112896\\
+55 & 661296\\
 \hline
-60 & 112896\\
+59.8 & 666592\\
 \hline
 \end{tabular}
 \caption{Wertetabelle Speicherverbrauch Clojure}
@@ -940,29 +940,29 @@ Die nachfolgende Tabelle beinhaltet den Verlauf der CPU-Auslastung während der 
 \hline
 0 & 0\\
 \hline
-5 & 92.4\\
+5 & 150\\
 \hline
-10 & 42\\
+10 & 125\\
 \hline
-15 & 28.8\\
+15 & 117\\
 \hline
-20 & 23.2\\
+20 & 115\\
 \hline
-25 & 19.3\\
+25 & 111\\
 \hline
-30 & 16\\
+30 & 110\\
 \hline
-35 & 13.6\\
+35 & 106\\
 \hline
-40 & 11.9\\
+40 & 104\\
 \hline
-45 & 10.5\\
+45 & 108\\
 \hline
-50 & 9.4\\
+50 & 112\\
 \hline
-55 & 8.6\\
+55 & 109\\
 \hline
-60 & 7.9\\
+59.8 & 109\\
 \hline
 \end{tabular}
 \caption{Wertetabelle CPU-Auslastung Clojure}
@@ -981,17 +981,17 @@ In diesem Unterkapitel vergleichen wir die jene Messdaten, welche die Zeit betre
 \begin{tabular}{|p{6cm}|r|r|r|} \hline
 Sprache & Java & Scala & Clojure \\
 \hline
-Benötigte Zeit & 22.28s & 22.37s & 62.88s\\
+Benötigte Zeit & 22.28s & 22.37s & 59.62s\\
 \hline
-Anz. CPU-Sekunden & 24.31s & 24.03s & 73.32s\\
+Anz. CPU-Sekunden & 24.31s & 24.03s & 67.52s\\
 \hline
-davon im User-Mode & 23.74s & 23.42s & 72.32s\\
+davon im User-Mode & 23.74s & 23.42s & 66.66s\\
 \hline
-davon im Kernel-Mode & 0.57s & 0.6s & 1.0s\\
+davon im Kernel-Mode & 0.57s & 0.6s & 0.86s\\
 \hline
-davon im User-Mode & 97.66\% & 97.50\% & 98.64\%\\
+davon im User-Mode & 97.66\% & 97.50\% & 98.73\%\\
 \hline
-davon im Kernel-Mode & 2.34\% & 2.50\% & 1.36\%\\
+davon im Kernel-Mode & 2.34\% & 2.50\% & 1.27\%\\
 \hline
 \end{tabular}
 \caption{Erklärung der gemessenen Zeitwerte Clojure}
@@ -1007,8 +1007,7 @@ Abbildung Nr. 9 zeigt den prozentualen Anteil an CPU-Sekunden auf, welcher im Ke
 \end{center}
 
 \subsubsection{Memory}
-Die folgende Grafik vergleicht die Speicherdaten aller Sprachen. Clojure hat den anderen Sprachen gegenüber einen enorm tieferen Speicherverbrauch. Es muss jedoch bedacht werden, dass das Programm bei einem um 60\% tieferen Speicherverbrauch auch eine um ca. 60\% längere Ausführungszeit hat. Der Speicherverbrauch von Java und Scala entwickelt sich sehr ähnlich, jedoch ist der Arbeitsspeicherverbrauch von Scala etwas tiefer als jener von Java. Erst kurz vor Programmende steigt der Verbrauch von Scala nochmal stark an und übersteigt jenen von Java. Entsprechend ist auch der durchschnittliche Speicherverbrauch von Java der höchste.
-
+Die folgende Grafik vergleicht die Speicherdaten aller Sprachen. Clojure hat den anderen Sprachen gegenüber einen deutlich höheren Speicherverbrauch. Jedoch verläuft auch der Verbrauch von Clojure  ähnlich wie derjenige der anderen Sprachen. Kurz nach dem Programmstart steigt der Speicherverbrauch enorm an, bleibt dann eine Weile auf ungefähr gleichbleibendem Niveau bevor er vor dem Programmende erneut stark ansteigt. Der Speicherverbrauch von Java und Scala entwickelt sich sehr ähnlich, jedoch ist der Arbeitsspeicherverbrauch von Scala etwas tiefer als jener von Java. Erst kurz vor Programmende steigt der Verbrauch von Scala nochmal stark an und übersteigt jenen von Java. Dementspreichend ist der durchschnittliche Speicherverbrauch von Clojure mit einer Differenz von ungefähr 200MB mit Abstand der höchste, gefolgt von Java und Scala.
 \\
 \bigskip
 \noindent
@@ -1019,53 +1018,55 @@ Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabel
 \begin{tabular}{|r|r|r|r|} \hline
 \textbf{Zeit [s]} & \textbf{Java [kB]} & \textbf{Scala [kB]} & \textbf{Clojure [kB]}\\
 \hline
-0 & 704 & 548 & 1300\\
+0 & 704 & 548 & 8660\\
 \hline
-1 & 4076 & 24504 & 4240\\
+1 & 4076 & 24504 & 41604\\
 \hline
-2 & 64888 & 145256 & 12532\\
+2 & 64888 & 145256 & 194040\\
 \hline
-3 & 254820 & 301740 & 25872\\
+3 & 254820 & 301740 & 340340\\
 \hline
-4 & 398824 & 294424 & 37100\\
+4 & 398824 & 294424 & 369344\\
 \hline
-5 & 315296 & 243544 & 64240\\
+5 & 315296 & 243544 & 432428\\
 \hline
-6 & 280544 & 228976 & 69396\\
+6 & 280544 & 228976 & 449356\\
 \hline
-7 & 278380 & 228492 & 89632\\
+7 & 278380 & 228492 & 412020\\
 \hline
-8 & 287952 & 233204 & 120256\\
+8 & 287952 & 233204 & 468172\\
 \hline
-9 & 292080 & 239428 & 120256\\
+9 & 292080 & 239428 & 479828\\
 \hline
-10 & 297992 & 245484 & 120264\\
+10 & 297992 & 245484 & 491620\\
 \hline
-11 & 305280 & 252520 & 120264\\
+11 & 305280 & 252520 & 504148\\
 \hline
-12 & 314180 & 262084 & 112896\\
+12 & 314180 & 262084 & 503488\\
 \hline
-13 & 324204 & 275336 & 112896\\
+13 & 324204 & 275336 & 497592\\
 \hline
-14 & 342300 & 293188 & 112896\\
+14 & 342300 & 293188 & 497532\\
 \hline
-15 & 357680 & 320268 & 112896\\
+15 & 357680 & 320268 & 499872\\
 \hline
-16 & 394120 & 349612 & 112896\\
+16 & 394120 & 349612 & 510348\\
 \hline
-17 & 404572 & 376812 & 112896\\
+17 & 404572 & 376812 & 511356\\
 \hline
-18 & 408484 & 443108 & 112896\\
+18 & 408484 & 443108 & 511824\\
 \hline
-19 & 408484 & 443236 & 112896\\
+19 & 408484 & 443236 & 512052\\
 \hline
-20 & 419848 & 451776 & 112896\\
+20 & 419848 & 451776 & 506064\\
 \hline
-21 & 425884 & 451780 & 112896\\
+21 & 425884 & 451780 & 506420\\
 \hline
-22 & 432032 & 493828 & 112896\\
+22 & 432032 & 493828 & 506292\\
 \hline
 ... & - & - & ...\\
+\hline
+Ø & 308557 & 297488 & 527627\\
 \hline
 \end{tabular}
 \captionof{table}{Vergleich der gemessenen Speicherdaten}
@@ -1074,7 +1075,7 @@ Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabel
 \captionof{figure}{Vergleich des Speicherverbrauchs}
 \end{center}
 \subsubsection{CPU}
-Die folgende Grafik zeigt die CPU-Auslastung während der Programmausführung an. Anfangs steigt die CPU-Auslastung bei allen Sprachen ungefähr gleich stark an. Während sich Java und Clojure anschliessend während der ganzen Programmausführung in einem Bereich von ca. 100\% bewegen, nimmt die CPU-Auslastung bei Clojure bis zum Programmende stetig ab. Auch hier muss jedoch bedacht werden, dass die Programmausführung bei Clojure weit länger dauert als bei den anderen Sprachen. Beim genaueren Vergleich von Java und Scala fällt auf, dass die CPU-Auslastung bei Java stets leicht höher ist als bei Scala.
+Die folgende Grafik zeigt die CPU-Auslastung während der Programmausführung an. Anfangs steigt die CPU-Auslastung bei allen Sprachen ungefähr gleich stark an. Während sich Java und Clojure anschliessend während der ganzen Programmausführung in einem Bereich von ca. 100\% bewegen, ist die CPU-Auslastung beim Clojure-Programm vot allem anfangs deutlich höher. Nach ungefähr 25 Sekunden pendelt sich das Clojure-Programm bei ca. 110\% ein. Beim genaueren Vergleich von Java und Scala fällt auf, dass die CPU-Auslastung bei Java stets minimal höher ist als bei Scala. Auch bei dieser Messung ist der Ressourcenverbrauch von Clojure am höchsten.
 
 \bigskip
 \noindent
@@ -1086,51 +1087,53 @@ Ein Hinweis zur Tabelle: Aufgrund der grossen Datenmenge enthält die Wertetabel
 \hline
 0 & 0 & 0 & 0\\
 \hline
-1 & 99 & 105 & 82\\
+1 & 99 & 105 & 0\\
 \hline
-2 & 103 & 105 & 128\\
+2 & 103 & 105 & 200\\
 \hline
-3 & 144 & 102 & 108\\
+3 & 144 & 102 & 142\\
 \hline
-4 & 131 & 103 & 115\\
+4 & 131 & 103 & 153\\
 \hline
-5 & 99.8 & 102 & 92.4\\
+5 & 99.8 & 102 & 150\\
 \hline
-6 & 116 & 100 & 77\\
+6 & 116 & 100 & 147\\
 \hline
-7 & 114 & 100 & 66\\
+7 & 114 & 100 & 143\\
 \hline
-8 & 99.2 & 101 & 51.3\\
+8 & 99.2 & 101 & 141\\
 \hline
-9 & 100 & 101 & 46.2\\
+9 & 100 & 101 & 125\\
 \hline
-10 & 100 & 101 & 42\\
+10 & 100 & 101 & 125\\
 \hline
-11 & 100 & 101 & 38.5\\
+11 & 100 & 101 & 126\\
 \hline
-12 & 99.3 & 100 & 35.5\\
+12 & 99.3 & 100 & 123\\
 \hline
-13 & 99.6 & 100 & 33\\
+13 & 99.6 & 100 & 121\\
 \hline
-14 & 100 & 100 & 30.8\\
+14 & 100 & 100 & 120\\
 \hline
-15 & 99.7 & 100 & 28.8\\
+15 & 99.7 & 100 & 117\\
 \hline
-16 & 100 & 100 & 27.1\\
+16 & 100 & 100 & 117\\
 \hline
-17 & 100 & 100 & 25.6\\
+17 & 100 & 100 & 115\\
 \hline
-18 & 100 & 100 & 24.4\\
+18 & 100 & 100 & 113\\
 \hline
-19 & 107 & 100 & 23.2\\
+19 & 107 & 100 & 117\\
 \hline
-20 & 103 & 103 & 22\\
+20 & 103 & 103 & 115\\
 \hline
-21 & 105 & 105 & 22\\
+21 & 105 & 105 & 112\\
 \hline
-22 & 106 & 105 & 21\\
+22 & 106 & 105 & 111\\
 \hline
 ... & - & - & ...\\
+\hline
+Ø & 109 & 107 & 112\\
 \hline
 \end{tabular}
 \captionof{table}{Vergleich der gemessenen CPU-Auslastungen}
