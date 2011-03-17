@@ -118,21 +118,21 @@ dazu ein identisches Programm in jeder der genannten
 Programmiersprachen geschrieben. Durch das Messen von Prozessor- und
 Speicherdaten sowie der Ausführungszeiten der Programme wollten wir
 Unterschiede feststellen, um am Ende aufzeigen zu können, welche der
-getesteten Sprachen den Benchmark am schnellsten Ausf\"uhert. Für die
+getesteten Sprachen den Benchmark am schnellsten ausf\"uhert. Für die
 Messungen haben wir ein Script geschrieben,
 welches die erforderlichen Daten in angemessenen Zeitabständen
 ausliest. 
 \\
 Nach Auswertung der gemessenen Daten zeigte sich, dass Scala
 und Java beide optimalen Code generieren und somit fast gleich schnell
-sind. Die Clojure ist in unserem Benchmark
-etwa drei mal langsamer, was für eine Sprache die im Kern dynamisch
-ist kein Katostrphales Ergebniss ist aber sicherlich potenzial nache
+sind. Das Clojure-Testprogramm ist in unserem Benchmark
+etwa drei mal langsamer, was für eine Sprache mit dynamischem Kern
+ist kein katastrophales Ergebnis ist, aber sicherlich Potenzial nach
 oben offen l\"asst. 
 \\
-Diese Resultat best\"atigt die Erwartung das
+Dieses Resultat best\"atigt die Erwartung, dass
 sowohl Java als auch Scala perfekt mit der VM harmonieren.
-Das Gr\"unde f\"ur das langsamere Clojure Programm konnten nicht
+Das Gr\"unde f\"ur das langsamere Clojure Programm konnten nicht vollständig
 lokalisiert werden. 
 
 
@@ -352,7 +352,8 @@ Als Alternative haben wir uns für ein selbstgeschriebenes Script entschieden. L
 Das folgende Script liest die benötigten Leistungsdaten aus. Ich erkläre die einzelnen Bereiche des Scripts nacheinander um Verwirrung zu vermeiden.
 
 Die erste Zeile informiert Linux darüber, dass es sich um ein Shell-Script handelt, damit das Betriebssystem den Code richtig interpretieren kann. Bei einem Perl Script müsste hier beispielsweise das ‚sh‘ durch ein ‚perl‘ ersetzt werden.
-g
+
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Shebang]{}
 #!/bin/sh
@@ -360,6 +361,7 @@ g
 \end{minipage}
 Die als Parameter mitgegebenen Parameter werden in Variablen gespeichert.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Parameter]{}
 lang=$1
@@ -372,6 +374,7 @@ Nun folgt die Fehlerbehandlung.  Die erste Zeile besagt, dass wenn im Script ein
 
 Die Error-Funktion gibt ihrerseits eine Meldung aus, die den Benutzer über das Auftreten des Fehlers aufklärt und evtl. mögliche Ursachen dafür nennt. Anschliessend wird das Script beendet.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Fehlerbehandlung,literate=% 
 {ü}{{\"u}}1 
@@ -393,6 +396,7 @@ Ein unbekannter Fehler ist aufgetreten. Prüfen Sie die folgenden möglichen Feh
 
 Die folgenden beiden Vergleichsoperationen (IF-Konstrukte) dienen ebenfalls der Fehlerbehandlung. Die erste Funktion prüft ob die angegebene Sprache zulässig ist (wenn die Sprache im Parameter \$lang nicht Clojure ist und nicht Java ist und nicht Scala ist, dann führe den folgenden Code aus). Wenn der Vergleich wahr ist, d.h. eine falsche Sprache angegeben wurde, wird eine entsprechende Meldung ausgegeben und das Script beendet.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Sprachparameter prüfen]{}
 if [ $lang != clojure -a $lang != java -a $lang != scala ] ; then
@@ -404,6 +408,7 @@ fi
 
 Die zweite Vergleichsoperation überprüft, ob die angegebene auszuführende Programmdatei überhaupt auffindbar ist (wenn die Datei im Parameter \$code nicht vorhanden ist, dann führe den folgenden Code aus). Sollte das Script keine Datei finden können, wird der Benutzer informiert und das Script beendet.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Jar-Datei prüfen]{}
 if [ ! -f $code ] ; then
@@ -419,6 +424,7 @@ Die for-Schleife wird hier benötigt, weil sich die im Ablageverzeichnis für di
 \\
 Falls bereits Dateien vorhanden sind, wird der Benutzer nach dem weiteren Vorgehen gefragt und die Antwort in eine Variable eingelesen. Eine weitere Vergleichsoperation prüft nun ob der Benutzer ein kleines oder grosses Ypsilon (für Yes) eingegeben hat. Ist das der Fall, werden mit dem rm-Befehl die vorhandenen Dateien gelöscht, der Benutzer wird informiert und die Schleife abgebrochen. Hat der Benutzer jedoch etwas anderes oder gar nichts eingegeben, teilt das Script ihm mit, dass es die bestehenden Dateien erneut verwenden wird und bricht ebenfalls die Schleife ab. Es ist hier notwendig die Schleife abzubrechen, da diese die vorhandenen Dateien hochzählt.  Befinden sich also mehrere Dateien im Verzeichnis, würde der Benutzer pro Datei einmal nach dem weiteren Vorgehen abgefragt.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Benutzerabfrage,literate=% 
 {ü}{{\"u}}1 
@@ -444,6 +450,7 @@ done
 
 In die drei Dateien, in welche die gesammelten Daten gespeichert werden, wird das aktuelle Datum sowie die Uhrzeit geschrieben. Somit ist in den Dateien ersichtlich, von wann genau die Messdaten stammen.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Titel einfügen]{}
 echo "#
@@ -458,6 +465,7 @@ Die Schleife prüft als Bedingung ob die Ausgabe von ps \$! Grösser als /dev/nu
 \\
 Der sed-Befehl kopiert die Zeilen 11 bis 20 aus der Datei /proc/\$!/status in die Datei \$lang.memory. Im Proc-Dateisystem werden die aktuellen System- und Prozessinformationen des Linux-System gespeichert. Auch hier steht \$! wieder für die PID des zuletzt gestarteten Prozesses. Anschliessend wird mit dem echo-Befehl eine Trennzeile in die gleiche Datei geschrieben und das Script wird für die Dauer von 0.2 Sekunden pausiert. An dieser Stelle kann somit festgelegt werden, in welchem Intervall die Daten ausgelesen werden sollen. Da unsere Programme nur eine sehr kurze Ausführungszeit haben, reicht eine Wartezeit von 0.2 Sekunden aus. Ohne Wartezeit wäre die Datenmenge zudem extrem hoch.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Speicherdaten sammeln]{}
 echo '
@@ -481,6 +489,7 @@ Anschliessend erfolgt der gleiche Programmaufruf wie er bereits für das Auslese
 
 Mit dem ps-Befehl werden jedes Mal zu den Prozessordaten auch die Spaltenüberschriften in die Datei geschrieben. Für eine bessere Darstellung werden diese mit dem sed-Befehl entfernt und die neue Ausgabe in die Datei \$lang.cpu geschrieben. Der sed-Befehl entfernt ab der dritten Zeile jede zweite Zeile in der temporären Datei. Anschliessend wird die temporäre Datei gelöscht.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=CPU-Daten sammeln]{}
 echo '
@@ -502,6 +511,7 @@ done'
 
 Der letzte Schritt ist nun das Auslesen von Zeitdaten (Wie lange dauert die Programmausführung? Wie viel Zeit davon hat die CPU im Kernel-, wie viel im User-Modus verbracht?). Für diese Daten wird keine Schleife benötigt. Die Daten können mit nur einer Befehlszeile ausgelesen werden. Der Parameter –f definiert das Format der Ausgabe (Was soll ausgegeben und wie sollen die Ausgaben beschriftet werden?), der Parameter –o definiert die Ausgabedatei (Output) und der Parameter –a sorgt dafür, dass die Ausgabedatei nicht überschrieben wird sondern die neuen Daten einfach angehängt (append) werden. Als letzten Parameter erwartet der time-Befehl das Programm welches ausgeführt werden soll.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Zeitdaten sammeln]{}
 echo '
@@ -530,6 +540,7 @@ Der Memory Bereich ist der wohl komplexeste von allen. Der Begriff des virtuelle
 \noindent
 In der Folge eine Beispielsausgabe aus unserem Messskript.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Speicherdaten]{}
 -----------------------
@@ -580,6 +591,7 @@ Zusammenfassend lässt sich sagen, dass für unsere Messungen lediglich der Wert
 \subsubsection{CPU}
 In der Folge eine Beispielausgabe für die  Messung der CPU-Daten mit unserem Script. Neben dem ausführenden Benutzer und der Prozess-ID sind hier auch die momentane CPU-Auslastung und die vergangene Ausführzeit ersichtlich.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Speicherdaten]{}
 #
@@ -604,6 +616,7 @@ Die Spalte TIME gibt auf die Sekunde genau an, wie lange der Prozess bereits akt
 
 Hier eine Beispielausgabe für die Messung der Zeit-Daten mit unserem Script. Erneut tauchen hier evtl. unbekannte Begriffe welche in der Folge kurz erklärt werden.
 
+\noindent
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[language=bash,caption=Speicherdaten]{}
 #
@@ -672,27 +685,28 @@ Alle Messresultate werden sowohl in tabellarischer wie auch in grafischer Form v
 
 Die Aufgabe des Programmes ist es:
 \begin{itemize}
-\item Definierung eine TreeNode f\"ur einen Binarytree.
-\item Zuerst alluziert man einen Binarytree auf dem Heap, test ob dies
-  richtig geschehen ist und dealloziert diesen wieder.
-\item Ein Tree wird angelegt der erst am ende des Programmes
+\item Definieren eines TreeNodes f\"ur einen Binarytree.
+\item Zuerst alloziert man einen Binarytree auf dem Heap, testet ob dies
+  richtig funktioniert hat und dealloziert diesen wieder.
+\item Ein Tree wird angelegt der erst bei Programmende
   wieder dealloziert wird.
 \item In mehreren durchläufen werden immer wieder Binarytrees
   erstellt, getestet und wieder aufgr\"aumt.
-\item Am Ende des Programmes muss getestet werden ob der zuvor
-  angellegte Tree noch korrekt ist und auch dieser muss wieder
+\item Am Ende des Programmes muss getestet werden, ob der zuvor
+  angelegte Tree noch korrekt ist und auch dieser muss wieder
   gel\"oscht werden.
 \end{itemize}
 
 \subsubsection{Regeln}
 
-\item Der ganze Tree muss erstellt werden bis er wieder eingesammelt
-  werden kann.
+\begin{itemize}
+\item Der ganze Tree muss erstellt werden und kann erst dann wieder eingesammelt
+  werden.
 \item Die unterste Schicht der Nodes darf nicht mit Value-Types
   ersetzt werden.
-\item Die Standard Heap-Size darf nicht ver\"ander werden.
+\item Die Standard Heap-Size darf nicht ver\"andert werden.
 \item Es d\"urfen kein FreeLists oder Memory Pools implementiert werden.
-
+\end{itemize}
 
 \subsection{Java}
 \subsubsection{Beschreibung}
@@ -702,13 +716,13 @@ teilweise im Auftrag von Sun) entwickelt wurde. Java wurde zuerst f\"ur
 eingebettete Systeme geschrieben. Heutzutage findet man Java Applikation in
 vielen Anwendungsgebieten.
 Java ist eine der meist verwendeten Programmiersprachen und wird auch
-in vielen Universitäten gelehrt. 
+an vielen Universitäten gelehrt. 
 
 \subsubsection{Code}
 
 Das Java Programmiermodel bietet eine  intuitive L\"osung f\"ur diese
-Problemstellung. Die TreeNode-Klass \"ubernimmt die Haubtaufgaben wie
-die erstellung der Trees und die \"ubepr\"ufung der korrektness.
+Problemstellung. Die TreeNode-Klasse \"ubernimmt die Hauptaufgaben wie
+die Erstellung der Trees und die \"Ubepr\"ufung der Korrektheit.
 \\
 \begin{lstlisting}[language=java,caption=Tree erstelung]{}
 		private static TreeNode bottomUpTree(int item, int depth){
@@ -726,7 +740,7 @@ die erstellung der Trees und die \"ubepr\"ufung der korrektness.
 \end{lstlisting}
 		
 Die Methode hat die Aufgabe einen Tree mit der Tiefe \"depth\" zu
-erstellen. Dabei werden die Nodes selber mit wohl definierten Zahlen best\"uckt. 
+erstellen. Dabei werden die Nodes selber mit definierten Zahlen best\"uckt. 
 
 \begin{lstlisting}[language=java,caption=Tree check]{}
 		private int itemCheck(){
@@ -735,8 +749,8 @@ erstellen. Dabei werden die Nodes selber mit wohl definierten Zahlen best\"uckt.
 		
 \end{lstlisting}
 
-Diese Methode durchl\"auft Rekursive all Nodes und Z\"ahlt alle Werte
-die Gespeichert sind zusammmen damit diese von einem Menschen kontrolliert
+Diese Methode durchl\"auft rekursiv all Nodes und z\"ahlt alle Werte
+die gespeichert sind zusammmen, damit diese von einem Menschen kontrolliert
 werden können.
 \\
 \begin{lstlisting}[language=java,caption=Argumente und Tiefenrechnung]{}
@@ -748,7 +762,7 @@ werden können.
 		int stretchDepth = maxDepth + 1;
 \end{lstlisting}
 
-Die erste Teil der Main Methode sorgt daf\"ur das die Agrgument
+Die erste Teil der Main Methode sorgt daf\"ur, dass die Argumente
 richtig geparst werden und berechnet die Grenzwerte.
 
 \begin{lstlisting}[language=java,caption=Memory streckung]{}
@@ -757,14 +771,14 @@ richtig geparst werden und berechnet die Grenzwerte.
                 "+stretchDepth+"\t check: " + check);
 \end{lstlisting}
 
-Dieser Teil alloziert und \"uberpr\"uft den gr\"osst m\"oglichen  Tree den wir in diesem
+Dieser Teil alloziert und \"uberpr\"uft den grösstmöglichen Tree, den wir in diesem
 Benchmark haben.
 
 \begin{lstlisting}[language=java,caption=Long-Lived-Tree]{}
 		TreeNode longLivedTree = TreeNode.bottomUpTree(0,maxDepth);
 \end{lstlisting}
 
-Der longLivedTree wird alloziert aber forerst in Ruhe gelassen.
+Der longLivedTree wird alloziert aber vorerst in Ruhe gelassen.
 
 \begin{lstlisting}[language=java,caption=Main Loop]{}
 		for (int depth=minDepth; depth<=maxDepth; depth+=2){
@@ -779,15 +793,15 @@ Der longLivedTree wird alloziert aber forerst in Ruhe gelassen.
 		}	
 \end{lstlisting}
 
-Der Haubtteil der Mainmethode. Hier wirden mehrere Trees alloziert und
-\"uberpr\"uft dann werden sie Ausgegeben. Dannach \"uberlassen wir
-diese Trees dem GC. 
+Der Hauptteil der Mainmethode. Hier werden mehrere Trees alloziert und
+\"uberpr\"uft. Anschliessend werden sie ausgegeben und dem GC \"uberlassen. 
 
 \begin{lstlisting}[language=java,caption=Long-Lived-Tree Check]{}
 	System.out.println("long lived tree of depth " + maxDepth + "\t check: "+ longLivedTree.itemCheck());
 \end{lstlisting}
-Der letzte Teil des Programmes. Der zuvor initialisiert longLivedTree
-wird \"uberpr\"uft.
+
+Der letzte Teil des Programmes. Hier wird der zuvor initialisierte longLivedTree
+\"uberpr\"uft.
 
 \subsection{Scala}
 
@@ -802,12 +816,11 @@ aber auch immer mehr Anwendungen im Business Bereich.
 \subsubsection{Code}
 
 
-Das Scala Programm ist dem Java Programm sehr \"ahnlich. Die gleiche
-vorgehensweise wirt mit den gleichen Konstrukten implementiert. Der
-Unterschied zeigt sich im kleinen. Beispielsweise verwendet Scala
-keine "static" keywords. Der Compiler kann den dadurch erhaltenen
-overhead wegoptimieren.
-\\\\
+Das Scala Programm ist sehr ähnlich wie das Java Programm. Sowohl die Vorgehensweise wie auch die implementierten Konstrukte sind die gleichen. Der
+Unterschied zeigt sich im Detail. Beispielsweise verwendet Scala
+keine "static" Keywörter. Der Compiler kann den dadurch erhaltenen
+Overhead wegoptimieren.
+\\
 
 \begin{lstlisting}[language=scala,caption=Scala TreeNode]{}
 
@@ -826,8 +839,8 @@ object Tree {
 }
 \end{lstlisting}
 
-Als weitere Unterschied f\"allt auf das Scala es schafft mit weniger
-Zeilen und Keywortern fast den identische gleichen TreeNode zu
+Als weiteren Unterschied f\"allt auf, dass Scala es schafft mit weniger
+Zeilen und Keywörtern einen fast identischen TreeNode zu
 erstellen.
 
 \subsection{Clojure}
@@ -838,15 +851,11 @@ für die JVM geschrieben wurde. Im Vordergrund der Entwicklung standen
 hohe Abstraktion, vor allem bei Concurency Programming, und eine gute
 Integration ins Host System (JVM). Diese erlaubt die Wiederverwendung von
 Java Code, Java Ecosystems (Webservers, Profilers, Debuggers...) und natürlich der VM.
-
+\newpage
 \subsubsection{Code}
-
-
-Im hintergrund f\"uhrt die gleiche Logik aus wie die anderen
-Programme. Die Syntax hat sich im Vergleich zu den anderen Sprachen
+Im Hintergrund f\"uhrt der Clojure-Code die gleiche Logik aus wie die anderen
+Programme. Die Syntax hat sich im Vergleich zu den anderen Sprachen jedoch
 sehr ge\"andert. 
-\\\\
-
 \begin{lstlisting}[language=Clojure,caption=Simple main]{}
 
 (def min-depth (long 4))
@@ -858,17 +867,16 @@ sehr ge\"andert.
 \end{lstlisting}
 
 In Clojure versucht man sein Problem in m\"oglichst viel kleine
-Funktione zu unterteilen und Dinge die Konstant, wie min-depth, offfen
-zu legen. Deshalb wird das parsen der Argumente und
-das setzen des Minimalwertes seperat behandelt. Jeder zus\"atzliche
-Funktionsaufrufe kostes zwar bei der Ausf\"uhrung etwas Zeit aber da
-der Hotspot sehr gut is solche Funktionen zu optimieren sollte das
+Funktionen zu unterteilen und Dinge konstant offen
+zu legen (z.B. min-depth). Deshalb wird das Parsen der Argumente und
+das Setzen des Minimalwertes separat behandelt. Jeder zus\"atzliche
+Funktionsaufruf kostet zwar bei der Ausf\"uhrung etwas Zeit, aber da
+der Hotspot sehr gut darin ist solche Funktionen zu optimieren, sollte das
 kein Problem sein. Den Gewinn an Klarheit und Einfachheit des Codes
 ist es wert.\\
 \newline
-Befor wir in die Main-Methode springen schauen wir uns den Typen und
+Bevor wir in die Main-Methode springen schauen wir uns den Typen und
 die Funktionen an.
-
 
 \begin{lstlisting}[language=Clojure,caption=Node and Interface]{}
 (definterface ITreeNode
@@ -883,12 +891,12 @@ die Funktionen an.
   (right [this] right))
 \end{lstlisting}
 
-Das Interface ist n\"otig weil man in Clojure sonst keine Methoden
-definieren kann. Die im TreeNode beschriebenen Methoden nehmen alle
+Das Interface ist n\"otig, weil man in Clojure sonst keine Methoden
+definieren kann. Die im TreeNode beschriebenen Methoden empfangen alle
 einen Paramenter. Man kann sich vorstellen "item" ist eine normale
-Funktion die einen singel Dispatch auf das erste Argument macht.
+Funktion, die einen Single-Dispatch auf das erste Argument macht.
 \\
-\begin{lstlisting}[language=Clojure,caption=Cljure Tree Function]{}
+\begin{lstlisting}[language=Clojure,caption=Clojure Tree Function]{}
 (defn ^TreeNode  bottom-up-tree [^long item ^long depth]
   (if (zero? depth)
     (TreeNode. nil nil item)
@@ -900,14 +908,14 @@ Funktion die einen singel Dispatch auf das erste Argument macht.
      item)))
 \end{lstlisting}
 
-Die Funktion sieht \"ahnlich aus wie die equivalenten Funktion in Java
-und Scala. Auff\"allig sind die Typehints, diese Erlauben es Clojure
+Die Funktion sieht \"ahnlich aus wie die äquivalenten Funktionen in Java
+und Scala. Auffällig sind die Typehints, diese erlauben es Clojure
 optimierten Code f\"ur diese Funktion zu erstellen. Ein weiterer
-Auff\"alliger Punkt sind die "unchecked-*" operationen. Diese heissen
-so weil sie kein Overflow-checks machen, wie es die normalen
-Mathematik operatoren tuen w\"urden.
+auffälliger Punkt sind die "unchecked-*" Operationen. Diese heissen
+so, weil sie keine Overflow-Checks machen, wie es die normalen
+Mathematik Operatoren tun w\"urden.
 \\
-\begin{lstlisting}[language=Clojure,caption=Cljure item-check]{}
+\begin{lstlisting}[language=Clojure,caption=Clojure item-check]{}
 (defn item-check [^TreeNode node]
   (if (nil? (.left node))
     (.item node)
@@ -919,8 +927,8 @@ Mathematik operatoren tuen w\"urden.
 \end{lstlisting}
 
 Diese Funktion ist semantisch gleich wie die Java und Scala
-version. Auch hier setzen wir die unchecked-Operation, dies is n\"otig
-da diese eine Funktion ist die oft Aufgerufen wird.
+Versionen. Auch hier setzen wir die unchecked-Operation. Dies is n\"otig,
+da diese Funktion oft aufgerufen wird.
 \\
 \begin{lstlisting}[language=Clojure,caption=Clojure Main]{}
 (defn main [^long max-depth ^long stretch-depth]
@@ -935,21 +943,20 @@ da diese eine Funktion ist die oft Aufgerufen wird.
              " check: " (item-check long-lived-tree))))
 \end{lstlisting}
 
-In der ersten Operation alluzieret clojure den grossen Tree, checked
-ob er stimmt und reported das Resultat.
+In der ersten Operation alloziert Clojure den grossen Tree, prüft
+ob er stimmt und meldet das Resultat.
 \\
-Mit dem let-Form bindet man Wert f\"ur eine gewisse Zeit an ein Symbol
-(long-lived-tree). Erst wenn man am Ende des let-Forms angekommen ist
-wird das Symbol freigegeben und damit f\"ur den GC frei.
+Mit der let-Form bindet man einen Wert f\"ur eine gewisse Zeit an ein Symbol
+(long-lived-tree). Erst am Ende der let-Form wird das Symbol freigegeben und damit f\"ur den GC frei.
 \\
-Anstelle eines For-Loops verwendet Clojure eine Higher-order Function
-die mit einem Stream von Tree gr\"ossen Aufgerufen wird (gleich wie
-die einzelnen Durchl\"aufe des For-Loops bei Java), der Ruckgabe werde
-ist ein list von Strings die Ausgegeben wird. Wie dieses String genau
-erstellt werden sehen wir geliche.
+Anstelle einer For-Schleife verwendet Clojure eine Higher-Order Funktion,
+die mit einem Stream von Tree Gr\"ossen aufgerufen wird (gleich wie
+die einzelnen Durchl\"aufe des For-Loops bei Java). Der Rückgabewert
+ist ein list von Strings die ausgegeben werden. Wie diese String genau
+erstellt werden sehen wir gleich.
 \\
 Im letzten Teil wird noch der long-lived-Tree kontrolliert und
-ausgegeben. 
+ausgegeben.
 
 \begin{lstlisting}[language=Clojure,caption=Clojure Worker-Funktion]{}
 (defn iterate-trees [^long mx ^long  mn ^long d]
@@ -965,34 +972,30 @@ ausgegeben.
                            (range 1 (unchecked-inc iterations)))))))
 \end{lstlisting}
 
-Wie in der Main-Funktion wird auch hier keinen For-Loop eingesetzt
-sondern eine kombination aus Higher-Order Functions die, die
-Berechnungen machen machen. Das Format Macro sorgt nun nur noch
-daf\"ur das die Information richtig in eine String gepackt werden um
-sie an die Main-Funktion zur\"uk zu geben.
-
+Wie in der Main-Funktion wird auch hier keine For-Schleife eingesetzt
+sondern eine Kombination aus Higher-Order Funktionen die, die
+Berechnungen machen. Das Format Macro sorgt nun nur noch
+daf\"ur, dass die Informationen richtig in einen String gepackt werden um
+sie anschliessend an die Main-Funktion zurückgeben zu können.
 
 \subsubsection{\"Uber den Sourcecode}
 
-Clojure ist sehr gut darin Code klein zu machen. Wenn es aber um sehr
-Performanten Code geht wird der Clojure Code merklich l\"anger. Diese
-ist ein Teil des Designkonzepts. Macht man etwas was man im Normalfall
+Clojure ist sehr gut darin Code zu verkleinern. Wenn es aber darum geht sehr performanten  Code zu schreiben, wird dieser merklich l\"anger. Dies
+ist ein Teil des Designkonzepts. Macht man etwas das man im Normalfall
 nicht machen sollte (z.B. Overflow Checking entfernen) zahlt man
-daf\"ur. Auf diese Art werden diese Features nur von Programmierern
-eingesetzt die wissen as es n\"otig ist.
+daf\"ur einen Preis. Auf diese Art werden diese Features nur von Programmierern
+eingesetzt die wissen, dass es n\"otig ist.
 
 \subsubsection{\"Anderungen am Sourcecode}
 
-Auf den ersten Blick betracht sieht es nach sehr wenig \"Anderunge am
-Source Code aus. Was wir gemacht haben ist das Programm in die neuste
-Version von Clojure portiert um so von den Geschwindigkeitsvorteilen
-zu provietieren. In der neuen Version hat sich der Support f\"ur
-primitive Typen ge\"andert (siehe Quellverzeichniss) und man musste
-genau nachlesen was diese \"Anderungen zu bedeuten haben. Es stellt
-sich heraus das, nicht wie zuerst gedacht, der neu Primitiven Typen
-nicht viel an der Performance \"andern.
-
-
+Auf den ersten Blick betrachtet sieht es nach sehr wenig Änderungen am
+Source Code aus. Was wir gemacht haben, ist das Programm in die neuste
+Version von Clojure zu portieren, um dadurch von den Geschwindigkeitsvorteilen
+zu profitieren zu können. In der neuen Version hat sich der Support f\"ur
+primitive Typen ge\"andert und man musste
+genau nachlesen was diese \"Anderungen zu bedeuten haben. Es stellte
+sich heraus, dass die neuen primitiven Typen entgegen der Erwartungen nicht viel an der Performance ändern.
+\newpage
 \section{Ergebnisse}
 Im diesem Kapitel werden die Messresultate der durchgeführten Messungen aufgezeigt. Hier ist zu beachten, dass es sich bei den Zeitangaben welche für die Memory- und CPU-Grafiken verwendet wurden, um Schätzungen handelt. Wir waren mit Hilfe unseres Scripts leider nicht in der Lage den genauen Zeitverlauf aufzuzeigen. Eventuelle Unregelmässigkeiten können daher nicht ausgeschlossen werden. Des weiteren beinhalten die in diesem Kapitel aufgezeigten Tabellen, aufgrund der grossen Datenmenge, nicht alle Messresultate. Die genaue Bedeutung der Werte wurde in den vorhergehenden Kapiteln bereits ausführlich behandelt, an dieser Stelle folgen daher keine Erklärungen mehr.
 
@@ -1502,51 +1505,48 @@ leicht tiefere Systembelastung von Scala gegenüber Java. Dies bei
 einer Ausführungszeit welche mit einer Differenz von 0.1 Sekunden
 beinahe identisch mit derjenigen von Java ist. 
 \\
-Wie Eingangs schon erw\"ahnt ist es immer einen Abw\"ahgung zwischen
-Performance und Abstrakton. Scala schafft es bei gleicher oder
-besserer Abstrakton gleich schnll zu sein wie Java. Bessonders f\"ur
-grosse System bietet die Zus\"atzliche Typesicherheit von Scala grosse
+Wie bereits in der Einleitung erwähnt, muss immer zwischen 
+Performance und Abstraktion abgewägt werden. Scala schafft es bei gleicher oder
+besserer Abstraktion gleich schnell zu sein wie Java. Besonders f\"ur
+grosse System bietet die zus\"atzliche Typsicherheit von Scala grosse
 Vorteile gengen\"uber Java.
 \\
-Clojure ist, wie bei einer so jungen und dynamischen  Sprache auch nicht anders zu
-erwarten noch langsamer als die Konkurenten Java und Scala. Die
-verlangsamung beträgt ungef\"ahr einen Faktor von drei. Diese ist
-f\"ur eine dynamische Sprache kein schlechtes Resultat. Die meist
-verwendeten dynamischen Sprachen zeigen in Benchmarks oft 10 bis 1000 mal langsamere
-Ergebnisse als ein Sprache wie Java oder C.
+Clojure ist, wie bei einer so jungen und dynamischen Sprache auch nicht anders zu
+erwarten, um ca. Faktor drei langsamer als die Konkurrenten Java und Scala.
+Dies ist f\"ur eine dynamische Sprache kein schlechtes Resultat. Die meist
+verwendeten dynamischen Sprachen weisen in Benchmarks oft 10- bis 1000-mal langsamere
+Ergebnisse vor, als eine Sprache wie Java oder C.
 \\
-Zusammenfassend lässt sich aussagen, dass Java und Scala aufgrund der
-f\"ur Performance kritische Applikationen sehr gut geeigntet
-sind. Beide Sprachen m\"ussen nur sehr selten auf eine alternative
-Sprache zur\"uckgreifen (die JVM bietet die m\"oglichkeit C
-aufzurufen). Scala wir auf Grund der h\"oheren Abstraktion von uns
-f\"ur Highperformance Applikationen eher Empfohlen.
+Zusammenfassend lässt sich aussagen, dass Java und Scala
+f\"ur Performance kritische Applikationen sehr gut geeignet
+sind. Beide Sprachen müssen nur sehr selten auf eine alternative
+Sprache zurückgreifen (die JVM bietet die Möglichkeit C
+aufzurufen). Aufgrund der h\"oheren Abstraktion empfehlen wir,
+f\"ur Highperformance Applikationen eher Scala zu verwenden.
 \\
-Clojure ist trotz der etwas schlechteren Resultate nicht
-abzuschreiben. Es unterscht\"utzt viel dynamische Features die Scala
-und Java nicht oder nur sehr schwer zur verf\"uhgung stehen auch
-bietet Clojure weitere Abstraktionsm\"oglichkeiten die den anderen
-Sprachen nicht zur Verf\"ugung stehen.
+Clojure muss trotz der etwas schlechteren Resultate nicht abgeschrieben werden. Es unterstützt viele dynamische Features, die Scala
+und Java gar nicht oder nur sehr begrenzt zur Verfügung stehen. Zudem 
+bietet Clojure weitere Abstraktionsmöglichkeiten, über die die anderen Sprachen nicht verfügen.
 \\
-Dank der Unterliegenden JVM k\"onnen alle Sprachen miteinander
-Sprechen d.h. es ist ohne weiteres M\"oglich 90\% der Applikation in
-Clojure zu schreiben und die Performance kritischen Teile z.B. in Java.
+Dank der unterliegenden JVM k\"onnen alle Sprachen miteinander kommunizieren, d.h. es ist ohne weiteres möglich 90\% der Applikation in
+Clojure zu schreiben und nur die performancekritischen Teile beispielsweise in Java.
 \\
-Abschleissen m\"ochten wir diese Arbeit mit eingen weisen Worten, die
-wir auch allgemeint Empfehlen, da man Programmiersprachen nur selten
-nach Performance ausgew\"ahlt werden sollen.
+Abschliessen m\"ochten wir diese Arbeit mit einigen weisen Worten, denen auch wir nur zustimmen können, da Programmiersprachen nur selten aufgrund der Performance ausgew\"ahlt werden sollten.
 \begin{quote}
 Premature optimization is the root of all evil.\\
 - Donald Knuth
- \end{quote}
+\end{quote}
+
 \newpage
 
 \section{Abk\"urzungsverzeichnis}
 \begin{tabbing}
 \hspace*{2cm}\=\kill
 \textbf{CPU} \>Central Processing Unit\\
+\textbf{GC} \>Garbage Collector\\
 \textbf{HWM} \>High Water Mark\\
 \textbf{IL} \>Intermediate Language\\
+\textbf{JIT} \>Just in Time (Compiler)\\
 \textbf{JVM} \>Java Virtual Machine\\
 \textbf{PID} \>Process Identifier\\
 \textbf{procfs}\>Process Filesystem\\
@@ -1557,8 +1557,6 @@ Premature optimization is the root of all evil.\\
 \textbf{SED} \>Stream Editor\\
 \textbf{SMP} \>Symmetric Multiprocessing\\
 \textbf{VM} \>Virtual Machine\\
-\textbf{JIT} \>Just in Time Compiler\\
-\textbf{GC} \>Garbage Collector\\
 \end{tabbing}
 
 
@@ -1567,6 +1565,7 @@ Premature optimization is the root of all evil.\\
 \begin{tabularx}{\linewidth}{p{6.5cm}X}
 \textbf{Arbeitsspeicher}&auch Hauptspeicher, dient zum kurzzeitigen Speichern von Daten und ist massiv schneller als Festplatten\\
 \textbf{Befehlssatz}&Eine Menge von Befehlen, welche in Maschinensprache vorliegt\\
+\textbf{Bouncechecking}& Bouncechecking prüft ob ungültige Lesevorgänge aufgetreten sind wenn man aus einem Array liest\\
 \textbf{Bytecode}&Ein Befehlssatz für eine VM.\\
 \textbf{CPU-Modi}&siehe Kapitel 4.5.3 (Time)\\
 \textbf{CPU-second}&siehe Kapitel 4.5.3 (Time)\\
@@ -1580,23 +1579,22 @@ Premature optimization is the root of all evil.\\
 \textbf{Open-Source}&Software deren Quellcode öffentlich zugänglich ist\\
 \textbf{Page}&eine Einheit in die der Arbeitsspeicher unterteilt wird, es handelt sich um die kleinste Speichereinheit, in der Reservationen durchgeführt werden\\
 \textbf{Parallelisierung}&Aufteilung eines Programms in mehrere Teile, die gleichzeitig ausgeführt werden können. Das Programm wird dadurch multiprozessorfähig\\
-\textbf{Parameter}&ein Wert der einem Programm oder Script mitgegeben wird\\
 \end{tabularx}
 \newpage
 \noindent
 \begin{tabularx}{\linewidth}{p{6.5cm}X}
+\textbf{Parameter}&ein Wert der einem Programm oder Script mitgegeben wird\\
 \textbf{Performance-Monitoring-Tool}&Programm, welches die Leistungsdaten eines Computers oder Prozesses überwacht\\
 \textbf{Proc}&ein virtuelles Dateisystem welches System- und Prozessinformationen anzeigt\\
 \textbf{Script}&ein in einer Scriptsprache geschriebenes Programm\\
 \textbf{Scriptsprache}&Programmiersprache, welche sich speziell für kleine Programme eignet\\
+\textbf{Syntax}&Zeichen im Code, welche dem Compiler und dem Programmierer helfen die Struktur des Codes verstehen zu k\"onnen.\\
 \textbf{User Mode}&siehe Kapitel 4.5.3 (Time)\\
 \textbf{Virtual Machine}&Eine Programm, welches einen physikalischen Computer simuliert. Sie erhält als Input eine beliebige Sprache und führt
 diese auf der darunterliegenden Sprache aus.\\
 \textbf{Virtual Memory}&siehe Kapitel 4.5.1 (Memory)\\
-\textbf{Syntax}&Zeichen im Code mithilfe deren der Compiler und der
-Mensch die Struktur des Codes verstehen k\"onnen.\\
-\textbf{Bouncechecking}& Bouncechecking checkes for nonvalide-reads
-wenn man aus einem Array liest\\
+
+
 \end{tabularx}
 \section{Literaturverzeichnis}
 \noindent
