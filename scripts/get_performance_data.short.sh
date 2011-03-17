@@ -52,7 +52,7 @@ echo "#
 echo '
 Collecting Memory Data...
 '
-java -server $param -jar $code &
+java -server -jar $code $param & 
 #Is the process still running?
 while ps $! > /dev/null
 do
@@ -67,7 +67,7 @@ echo '
 Collecting CPU Data...
 '
 random=tmp$(date +%d%m%Y_%H%M%S)
-java -server $param -jar $code &	
+java -server -jar $code $param &	
 while ps $! > /dev/null
 do
 	ps -p $! -o user,pid,%cpu,c,time >> /opt/data/$random
@@ -81,6 +81,6 @@ done'
 echo '
 Collecting Time Data...
 '
-/usr/bin/time -f "Elapsed real time: %E\nCPU usage: %P\nTotal CPU-seconds in user mode: %U\nTotal CPU-seconds in kernel mode: %S\nSignals delivered to the process: %k\nName and arguments of the command: %C" -o /opt/data/$lang.time -a java -server $param -jar $code
+time -f "Elapsed real time: %E\nCPU usage: %P\nTotal CPU-seconds in user mode: %U\nTotal CPU-seconds in kernel mode: %S\nSignals delivered to the process: %k\nName and arguments of the command: %C" -o /opt/data/$lang.time -a java -server-jar $code $param
 echo '
 done'
